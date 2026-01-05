@@ -1,0 +1,42 @@
+{
+  "_comment": "Verification evidence format - stored in LogBook/verification/evidence/<lane>/<issue_id>_<timestamp>.json",
+  "issue_id": "E-01",
+  "lane": "E",
+  "timestamp": "2026-01-04T12:30:15.407038",
+  "all_passed": true,
+  "passed_checks": 2,
+  "failed_checks": 0,
+  "total_checks": 2,
+  "confidence_score": 100,
+  "verification_pattern": "infrastructure_check",
+  "verification_depth": "DEEP",
+  "affected_paths": [
+    "src/support/",
+    "src/support/README.md"
+  ],
+  "checks": [
+    {
+      "name": "directory_exists",
+      "command": "test -d src/support && echo \"PASS\" || echo \"FAIL\"",
+      "expected": 0,
+      "actual": 0,
+      "passed": true,
+      "output": "PASS",
+      "duration_ms": 12
+    },
+    {
+      "name": "readme_present",
+      "command": "test -f src/support/README.md && git ls-files --error-unmatch src/support/README.md",
+      "expected": 0,
+      "actual": 0,
+      "passed": true,
+      "output": "src/support/README.md",
+      "duration_ms": 45
+    }
+  ],
+  "metadata": {
+    "verifier": "verify_issue.py",
+    "version": "1.0",
+    "auto_corrected": false
+  }
+}

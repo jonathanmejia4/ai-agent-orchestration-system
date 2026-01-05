@@ -100,6 +100,39 @@ workflow:
 4. Create issue files with verification commands
 ```
 
+## Data Models
+
+### Orchestrator State
+
+Orchestrators track agent execution without storing full transcripts:
+
+```yaml
+lanes:
+  E:
+    status: completed
+    issues: 15
+    committed: true
+```
+
+See [orchestrator-state-example.yaml](examples/orchestrator-state-example.yaml) for complete structure.
+
+### Verification Evidence
+
+Each issue fix generates verification evidence:
+
+```json
+{
+  "issue_id": "E-01",
+  "all_passed": true,
+  "confidence_score": 100,
+  "checks": [...]
+}
+```
+
+See [verification-evidence.json](examples/verification-evidence.json) for complete structure.
+
+**Key insight:** File-based state + verification evidence = complete audit trail without context overhead.
+
 ## Results
 
 ### Issue Resolution Statistics

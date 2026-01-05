@@ -1,0 +1,47 @@
+# This file demonstrates orchestrator state management
+# Real files: LogBook/issue-hunting/orchestrator-state.yaml
+#            LogBook/issue-fixing/orchestrator-state.yaml
+#
+# Purpose: Track agent execution without storing full transcripts
+# Benefit: 98.9% context reduction vs traditional transcript-based coordination
+
+run_id: "2026-01-04-1200"
+started: "2026-01-04T12:00:00"
+status: "completed"
+
+lanes:
+  E:
+    status: completed
+    issues: 15
+    committed: true
+    started_at: "2026-01-04T12:00:05"
+    completed_at: "2026-01-04T12:12:18"
+  G:
+    status: completed
+    issues: 12
+    committed: true
+    started_at: "2026-01-04T12:00:06"
+    completed_at: "2026-01-04T12:11:33"
+  H:
+    status: completed
+    issues: 9
+    committed: true
+    started_at: "2026-01-04T12:00:07"
+    completed_at: "2026-01-04T12:13:45"
+  M:
+    status: completed
+    issues: 8
+    committed: true
+    started_at: "2026-01-04T12:00:12"
+    completed_at: "2026-01-04T12:08:22"
+  # ... (17 more lanes follow same pattern)
+
+progress:
+  total_lanes: 21
+  completed_lanes: 21
+  total_found: 287
+  timestamp: "2026-01-04T12:15:30"
+
+# Key insight: This entire state file replaces 265k tokens of transcripts
+# Traditional approach: TaskOutput returns full agent transcript per lane
+# File-based approach: Poll for .done files, read compact state
