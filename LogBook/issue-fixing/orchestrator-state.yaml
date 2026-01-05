@@ -1,0 +1,43 @@
+# Sample orchestrator state file
+# This tracks the status of parallel issue fixing across all lanes
+
+run_id: "2025-01-04-0915"
+started: "2025-01-04T09:15:00"
+status: complete
+
+lanes:
+  E:
+    status: completed
+    issues_fixed: 12
+    issue_ids: [E-01, E-02, E-03, E-04, E-05]
+  G:
+    status: completed
+    issues_fixed: 18
+    issue_ids: [G-01, G-02, G-03, G-04, G-05]
+  H:
+    status: completed
+    issues_fixed: 35
+    issue_ids: [H-01, H-02, H-03, H-04, H-05]
+  M:
+    status: completed
+    issues_fixed: 10
+    issue_ids: [M-01, M-02, M-03, M-04, M-05]
+  # ... additional lanes follow same pattern
+
+progress:
+  total_lanes: 21
+  completed_lanes: 21
+  total_fixed: 1030
+
+# Complexity status observed during run
+complexity_notes:
+  - lane: Z
+    issue: Z-08
+    level: EXTREME
+    reason: "15 files, architectural governance overhaul"
+    fixed_count: 1
+  - lane: E
+    issue: E-45
+    level: HIGH
+    reason: "8 files, data protection policy update"
+    fixed_count: 2

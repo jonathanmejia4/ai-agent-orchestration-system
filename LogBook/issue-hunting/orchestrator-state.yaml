@@ -1,0 +1,52 @@
+# Sample orchestrator state file
+# This tracks the status of parallel issue hunting across all lanes
+
+run_id: "2025-01-03-1430"
+started: "2025-01-03T14:30:00"
+last_updated: "2025-01-03T14:45:22"
+status: complete
+
+config:
+  batch_size: 3
+  lanes_to_run: [E, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z]
+
+lanes:
+  E:
+    status: completed
+    issues: 15
+    issue_ids: [E-01, E-02, E-03, E-04, E-05]
+    committed: true
+    started_at: "2025-01-03T14:30:05"
+    completed_at: "2025-01-03T14:42:18"
+  G:
+    status: completed
+    issues: 23
+    issue_ids: [G-01, G-02, G-03, G-04, G-05]
+    committed: true
+    started_at: "2025-01-03T14:30:06"
+    completed_at: "2025-01-03T14:41:33"
+  H:
+    status: completed
+    issues: 42
+    issue_ids: [H-01, H-02, H-03, H-04, H-05]
+    committed: true
+    started_at: "2025-01-03T14:30:07"
+    completed_at: "2025-01-03T14:43:45"
+  M:
+    status: completed
+    issues: 10
+    issue_ids: [M-01, M-02, M-03, M-04, M-05]
+    committed: true
+    started_at: "2025-01-03T14:30:12"
+    completed_at: "2025-01-03T14:38:22"
+  # ... additional lanes follow same pattern
+
+progress:
+  total_lanes: 21
+  completed_lanes: 21
+  total_issues: 1330
+  batches_run: 0
+  last_batch: []
+  next_batch: []
+
+errors: []
