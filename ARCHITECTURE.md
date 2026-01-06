@@ -279,8 +279,8 @@ To add new lanes:
 
 | Metric | Value |
 |--------|-------|
-| Total issues found | 1,330 |
-| Issues resolved | 1,030 (77.4%) |
+| Total issues found | 1,471 |
+| Issues resolved | 1,352 (91.9%) |
 | Context reduction | 98.9% |
 | Parallel agents | 21 |
 | Avg resolution time | 15-20 min per full run |

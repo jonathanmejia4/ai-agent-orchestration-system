@@ -54,7 +54,7 @@ python tools/sync_catalog_stats.py --verbose
 - **File-based signaling**: 98.9% context reduction (3k vs 265k tokens)
 - **Parallel execution**: 21 simultaneous context windows
 - **Autonomous agents**: Each agent commits its own work
-- **Verified results**: 1,030 issues resolved, 77.4% completion rate
+- **Verified results**: 1,352 issues resolved, 91.9% completion rate
 
 ## Extending the System
 
@@ -67,9 +67,9 @@ To add a new lane (problem domain):
 
 ## Real-World Performance
 
-- **Traditional approach**: 299 issues x 30 min = 149.5 hours
-- **With orchestration**: 299 issues / 21 lanes = 3.6 hours
-- **Productivity gain**: 41.5x faster
+- **Traditional approach**: 118 issues x 30 min = 59 hours
+- **With orchestration**: 118 issues / 21 lanes = 1.4 hours
+- **Productivity gain**: 42x faster
 
 ---
 
