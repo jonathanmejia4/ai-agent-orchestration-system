@@ -1,179 +1,211 @@
 # AI Agent Orchestration System
 
-**Production-grade multi-agent system for automated issue resolution**
+**Showcase demonstrating file-signal orchestration for multi-agent coordination**
 
-## Overview
+## What This Is
 
-This repository demonstrates a scalable AI agent architecture that resolves issues in parallel using specialized agents coordinated by orchestrators. Built with Claude AI and modern agentic workflows.
+A public excerpt demonstrating a production-tested pattern for coordinating multiple AI agents. This repo shows **how** the orchestration works without exposing proprietary detection logic, policies, or internal tooling.
 
-### Key Results
-- **1,352 issues resolved** across 21 specialized domains
-- **91.9% completion rate** (verified, not claimed)
-- **42x productivity multiplier** vs manual resolution
-- **46 autonomous agents** (23 hunters + 22 fixers + orchestrators)
+**Key pattern:** File-based signaling instead of transcript parsing.
+
+## Real-World Validation
+
+This repository is a **sanitized showcase subset** of a larger internal system that has been actively used in real development workflows.
+
+The full system has been exercised with:
+- **Dozens of coordinated autonomous agents** running in parallel
+- **Multiple specialized work lanes** (D, E, G-Z)
+- **Hundreds+ tracked and resolved issues** across a production codebase
+- **Sustained daily usage** over extended development cycles
+
+Exact metrics, agent rulebooks, and governance policies are intentionally abstracted to avoid exposing proprietary architecture. This repository demonstrates **how the system works**, not the full extent of its internals.
+
+> **Note:** This demo includes only lanes E and M. The full system spans many more lanes and agents.
+
+## The Problem It Solves
+
+Traditional multi-agent orchestration returns full transcripts from each agent, which:
+- Consumes massive context windows (100k+ tokens per agent)
+- Requires complex transcript parsing
+- Doesn't scale beyond a few agents
+
+**Our solution:** Agents write small signal files (`.status`, `.done`). The orchestrator polls for these files instead of parsing transcripts. Result: ~3k tokens vs 100k+ tokens per coordination cycle.
+
+## Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/jonathanmejia4/ai-agent-orchestration-system.git
+cd ai-agent-orchestration-system
+
+# Set up Python environment
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+# Run the file-signal demo
+python3 scripts/run_demo_file_signals.py
+```
+
+**Expected output:**
+```
+============================================================
+            FILE-SIGNAL ORCHESTRATION DEMO
+============================================================
+
+[Step 1] Cleaning old signals...
+  ✓ Signal directory cleaned
+[Step 2] Reading issue catalog...
+  → Lane E: 3 open issues
+  → Lane M: 2 open issues
+[Step 3] Spawning lane workers in PARALLEL...
+  → In production: dozens of parallel agents via Task tool
+  → In demo: Threaded simulation with same signal behavior
+  → Starting Lane E worker...
+  → Starting Lane M worker...
+[Step 4] Polling for completion signals...
+  Polling: E:✓ | M:✓ (2/2 done)
+  ✓ All lanes completed!
+[Step 5] Generating report...
+  ✓ Report: examples/output/sample_run_report.md
+
+============================================================
+                      DEMO COMPLETE
+============================================================
+
+  Lanes:        2
+  Issues fixed: 5
+  Signals:      LogBook/issue-fixing/signals/
+  Report:       examples/output/sample_run_report.md
+```
+
+**Output files created:**
+- `LogBook/issue-fixing/signals/E.status` - Progress updates
+- `LogBook/issue-fixing/signals/E.done` - Completion signal
+- `LogBook/issue-fixing/signals/M.status` - Progress updates
+- `LogBook/issue-fixing/signals/M.done` - Completion signal
+- `examples/output/sample_run_report.md` - Run summary
 
 ## Architecture
 
-### Core Concept: Lane-Based Specialization
+### File-Signal Pattern
 
-The system divides problems into 21 "lanes" (A-Z), each with domain-specific expertise:
-- **Lane E**: Customer services & data protection
-- **Lane G**: Reference integrity & missing artifacts
-- **Lane H**: Code stubs & placeholders
-- **Lane M**: Schema validation & drift detection
-- ...and 17 more specialized domains
-
-### Two-Phase Agent System
-
-**Phase 1: Issue Hunters**
-- 23 specialized hunter agents scan codebase for issues
-- Each hunter focuses on specific problem patterns
-- Parallel execution with separate context windows
-- Results cataloged in central issue registry
-
-**Phase 2: Issue Fixers**
-- 22 specialized fixer agents resolve issues
-- Oldest-first priority (FIFO queue)
-- 5-issue batches per agent
-- Autonomous commit & verification
-
-### Orchestration Pattern: File-Based Signaling
-
-Traditional approach: Return full agent transcripts (265k tokens)
-Our approach: File-based `.done` signals (3k tokens - 98.9% reduction)
-
-```yaml
-# Orchestrator spawns 21 agents in parallel
-workflow:
-  - spawn agents with Task tool
-  - agents work independently
-  - agents write .done files when complete
-  - orchestrator polls for completion signals
-  - orchestrator syncs results
+```
+┌─────────────────┐         ┌─────────────────┐
+│  Orchestrator   │         │  Lane Worker E  │
+│                 │         │                 │
+│  1. Spawn       │────────▶│  Process issues │
+│     workers     │         │  Write .status  │
+│                 │         │  Write .done    │
+│  2. Poll for    │◀────────│                 │
+│     .done files │         └─────────────────┘
+│                 │
+│  3. Sync        │         ┌─────────────────┐
+│     results     │         │  Lane Worker M  │
+│                 │         │                 │
+└─────────────────┘◀────────│  Same pattern   │
+                            └─────────────────┘
 ```
 
-**Benefits:**
-- Massive context window savings (98.9% reduction)
-- True parallel execution
-- No transcript parsing overhead
-- Simple state management
+### Why This Works
+
+| Traditional | File-Signal |
+|-------------|-------------|
+| Return full transcript | Write small .done file |
+| Parse 100k+ tokens | Check file existence |
+| Sequential context load | Parallel file polling |
+| Complex error handling | Simple file checks |
+
+### Lane-Based Specialization
+
+Each "lane" handles a specific domain:
+- **Lane E**: Customer services, data protection
+- **Lane M**: Schema validation, configuration
+
+In production, this scales to multiple lanes running in parallel.
+
+## Repository Structure
+
+```
+ai-agent-orchestration-system/
+├── .claude/agents/              # Agent specifications
+│   ├── issue-fixers/
+│   │   ├── IF-Orchestrator.md   # Orchestrator spec
+│   │   ├── IF-Lane-E.md         # Lane E worker spec
+│   │   └── IF-Lane-M.md         # Lane M worker spec
+│   └── issue-hunters/           # Hunter agent specs
+├── examples/
+│   ├── minimal_demo/            # Self-contained demo
+│   │   ├── SAF_ISSUE_CATALOG.md # Sample issue catalog
+│   │   ├── issues/              # Sample issue files
+│   │   └── config/              # Demo config files
+│   └── output/                  # Demo output artifacts
+├── scripts/
+│   ├── run_demo_file_signals.py # Main demo script
+│   └── demo_dry_run.py          # Alternative demo
+├── tools/                       # Utility scripts
+├── LogBook/                     # Runtime state
+│   └── issue-fixing/signals/    # Signal files go here
+├── README.md
+├── LICENSE
+└── requirements.txt
+```
+
+## What's Included vs Omitted
+
+This repo demonstrates **orchestration patterns and governance architecture** without exposing proprietary system internals.
+
+### Included (safe to share)
+
+| Item | Purpose |
+|------|---------|
+| File-signal pattern | Core orchestration technique |
+| Agent specs | Show lane-based structure |
+| Demo harness | Prove the pattern works |
+| Sample issues | Demonstrate format |
+
+### Intentionally Omitted
+
+| Item | Reason |
+|------|--------|
+| Full agent prompt library | Proprietary |
+| Detection heuristics | Competitive advantage |
+| Policy engine | Organization-specific |
+| Production integrations | Customer data |
+| Guardrails / safety filters | Internal governance |
+
+**Note:** The demo requires no API keys, external services, or secrets. It runs entirely locally using pure Python stdlib.
+
+## Alternative Demo
+
+There's also a dry-run demo showing work order + verdict patterns:
+
+```bash
+python3 scripts/demo_dry_run.py
+```
+
+This demonstrates a different aspect of the system (PM dispatch → fix → critic verdict). It performs **no file modifications** - just prints what would happen.
+
+**Sample output from a real run:** `demo/sample_run_output.txt`
 
 ## Technical Stack
 
-- **AI Framework**: Claude AI (Anthropic)
-- **Languages**: Python, Markdown, YAML
-- **Orchestration**: Custom file-based signaling
-- **State Management**: YAML orchestrator states
-- **Verification**: Automated validation tools
+- **Orchestration**: File-based signaling (no database required)
+- **State**: YAML files for configuration and status
+- **Agents**: Claude AI (in production)
+- **Demo**: Pure Python, no AI calls needed
 
-## Code Quality Tools
+## Key Takeaways
 
-### Convention Checker
-- Auto-fix trailing whitespace, newlines
-- API documentation verification
-- Escape hatch tracking
-- 494+ lines of quality enforcement
-
-### Schema Validator
-- Circular dependency detection (DFS algorithm)
-- Path validation for security
-- Configurable coverage thresholds
-- 744+ lines of validation logic
-
-### Catalog Sync
-- Parses 1,471 issue files automatically
-- Updates statistics in real-time
-- Maintains "Open Issues by Lane" registry
-- Single source of truth for orchestrators
-
-## Sample Agent: Issue Hunter (Lane E)
-
-```
-**Lane:** E - Customer Services & Data Protection
-**Quota:** Up to 5 issues per run
-**Model:** Haiku (fast, cost-efficient)
-
-**Search Strategy:**
-1. Check for forbidden patterns (things that shouldn't exist)
-2. Check for missing required patterns (things that should exist)
-3. Cross-reference guidelines vs implementation
-4. Create issue files with verification commands
-```
-
-## Data Models
-
-### Orchestrator State
-
-Orchestrators track agent execution without storing full transcripts:
-
-```yaml
-lanes:
-  E:
-    status: completed
-    issues: 15
-    committed: true
-```
-
-See [orchestrator-state-example.yaml](examples/orchestrator-state-example.yaml) for complete structure.
-
-### Verification Evidence
-
-Each issue fix generates verification evidence:
-
-```json
-{
-  "issue_id": "E-01",
-  "all_passed": true,
-  "confidence_score": 100,
-  "checks": [...]
-}
-```
-
-See [verification-evidence.json](examples/verification-evidence.json) for complete structure.
-
-**Key insight:** File-based state + verification evidence = complete audit trail without context overhead.
-
-## Results
-
-### Issue Resolution Statistics
-
-| Metric | Value |
-|--------|-------|
-| Total issues | 1,471 |
-| Resolved | 1,352 (91.9%) |
-| Open | 118 |
-| Lanes complete | 5 (100% resolution) |
-| Average completion | 91.9% |
-
-### Productivity Impact
-
-- **Traditional (1 developer)**: 118 issues x 30 min = 59 hours
-- **With orchestrators**: 118 issues / 21 lanes x 5/batch x 15 min = 1.4 hours
-- **Multiplier**: 42x faster
-
-## Use Cases
-
-This architecture applies to:
-
-- Automated code quality enforcement
-- Large-scale refactoring projects
-- Issue triage and resolution
-- Documentation gap analysis
-- Compliance checking
-- Technical debt reduction
-
-## Key Learnings
-
-1. **Specialization > Generalization** - 21 focused agents outperform 1 general agent
-2. **File signals > Transcript returns** - 98.9% context reduction
-3. **Parallel > Sequential** - 21 simultaneous context windows
-4. **Verification built-in** - Each issue has automated verification
-5. **State as files** - YAML states easier than database
-
-## Author
-
-Built by a mechanical engineering student exploring AI-assisted automation and agentic workflows.
+1. **File signals beat transcript returns** - Dramatic context savings
+2. **Lane specialization scales** - Each agent has focused scope
+3. **Polling is simple** - Just check for file existence
+4. **Idempotent by design** - Clean signals, re-run safely
 
 ## License
 
-MIT License - Feel free to study, adapt, or build upon this architecture.
+MIT License - See [LICENSE](LICENSE)
+
+---
+
+*This is a public showcase. The full production system includes additional tooling and policies not shown here.*

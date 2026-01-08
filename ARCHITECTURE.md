@@ -1,5 +1,18 @@
 # Architecture Deep Dive
 
+## Real-World Validation
+
+This architecture has been **validated in production** on a real codebase:
+
+- **Dozens of parallel agents** coordinated via file signals
+- **Hundreds+ issues** discovered and resolved
+- **Sustained daily execution** over extended development cycles
+- **~99% context reduction** vs transcript-based approaches
+
+This document describes the patterns used. Exact metrics, rulebooks, and lane configurations are abstracted for this public showcase.
+
+---
+
 ## Design Principles
 
 ### 1. Lane-Based Specialization
@@ -27,7 +40,7 @@ Each lane represents a specific problem domain:
 touch LogBook/issue-hunting/signals/E.done
 
 # Orchestrator polls
-while [ $(ls signals/*.done | wc -l) -lt 21 ]; do
+while [ $(ls signals/*.done | wc -l) -lt 22 ]; do
     sleep 30
 done
 ```
@@ -64,9 +77,9 @@ lanes:
 │                          ORCHESTRATOR (Sonnet)                          │
 │                                                                         │
 │  1. Reset state & signals                                               │
-│  2. Spawn 21 agents in parallel ─────────────────────────────────────┐  │
+│  2. Spawn 22 agents in parallel ─────────────────────────────────────┐  │
 │  3. Poll for .done files                                             │  │
-│  4. When 21/21 complete:                                             │  │
+│  4. When 22/22 complete:                                             │  │
 │     - Sync catalog                                                   │  │
 │     - Commit & push                                                  │  │
 │     - Cleanup signals                                                │  │
@@ -94,7 +107,7 @@ lanes:
 2. **Agents execute independently** (separate context windows)
 3. **Agents commit their work** (git add, commit)
 4. **Agents signal completion** (touch .done file)
-5. **Orchestrator polls signals** (wait for 21/21)
+5. **Orchestrator polls signals** (wait for 22/22)
 6. **Orchestrator syncs catalog** (update statistics)
 7. **Orchestrator commits final state** (push to main)
 
@@ -104,7 +117,7 @@ lanes:
 
 ### The Problem
 
-With 21 agents running in parallel, naive approaches blow up context:
+With 22 agents running in parallel, naive approaches blow up context:
 
 | Approach | Context Used | Problem |
 |----------|--------------|---------|
@@ -149,7 +162,7 @@ IH-Orchestrator (Sonnet)
     ├── IH-Lane-G (Opus) → Reference integrity issues
     ├── IH-Lane-H (Opus) → Code stub issues
     ├── IH-Lane-M (Opus) → Schema drift issues
-    └── ... (21 total lanes)
+    └── ... (22 total lanes)
 ```
 
 **Each hunter:**
@@ -169,7 +182,7 @@ IF-Orchestrator (Sonnet)
     ├── IF-Lane-G (Opus) → Fixes G-* issues
     ├── IF-Lane-H (Opus) → Fixes H-* issues
     ├── IF-Lane-M (Opus) → Fixes M-* issues
-    └── ... (21 total lanes)
+    └── ... (22 total lanes)
 ```
 
 **Each fixer:**
@@ -266,21 +279,23 @@ To add new lanes:
 
 ## Key Learnings
 
-1. **Specialization beats generalization** - 21 focused agents outperform 1 general agent
+1. **Specialization beats generalization** - 22 focused agents outperform 1 general agent
 2. **File signals beat transcript returns** - 98.9% context reduction
-3. **Parallel beats sequential** - 21 simultaneous context windows
+3. **Parallel beats sequential** - 22 simultaneous context windows
 4. **Verification must be built-in** - Each issue has automated verification
 5. **State as files** - YAML states easier than databases
 6. **Quality over quantity** - One complete fix > five partial fixes
 
 ---
 
-## Metrics Achieved
+## Example Metrics
 
-| Metric | Value |
-|--------|-------|
-| Total issues found | 1,471 |
-| Issues resolved | 1,352 (91.9%) |
-| Context reduction | 98.9% |
-| Parallel agents | 21 |
+| Metric | Typical Value |
+|--------|---------------|
+| Issues per run | 50-200+ |
+| Resolution rate | >90% |
+| Context reduction | ~99% |
+| Parallel agents | 22 |
 | Avg resolution time | 15-20 min per full run |
+
+*Metrics vary based on codebase size and issue complexity.*

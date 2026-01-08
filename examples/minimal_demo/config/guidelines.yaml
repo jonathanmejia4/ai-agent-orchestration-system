@@ -1,0 +1,10 @@
+# Customer Service Guidelines (Demo)
+# This file is used by the minimal demo to demonstrate issue fixing
+
+customer_service:
+  enabled: true
+  support_email: "support@example.com"
+
+privacy:
+  policy_version: "1.0"
+  consent_required: true

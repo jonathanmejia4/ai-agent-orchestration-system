@@ -1,0 +1,80 @@
+# ============================================================
+# DEMO / NON-PRODUCTION
+# This file demonstrates critic verdict format only
+# Real verdicts use proprietary scoring weights and dimensions
+# ============================================================
+
+# Final Decision
+final_verdict: "APPROVED"
+brick_id: "demo-1.0-config-setup"
+timestamp: "2026-01-07T10:25:00Z"
+
+# Aggregate Score (normalized 0.0 - 1.0)
+overall_score: 0.94
+recommendation: "APPROVE - All checks passed"
+
+# Dimension Results
+# NOTE: Real system uses 7 specialized critic agents
+# Dimension names shown; internal weights redacted
+dimension_results:
+  - dimension: "SpecFit"
+    verdict: "pass"
+    score: 0.95
+    feedback: "Output matches specification requirements"
+    evidence:
+      - type: "file_check"
+        ref: "config/settings.yaml exists"
+
+  - dimension: "Verification"
+    verdict: "pass"
+    score: 0.92
+    feedback: "All verification commands passed"
+    evidence:
+      - type: "command_check"
+        ref: "3/3 verification commands successful"
+
+  - dimension: "Dependencies"
+    verdict: "pass"
+    score: 1.0
+    feedback: "No dependencies - standalone fix"
+    evidence:
+      - type: "dependency_check"
+        ref: "No blocking issues"
+
+  - dimension: "Effort"
+    verdict: "pass"
+    score: 0.90
+    feedback: "Completed within time box"
+    evidence:
+      - type: "time_check"
+        ref: "Estimated: PT30M, Actual: PT25M"
+
+  - dimension: "Security"
+    verdict: "pass"
+    score: 0.95
+    feedback: "No security issues detected"
+    evidence:
+      - type: "security_scan"
+        ref: "No secrets, no vulnerabilities"
+
+# Summary
+issues_summary:
+  critical: 0
+  high: 0
+  medium: 0
+  low: 0
+  total: 0
+
+# Evaluation Metadata
+evaluation_metadata:
+  demo_mode: true
+  dimensions_evaluated: 5
+  evaluation_duration: "PT2M"
+
+# ============================================================
+# NOTE: This is a DEMO verdict for showcase purposes only.
+# Real verdicts contain:
+# - Proprietary dimension weights
+# - Internal policy compliance checks
+# - Production-grade security analysis
+# ============================================================

@@ -1,0 +1,26 @@
+# ============================================================
+# DEMO / NON-PRODUCTION - Before State
+# ============================================================
+
+Project Structure (Before Fix):
+
+project/
+  src/
+    main.py
+    utils.py
+  tests/
+    test_main.py
+  README.md
+
+Missing: config/settings.yaml
+
+Application startup log:
+--------------------------
+[ERROR] Configuration file not found: config/settings.yaml
+[WARN] Using default settings - not recommended for production
+[INFO] Application started with defaults
+
+Issues detected:
+- No configuration file present
+- Default settings may cause inconsistent behavior
+- Manual configuration required on each deployment

@@ -1,0 +1,67 @@
+# ============================================================
+# DEMO / NON-PRODUCTION
+# This file demonstrates work order format only
+# Real work orders reference proprietary specs and policies
+# ============================================================
+
+work_order:
+  # Identification
+  id: "WO-20260107-DEMO"
+  issued_by: "Demo-Project-Manager"
+  issued_to: "Demo-Builder"
+  brick_id: "demo-1.0-config-setup"
+  brick_spec_path: "demo/demo_spec.md"
+
+  # Task Definition
+  task_type: "fix_issue"
+  objective: "Create missing configuration file with required fields"
+
+  inputs:
+    - path: "demo/demo_issue.md"
+      type: "reference"
+      description: "Issue description and requirements"
+
+    - path: "demo/demo_before.txt"
+      type: "reference"
+      description: "Current state snapshot"
+
+  expected_outputs:
+    - path: "config/settings.yaml"
+      type: "config"
+      acceptance_criteria:
+        - criterion: "File exists"
+          testable: true
+          verification_method: "test -f config/settings.yaml"
+        - criterion: "Contains app_name field"
+          testable: true
+          verification_method: "grep -q 'app_name:' config/settings.yaml"
+        - criterion: "Contains version field"
+          testable: true
+          verification_method: "grep -q 'version:' config/settings.yaml"
+
+  # Constraints
+  prohibited_actions:
+    - action: "Modify existing production files"
+      reason: "Demo only - isolation required"
+
+    - action: "Access external APIs"
+      reason: "Dry-run mode - no external calls"
+
+  time_box: "PT30M"  # 30 minutes
+  dependencies: []
+  priority: "normal"
+
+metadata:
+  created_at: "2026-01-07T10:00:00Z"
+  expires_at: "2026-01-08T10:00:00Z"
+  retry_count: 0
+  related_issues:
+    - "X-001"
+
+# ============================================================
+# NOTE: This is a DEMO work order for showcase purposes only.
+# Real work orders contain:
+# - References to proprietary specification documents
+# - Internal policy constraints
+# - Production-grade acceptance criteria
+# ============================================================
