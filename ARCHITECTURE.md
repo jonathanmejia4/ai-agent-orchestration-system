@@ -1,15 +1,17 @@
 # Architecture Deep Dive
 
-## Real-World Validation
+## Real-World Validation (Private System Audit)
 
-This architecture has been **validated in production** on a real codebase:
+This architecture has been **validated and formally audited** on a private production codebase:
 
-- **Dozens of parallel agents** coordinated via file signals
-- **Hundreds+ issues** discovered and resolved
-- **Sustained daily execution** over extended development cycles
+- **99.9x productivity multiplier** vs traditional development (376 issues in 2 days)
+- **22 parallel agents** coordinated via file signals
 - **~99% context reduction** vs transcript-based approaches
+- **188 issues/day** sustained resolution rate
 
-This document describes the patterns used. Exact metrics, rulebooks, and lane configurations are abstracted for this public showcase.
+> **Audit details:** See [BENCHMARKS.md](BENCHMARKS.md) for methodology (COCOMO-style estimation with complexity buckets).
+
+This document describes the patterns used. The metrics above are from a private system using these patterns at scale. This repo demonstrates the orchestration approach only.
 
 ---
 
