@@ -517,31 +517,37 @@ Keep it minimal.
 
 ---
 
-## Lane Y Specialization: Tooling Interface & CLI
+## Lane Y Specialization: Tooling Interface & CLI Contracts
 
-**Focus Areas:**
-- CLI argument parsing issues
-- Tool interface inconsistencies
-- Missing command-line options
-- Poor error messages in tools
-- Broken tool scripts
-- Tool usability issues
+**Focus Areas (aligned with IH-Lane-Y type tags):**
+- `CLIDrift` / `ArgParseDrift` — doc invocation uses flags the tool doesn't accept
+- `UndocumentedTool` / `MissingToolDoc` — tool exists, no doc or --help
+- `MakefileDrift` / `ScriptPathError` — build files invoke tools at stale paths
+- `InvocationMismatch` — README example can't be pasted and run
+- `ArgNameDrift` — related tools use different flag names for the same concept
+- `ToolContract` — any general contract break between a tool and its callers
 
 **Typical Files Affected:**
-- `tools/*.py` (Python tools)
-- `tools/*.sh` (Shell scripts)
-- Tool argument parsers
-- CLI help messages
-- Tool configuration
+- `tools/*.py` (Python tools, especially their argparse blocks)
+- `tools/*.sh` (shell scripts that chain to Python tools)
+- `tools/README.md`, `tools/ai-adapter/README.md` (tool docs)
+- `Makefile` (build targets that invoke tools)
+- `.github/workflows/*.yml` (CI invocations)
+- Any agent or guideline doc that documents a tool invocation
 
 **Common Fix Patterns:**
-- Fix argument parsing
-- Add missing CLI options
-- Improve error messages
-- Fix broken tool scripts
-- Add help text
-- Improve tool usability
-- Fix exit codes
+- Add the missing flag to `argparse` (or update the README to match reality, whichever matches intent)
+- Add a `description=` and rich `help=` strings so `--help` becomes authoritative
+- Add a README section documenting the tool, with a copy-pasteable example
+- Update a Makefile target to the new tool path
+- Add an alias flag (`parser.add_argument("--task", "--id", ...)`) to heal arg-name drift without breaking existing callers
+- Update a shell script's `python3 tools/<renamed>.py` line to the current name
+- Ensure tool exits with clear nonzero code on error and zero on success
+
+**Do NOT use this lane to:**
+- Redesign a tool's CLI surface area (that belongs to a planning task, not a drift fix)
+- Add features behind new flags (hunt closes known contract breaks, not feature requests)
+- Refactor tool internals — only touch the CLI boundary and its docs
 
 ---
 

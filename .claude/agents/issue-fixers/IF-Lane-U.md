@@ -1,12 +1,12 @@
 ---
 name: IF-Lane-U
-description: Fixes issues in Lane U - Configuration Management (max 5 per run, oldest first)
+description: Fixes issues in Lane U - Versioning & Changelog (max 5 per run, oldest first)
 model: haiku
 color: green
 tools: ["Read", "Write", "Edit", "Grep", "Glob", "Bash"]
 ---
 
-# Issue Fixer: Lane U - Configuration Management
+# Issue Fixer: Lane U - Versioning & Changelog
 
 ## Activation
 
@@ -517,31 +517,39 @@ Keep it minimal.
 
 ---
 
-## Lane U Specialization: Configuration Management
+## Lane U Specialization: Versioning & Changelog
 
-**Focus Areas:**
-- Configuration file errors
-- Missing config values
-- Environment variable issues
-- Config drift between environments
-- Hardcoded values that should be configurable
-- Invalid configuration formats
+**Focus Areas (aligned with IH-Lane-U hunter):**
+- Stale version numbers across specs and manifests
+- Missing or outdated document-version headers
+- Template version mismatches between registry and family metadata
+- Stale path references in README/specs
+- Changelog not updated for recent changes
+- Base-version tracking claims vs. actual `.task/base/` state
+- SemVer violations (e.g., breaking change bumped as PATCH)
+
+**Type Tags Handled (match hunter):**
+`VersionSkew`, `ChangelogDrift`, `BaseVersionGap`, `StaleRef`, `DocVersionMissing`, `TemplateVersionDrift`, `SemVerViolation`, `VersionEnforcement`
 
 **Typical Files Affected:**
-- Config files (`.yaml`, `.json`, `.env`)
-- `deployment/config.yaml`
-- `.github/alt-status-config.yaml`
-- Environment configuration
-- Application config files
+- `tools/get_base_version.py`, `update_base_version.py`, `template_version_checker.py`, `version_compatibility_checker.py`, `policy_version_checker.py`
+- `PLANNING/TEMPLATE_VERSIONING_AND_DEPRECATION_POLICY.md`, `THREE_WAY_MERGE_REGENERATION_POLICY.md`, `SPEC_TO_DIFF_PREVIEWS_POLICY.md`
+- `.task/base/` (base-version snapshots)
+- `templates/registry.yaml`, `templates/<family>/metadata.yaml`
+- `tools/ai-adapter/CHANGELOG.md`, `docs/meta/changelog.md`, `templates/docs/changelog.jinja2`
+- `.claude/guidelines/*.md` (Document Version headers)
 
 **Common Fix Patterns:**
-- Fix configuration syntax errors
-- Add missing config values
-- Move hardcoded values to config
-- Fix config schema violations
-- Update outdated config values
-- Align configs across environments
-- Add config validation
+- Add missing `**Document Version:** / **Last Updated:**` headers to guideline files
+- Reconcile template version between `registry.yaml` and family `metadata.yaml`
+- Populate or document `.task/base/` so `get_base_version.py` returns real data
+- Update README paths to reflect current directory structure
+- Append a changelog entry covering recent merged changes
+- Correct SemVer bump class (MAJOR for breaking, MINOR for feature, PATCH for fix)
+
+**False-Positive Guard:**
+- A file intentionally omitted from version tracking (e.g., generated artifacts) is not drift.
+- Two changelogs in different subsystems may legitimately have different dates if their release cadences differ — check scope before filing.
 
 ---
 

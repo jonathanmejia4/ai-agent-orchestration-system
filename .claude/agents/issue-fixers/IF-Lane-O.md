@@ -517,31 +517,31 @@ Keep it minimal.
 
 ---
 
-## Lane O Specialization: API Contract Drift
+## Lane O Specialization: Spec Conflicts / SSOT Drift
 
 **Focus Areas:**
-- API definitions out of sync with implementation
-- Missing API endpoints in documentation
-- Schema drift between API and docs
-- Outdated API examples
-- Breaking changes not documented
-- API versioning issues
+- Multiple documents defining the same concept with conflicting values
+- Count mismatches across docs (e.g., doc A says 4 stages, doc B says 5)
+- Satellite docs contradicting the authoritative (SSOT) source
+- Terminology drift (same concept, different names)
+- Procedure conflicts (same workflow, different steps across docs)
+- Version skew between related specification documents
 
 **Typical Files Affected:**
-- `api/**/*.py` (API implementation)
-- `PLANNING/schemas/*_request.json` (request schemas)
-- `PLANNING/schemas/*_response.json` (response schemas)
-- `docs/api/` (API documentation)
-- OpenAPI/Swagger definitions
+- `CLAUDE.md` (tier 1 governance)
+- `.claude/agents/*.md` (agent role definitions)
+- `.claude/guidelines/*.md` (operational guidelines)
+- `PLANNING/**/*.md` (strategic/design docs)
+- `PLANNING/schemas/*.yaml` (data shape SSOTs)
+- Cross-referencing README and index files
 
 **Common Fix Patterns:**
-- Synchronize API schemas with implementation
-- Update API documentation
-- Fix mismatched endpoint definitions
-- Add missing API endpoints to docs
-- Update API version numbers
-- Align request/response schemas
-- Fix broken API examples
+- Pick the higher-tier document as SSOT and update the satellite to match
+- Replace duplicate definitions with a single cross-reference
+- Normalize terminology to one canonical name (update all sites)
+- Reconcile count mismatches against the authoritative source
+- Add explicit "SSOT: see X" pointers to conflicting docs
+- When no clear SSOT exists, escalate (set `user_approval_required: true`)
 
 ---
 

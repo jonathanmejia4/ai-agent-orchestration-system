@@ -42,7 +42,7 @@ Use these tags: `EnforcementGap`, `ClaimMismatch`, `UnwiredGate`, `PolicyDrift`,
 
 ### CI Workflows (check .github/workflows/)
 
-- quality-gate.yml, security-gates.yml, saf-gates.yml
+- quality-gate.yml, security-gates.yml, framework-gates.yml
 - policy-compliance.yml, template_compliance.yml
 - schema-validation.yml, task-validation.yml
 - boundary-check.yml, dag_validation.yml

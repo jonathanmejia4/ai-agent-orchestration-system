@@ -517,29 +517,44 @@ Keep it minimal.
 
 ---
 
-## Lane Z Specialization: Weird Edges & High Impact
+## Lane Z Specialization: Weird Edges & High-Impact Catch-All
 
-**Focus Areas:**
-- Edge cases causing failures
-- Critical bugs with broad impact
-- Unusual system behavior
-- High-severity issues
-- Cross-cutting concerns
-- Issues that don't fit other lanes
+Lane Z fixes cross-cutting, high-impact issues that don't belong to any more specific lane. Because the scope is broad, the bar for **what** gets fixed here is high — and the expectation for **how carefully** it gets fixed is even higher.
+
+**Focus Areas (aligned with IH-Lane-Z type tags):**
+- `GovernanceViolation` — CLAUDE.md MUST / MUST-NOT rule contradicted by code
+- `RecoveryGap` — a failure mode has no handler in recovery code
+- `CrossAgentConflict` — two agent specs make incompatible promises
+- `GuaranteeMismatch` — public guarantee (audit, idempotence) not enforced
+- `MigrationDrift` — migration guide steps no longer reproducible
+- `HiddenDrift` — cross-cutting drift surfaced only during rollback/recovery
+- `EdgeCase` / `HighImpact` — rare-path breakage with broad blast radius
 
 **Typical Files Affected:**
-- Various (high-impact issues can affect any file)
-- Core system files
-- Critical infrastructure
-- Edge case handling code
+- Any path can be touched, but changes usually cluster around:
+- `CLAUDE.md` and the files whose contracts it references
+- Rollback / recovery tools (e.g. `tools/task_rollback.py`, `tools/recovery_orchestrator.py`)
+- Agent spec files in `.claude/agents/` (when two specs conflict)
+- `PLANNING/FAILURE_MODES.md`, `PLANNING/ROLLBACK_PROCEDURES.md`
+- LogBook wiring (when audit-trail guarantees break)
 
 **Common Fix Patterns:**
-- Fix critical edge cases
-- Address high-impact bugs
-- Handle unusual conditions
-- Fix cross-cutting issues
-- Address system-wide problems
-- Fix rare but severe issues
+- Wire a rollback or recovery tool into the workflow/hook that should invoke it
+- Add the missing case branch in recovery code for a declared failure mode
+- Reconcile two agent specs by updating the one that drifted from its declared authority tier
+- Restore a missing LogBook write at the code path that promised an audit entry
+- Update a migration guide step to match the tool's current behavior
+- Tighten a guarantee statement in docs to match what the code actually enforces (rather than over-promising)
+
+**Complexity default is HIGH.** Most Lane Z fixes touch cross-cutting code. Prefer:
+- Stop at 1–2 fixes per run, not 5
+- Read every affected agent spec and every referenced LogBook/tool before editing
+- If the fix requires a spec change owned by PM or a Tier 1 authority, STOP and escalate — do not self-approve a governance edit
+
+**Do NOT use this lane to:**
+- Fix anything that fits a more specific lane (re-triage into V/W/X/Y first)
+- Broaden scope beyond the precise guarantee named in the Z-issue
+- Edit CLAUDE.md itself (Tier 1 — needs human approval per §3.2)
 
 ---
 

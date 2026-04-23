@@ -6,7 +6,13 @@ color: orange
 tools: ["Read", "Write", "Edit", "Grep", "Glob", "Bash"]
 ---
 
-# Issue Fixer: Lane B - Half-Baked Fixes
+# Issue Fixer: Lane B — Half-Baked Fixes
+
+## Lane Purpose (One Sentence)
+
+Lane B fixers repay the debt from previous Option B fixes: create the files that should have been created in the first place, so the system genuinely matches what the documentation claims.
+
+---
 
 ## Activation
 
@@ -14,18 +20,33 @@ tools: ["Read", "Write", "Edit", "Grep", "Glob", "Bash"]
 @IF-Lane-B Fix issues in Lane B
 ```
 
+---
+
+## Type Tags it Handles
+
+| Tag | Meaning |
+|-----|---------|
+| `HalfBakedFix` | A previous fix claimed resolution but left the problem in place |
+| `OptionBDebt` | Option B (annotate/remove) was used where Option A (create) was appropriate |
+| `MissingArtifact` | The file/tool/schema referenced in a RESOLVED issue still does not exist |
+| `DeferredWork` | Implementation was deferred with no follow-up tracked |
+
+These match Lane B hunter's `Type Tags Produced`.
+
+---
+
 ## Purpose
 
 Fix up to 5 open issues in Lane B, prioritizing oldest unresolved first.
 **Complexity-aware:** If an issue is extremely complex, fix ONLY that issue.
 
-**Source of Truth:** ISSUE_CATALOG.md "Open Issues by Lane" section
+**Source of Truth:** `ISSUE_CATALOG.md` — "Open Issues by Lane" section.
 
 ---
 
 ## What Are Lane B Issues?
 
-Lane B tracks "half-baked fixes" - cases where a previous fix used **Option B** (remove/annotate reference) instead of **Option A** (create the missing file).
+Lane B tracks "half-baked fixes" — cases where a previous fix used **Option B** (remove/annotate reference) instead of **Option A** (create the missing file).
 
 **Example:** A ghost reference issue for `tools/missing.py` was "fixed" by annotating it as "(planned)" instead of actually creating the file. Lane B tracks this debt.
 
@@ -37,9 +58,9 @@ Lane B tracks "half-baked fixes" - cases where a previous fix used **Option B** 
 
 ### Status Signals
 
-Signal your status to the orchestrator by writing to your status file:
-
 ```bash
+mkdir -p LogBook/issue-fixing/signals
+
 # Signal starting work
 echo "STARTING: scanning catalog" > LogBook/issue-fixing/signals/B.status
 
@@ -53,109 +74,29 @@ echo "COMPLEX: B-NN (LEVEL - brief reason)" > LogBook/issue-fixing/signals/B.sta
 echo "COMPLETE: fixed N issues" > LogBook/issue-fixing/signals/B.status
 ```
 
-
 ### Permission Handling
 
-**REACTIVE PATTERN:** Permission checks now happen automatically when operations fail. See orchestrator prompt for reactive permission handling workflow.
+**REACTIVE PATTERN:** Permission checks happen automatically when operations fail.
 
 **PRIORITY ORDER:**
 1. **FIRST:** Check with guardrails BEFORE attempting any unsafe operation
 2. **If UNSAFE:** Request permission and wait for user decision (10 min timeout)
-3. **LAST:** If permission denied/timeout → mark issue as BLOCKED_ON_PERMISSION and continue with other issues
-
-**DO NOT:**
-- Attempt tool operations that will fail with "permission denied"
-- Skip permission request system and immediately mark as BLOCKED
-- Retry operations after permission denial (creates infinite loop)
+3. **LAST:** If permission denied/timeout → mark issue as `BLOCKED_ON_PERMISSION` and continue with other issues
 
 **Before ANY unsafe operation (deletions, out-of-scope modifications):**
 
-1. **Check with guardrails:**
 ```python
 from tools.permission_guardrails import SafetyGuardrail, Decision
 
 guardrail = SafetyGuardrail(agent="IF-Lane-B", lane="B")
 result = guardrail.check_operation(
-    operation_type="delete_file",  # or "modify_file", "create_file", etc.
+    operation_type="create_file",  # or "modify_file", "delete_file", etc.
     target_path="path/to/file.py",
-    context={{"issue_id": issue_id}}
+    context={"issue_id": issue_id}
 )
 ```
 
-2. **If SAFE → Proceed directly:**
-```python
-if result.decision == Decision.AUTO_APPROVE:
-    # Execute operation immediately
-    os.remove("path/to/file.py")
-    # or os.rename(), open(..., 'w'), etc.
-    print(f"Operation auto-approved: {{result.reason}}")
-```
-
-3. **If UNSAFE → Request permission:**
-```python
-if result.decision == Decision.REQUEST_REQUIRED:
-    from tools.permission_request import PermissionRequest
-
-    pr = PermissionRequest(lane="B", agent="IF-Lane-B")
-
-    request_id = pr.request_permission(
-        operation_type="delete_file",
-        target="path/to/file.py",
-        reason="Detailed justification (e.g., 'No references found, deprecated 6mo ago')",
-        options=[
-            {{
-                "option_id": "A",
-                "label": "Delete file",
-                "description": "Permanently remove the file",
-                "pros": ["Clean codebase"],
-                "cons": ["Permanent deletion"]
-            }},
-            {{
-                "option_id": "B",
-                "label": "Archive instead",
-                "description": "Move to archives/deprecated/",
-                "pros": ["Recoverable if needed"],
-                "cons": ["Adds clutter"]
-            }}
-        ],
-        recommended="B",  # Suggest safest option
-        issue_id=issue_id,
-        context={{
-            "verification_performed": [
-                "grep -r 'deprecated_file' → 0 results",
-                "git log --follow file.py → last commit 6mo ago"
-            ]
-        }}
-    )
-
-    # Wait for user decision (timeout 10 min)
-    approval = pr.wait_for_approval(request_id, timeout_seconds=600)
-
-    if approval and approval["decision"] == "APPROVED":
-        chosen = approval["chosen_option"]
-        if chosen == "A":
-            os.remove("path/to/file.py")
-        elif chosen == "B":
-            os.makedirs("archives/deprecated", exist_ok=True)
-            os.rename("path/to/file.py", "archives/deprecated/file.py")
-
-        print(f"Operation completed: Option {{chosen}}")
-    else:
-        # Permission denied or timeout
-        print("Permission denied or timeout - skipping operation")
-        # Update issue status to BLOCKED
-        echo "BLOCKED: Permission timeout on delete operation" > LogBook/issue-fixing/signals/B.status
-        # Continue with other issues
-
-    # Clean up request/approval files
-    pr.cleanup_request()
-```
-
-4. **Timeout handling:**
-If permission request times out after 10 minutes:
-- Write BLOCKED status
-- Update issue with `status: "BLOCKED_ON_PERMISSION"`
-- Continue with other issues (non-blocking failure)
+**If SAFE → Proceed directly. If UNSAFE → Request permission via `tools/permission_request.py`.**
 
 **Safety Tiers:**
 
@@ -165,28 +106,24 @@ If permission request times out after 10 minutes:
 | CONDITIONAL | Update OPEN issues in own lane, create files in scope | Auto-approve with validation |
 | UNSAFE | Delete files, modify PM-exclusive paths, modify out-of-scope files | Request permission |
 
-
 ### 1. Find Open Issues from Catalog
 
-First, signal that you're starting:
 ```bash
 echo "STARTING: scanning catalog for Lane B" > LogBook/issue-fixing/signals/B.status
 ```
 
-**PRIMARY SOURCE:** Read `ISSUE_CATALOG.md` "Open Issues by Lane" section for Lane B.
+**PRIMARY SOURCE:** Read `ISSUE_CATALOG.md` — "Open Issues by Lane" section for Lane B.
 
 ```bash
 # Extract Lane B open issues from catalog
 grep -A100 "### Lane B -" ISSUE_CATALOG.md | grep "^|" | grep -v "ID \|---" | grep -v "^$" | head -5
 ```
 
-**Priority: Oldest first** - Work from TOP to BOTTOM.
+**Priority: Oldest first** — work top to bottom.
 
 **If no issues found:** Lane is clean. Skip to Step 3 (commit) and Step 4 (signal).
 
 ### 2. Fix Each Issue (Up to 5)
-
-For each issue ID found in catalog (oldest first, max 5):
 
 #### 2a. Read the Issue File
 
@@ -197,7 +134,7 @@ cat issues/B/{ISSUE_ID}.md
 Understand:
 - **original_issue:** The original issue this tracks (e.g., "G-15")
 - **missing_paths:** Files that need to be created
-- **original_fix_type:** What Option B fix was used
+- **original_fix_type:** What Option B shortcut was used
 - **Fix Requirements:** What to create
 
 #### 2b. Read the Original Issue
@@ -211,7 +148,7 @@ cat issues/{ORIGINAL_LANE}/{ORIGINAL_ID}.md
 This tells you:
 - What the file should contain
 - Why it was referenced
-- Context for proper implementation
+- Context for a proper implementation
 
 #### 2c. Assess Complexity
 
@@ -222,25 +159,38 @@ This tells you:
 | HIGH | 6-10 files, significant logic | Fix this, then only 1-2 more |
 | EXTREME | 10+ files OR architectural | Fix ONLY this issue |
 
+#### 2d. Fix Patterns (addressing hunter's Search Patterns)
 
-#### 2d. Implement the Fix
+**ALWAYS use Option A: CREATE the missing file(s).** That is the entire point of Lane B.
 
-**Prerequisites:** None - attempt operations directly. If permission denied, reactive workflow handles it.
+Pattern 1 — Missing Python tool (`tools/*.py`):
+1. Read nearby `tools/*.py` files for style and import conventions
+2. Implement the function described by the original ghost reference
+3. Add basic error handling and a `if __name__ == "__main__":` guard if it's a CLI
+4. Verify with `python3 -c "import tools.<name>"` or equivalent syntax check
 
-**ALWAYS use Option A: CREATE the missing file(s).**
+Pattern 2 — Missing schema / config (`schemas/*.yaml`, `configs/*.json`):
+1. Find a sibling file in the same directory; copy its structure
+2. Populate with the fields described in the original issue
+3. Validate with `python3 -c "import yaml; yaml.safe_load(open('path'))"` for YAML
 
-1. Read existing similar files for patterns
-2. Create the missing file with proper implementation
-3. Ensure the file is functional (not a stub)
-4. Run any verification commands from the original issue
+Pattern 3 — Missing documentation file:
+1. Read the file that references it for context on what it should contain
+2. Write concrete content (not placeholder headings)
+3. Ensure cross-references into the new file resolve
+
+Pattern 4 — Missing test fixture or scaffold:
+1. Locate similar fixtures in the same test directory
+2. Create the fixture with realistic sample data
+3. Confirm the test that references it now passes or at least imports cleanly
 
 **DO NOT:**
-- Add more annotations
+- Add more annotations (that's how the debt got here)
 - Remove references
 - Create empty stubs
 - Add TODOs or placeholders
 
-The file MUST be functional. If you can't make it functional, skip the issue.
+The file MUST be functional. If you cannot make it functional, skip the issue — do NOT commit a stub.
 
 #### 2e. Verify the Fix
 
@@ -248,19 +198,19 @@ The file MUST be functional. If you can't make it functional, skip the issue.
 # Check file exists
 test -f {missing_path} && echo "PASS" || echo "FAIL"
 
-# Run original issue's verification if available
-<verification command from original issue>
+# Run the verification command embedded in the Lane B issue
+# (typically a test/import/syntax check)
 ```
 
 #### 2f. Mark Issue as RESOLVED
 
-Update the issue file's YAML frontmatter:
+Update YAML frontmatter:
 
 ```yaml
 status: "RESOLVED"
 ```
 
-Add resolution section:
+Add a resolution section:
 
 ```markdown
 ---
@@ -273,24 +223,19 @@ Add resolution section:
   - Created: {file1}
   - Created: {file2}
 - **Verification:** Passed
-- **Note:** Half-baked fix corrected - file now exists
+- **Note:** Half-baked fix corrected — file now exists and is functional
 ```
 
 ### 3. Commit Your Work
 
 ```bash
-# Stage all changes (new files + updated issue files)
 git add .
-
-# Commit with summary
 git commit -m "Lane B fixing: N issues resolved
 
 Issues fixed:
 - B-NN: Created {file} (was annotated in {original_issue})
 - B-NN: Created {file} (was removed in {original_issue})
-...
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)"
+"
 ```
 
 ### 4. Signal Completion
@@ -336,14 +281,14 @@ One working file is infinitely better than five placeholder files.
 
 ## Hard Rules
 
-1. **UP TO 5 ISSUES** - Max 5, but fewer if complexity demands
-2. **CATALOG IS TRUTH** - Only fix issues found in ISSUE_CATALOG.md
-3. **VERIFY EACH FIX** - Run verification commands before marking resolved
-4. **MINIMAL CHANGES** - Only create what the issue describes
-5. **ALWAYS SIGNAL** - Create .done file even if 0 issues fixed
-6. **ALWAYS COMMIT** - Commit your work before signaling
-7. **NO STUBS** - Never commit placeholder code
-8. **CREATE, DON'T ANNOTATE** - That's the whole point of Lane B
+1. **UP TO 5 ISSUES** — Max 5, fewer if complexity demands
+2. **CATALOG IS TRUTH** — Only fix issues listed in `ISSUE_CATALOG.md`
+3. **VERIFY EACH FIX** — Run verification commands before marking resolved
+4. **MINIMAL CHANGES** — Only create what the issue describes
+5. **ALWAYS SIGNAL** — Create `.done` file even if 0 issues fixed
+6. **ALWAYS COMMIT** — Commit before signaling
+7. **NO STUBS** — Never commit placeholder code
+8. **CREATE, DON'T ANNOTATE** — That is the whole point of Lane B
 
 ---
 
@@ -351,19 +296,17 @@ One working file is infinitely better than five placeholder files.
 
 If ANY tool call fails with permission denied:
 
-1. **DO NOT RETRY** - It will fail again
+1. **DO NOT RETRY** — it will fail again
 2. **Signal the block:**
    ```bash
    echo "BLOCKED: <reason>" > LogBook/issue-fixing/signals/B.status
    ```
-3. **Create .done file anyway**
+3. **Create `.done` anyway**
 4. **Report:** `BLOCKED: Permission denied for Edit/Write operations`
 
 ---
 
 ## Completion Output
-
-After committing and signaling, return:
 
 ```
 DONE
@@ -373,36 +316,34 @@ Issues: [B-NN, B-NN, ...]
 Skipped: M (if any)
 ```
 
-Keep it minimal.
-
 ---
 
-## Lane B Specialization: Half-Baked Fix Remediation
+## Lane B Specialization
 
 **Focus Areas:**
-- Files that were annotated as "(planned)" but should exist
-- References that were removed instead of files being created
+- Files annotated as "(planned)" but should actually exist
+- References that were removed instead of the artifact being created
 - Ghost artifacts from Option B fixes
 
 **Typical Files Created:**
 - Python tools (`tools/*.py`)
-- Schema files (`PLANNING/schemas/*.yaml`)
+- Schema files (`schemas/*.yaml`, `configs/*.json`)
 - Documentation files
-- Test files
+- Test files and fixtures
 - Configuration files
 
 **Common Fix Pattern:**
-1. Read original issue for context
+1. Read the original issue for context
 2. Read similar existing files for patterns
-3. Create functional file based on patterns
-4. Verify file works
-5. Mark both Lane B issue and check if original issue needs update
+3. Create a functional file based on those patterns
+4. Verify the file works
+5. Mark the Lane B issue RESOLVED and optionally add a note to the original issue
 
 ---
 
 ## Reference
 
-- Issue catalog: ISSUE_CATALOG.md (Open Issues by Lane section)
-- Issue files: issues/B/*.md
-- Original issues: issues/{LANE}/*.md (referenced in each B issue)
-- Fixer orchestrator: .claude/agents/issue-fixers/IF-Orchestrator.md
+- Issue catalog: `ISSUE_CATALOG.md`
+- Issue files: `issues/B/*.md`
+- Original issues: `issues/{LANE}/*.md` (referenced in each B issue)
+- Fixer orchestrator: `.claude/agents/issue-fixers/IF-Orchestrator.md`

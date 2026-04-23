@@ -1,6 +1,6 @@
 # Issue Catalog
 
-> **Last Updated:** 2026-04-23 00:52:07
+> **Last Updated:** 2026-04-23 01:20:35
 > **Purpose:** Central registry of all issues discovered and their resolution status
 
 ---
@@ -17,8 +17,11 @@
 
 | Lane | Specialization | Description |
 |------|----------------|-------------|
+| A | API Contract Drift | OpenAPI/docs vs route implementation mismatches |
+| C | Configuration Drift | Code vs `.env.example` / `config.yaml` mismatches |
 | D | Marketing Infrastructure | Lead generation, campaigns, funnels |
 | E | Customer Services | Support, data protection, GDPR |
+| F | Frontend Accessibility | WCAG 2.1 AA violations in HTML/JSX/Vue |
 | G | Ghost References | Missing artifacts, broken links |
 | H | Stubs & Placeholders | TODOs, NotImplemented, incomplete code |
 | I | Agent Contradictions | Guidelines vs implementation conflicts |
@@ -48,8 +51,10 @@
 |------|-------|----------|----------|------|------------|--------------|
 | A | 0 | 0 | 0 | 0 | 🔴 0% | - 0% |
 | B | 0 | 0 | 1 | 0 | 🔴 0% | - 0% |
+| C | 0 | 0 | 0 | 0 | 🔴 0% | - 0% |
 | D | 0 | 0 | 0 | 0 | 🔴 0% | - 0% |
 | E | 0 | 0 | 0 | 0 | 🔴 0% | - 0% |
+| F | 0 | 0 | 0 | 0 | 🔴 0% | - 0% |
 | G | 0 | 0 | 0 | 0 | 🔴 0% | - 0% |
 | H | 0 | 0 | 0 | 0 | 🔴 0% | - 0% |
 | I | 0 | 0 | 0 | 0 | 🔴 0% | - 0% |
@@ -75,6 +80,18 @@
 
 ## Open Issues by Lane
 
+### Lane A - API Contract Drift
+
+| ID | Title | Severity | Type Tags | Status |
+|----|-------|----------|-----------|--------|
+<!-- LANE_A_ISSUES -->
+
+### Lane C - Configuration Drift
+
+| ID | Title | Severity | Type Tags | Status |
+|----|-------|----------|-----------|--------|
+<!-- LANE_C_ISSUES -->
+
 ### Lane D - Marketing Infrastructure & Lead Generation
 
 | ID | Title | Severity | Type Tags | Status |
@@ -86,6 +103,12 @@
 | ID | Title | Severity | Type Tags | Status |
 |----|-------|----------|-----------|--------|
 <!-- LANE_E_ISSUES -->
+
+### Lane F - Frontend Accessibility
+
+| ID | Title | Severity | Type Tags | Status |
+|----|-------|----------|-----------|--------|
+<!-- LANE_F_ISSUES -->
 
 ### Lane G - Ghost References & Missing Artifacts
 

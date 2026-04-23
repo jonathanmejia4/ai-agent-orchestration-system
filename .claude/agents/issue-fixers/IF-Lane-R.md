@@ -1,12 +1,12 @@
 ---
 name: IF-Lane-R
-description: Fixes issues in Lane R - Observability & Monitoring (max 5 per run, oldest first)
+description: Fixes issues in Lane R - Builder TDD & Idempotence (max 5 per run, oldest first)
 model: haiku
 color: green
 tools: ["Read", "Write", "Edit", "Grep", "Glob", "Bash"]
 ---
 
-# Issue Fixer: Lane R - Observability & Monitoring
+# Issue Fixer: Lane R - Builder TDD & Idempotence
 
 ## Activation
 
@@ -517,31 +517,38 @@ Keep it minimal.
 
 ---
 
-## Lane R Specialization: Observability & Monitoring
+## Lane R Specialization: Builder TDD & Idempotence
 
-**Focus Areas:**
-- Missing logging
-- Inadequate monitoring
-- No health checks
-- Missing metrics
-- Poor error visibility
-- Debugging gaps
+**Focus Areas (aligned with IH-Lane-R hunter):**
+- Tests that assert trivially true things (don't actually test the behavior)
+- Idempotence rule claims that are not actually verifiable
+- Builder output path drift between spec, operating manual, and agent file
+- TDD workflow phase mismatches across documents
+- Work-order schema drift between producer and consumer
+- Missing test coverage for builder-generated outputs
+
+**Type Tags Handled (match hunter):**
+`BuilderContract`, `TDDDrift`, `IdempotenceGap`, `OutputDrift`, `TaskArtifact`, `WorkOrderDrift`, `WriteBoundaryViolation`, `SpecConflict`
 
 **Typical Files Affected:**
-- `tools/*.py` (monitoring tools)
-- `.github/workflows/*.yml` (monitoring workflows)
-- Application code (logging)
-- Health check endpoints
-- Metrics collection code
+- `PLANNING/Builder_Spec.md`, `Builder_Operating_Manual.md`, `Builder_Decision_Matrix.md`
+- `.claude/agents/Builder.md`
+- `.claude/guidelines/builder-idempotence-rules.md`, `builder-scope-enforcement.md`
+- `tools/idempotence_checker.py`, `idempotence_validator.py`, `check_canonicalization.py`, `scan_timestamps.py`
+- `PLANNING/schemas/work_order_schema.yaml`, `task_schema.yaml`, `task_spec_schema.yaml`
+- `.task/*.yaml` lifecycle artifacts
 
 **Common Fix Patterns:**
-- Add missing log statements
-- Implement health checks
-- Add metrics collection
-- Improve error logging
-- Add monitoring dashboards
-- Create alerting rules
-- Add debug logging
+- Harden idempotence checker to cover state/side-effect operations (not just file generation)
+- Align Builder output paths across Spec / Operating Manual / agent definition (pick SSOT, update the rest)
+- Make TDD phase ordering consistent (test first → minimal implement → verify → commit)
+- Update work-order validator to match the canonical schema fields
+- Replace trivial tests with behavior-verifying assertions
+- Normalize `.task/` artifact formats against their schemas
+
+**False-Positive Guard:**
+- Distinct TDD phrasings that are semantically equivalent are not drift; require a concrete contradiction.
+- An idempotence rule that is narrowly-scoped by design should not be flagged merely for not covering other cases — check the scope statement first.
 
 ---
 

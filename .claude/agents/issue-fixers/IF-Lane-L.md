@@ -517,30 +517,32 @@ Keep it minimal.
 
 ---
 
-## Lane L Specialization: CI/Workflow Configuration
+## Lane L Specialization: CI / Hooks / Automation Gaps
 
 **Focus Areas:**
-- GitHub Actions workflow syntax errors
-- Missing workflow triggers
-- Incorrect workflow permissions
-- Missing workflow dependencies
-- Broken workflow references
-- Workflow environment configuration
+- Pre-commit hooks, CI workflows, and git hooks that are missing, broken, or misconfigured
+- Workflows referencing scripts or tools that don't exist on disk
+- Placeholder/stub workflow steps (echo-only, TODO messages)
+- Disabled jobs (`if: false`) that silently skip validation
+- Trigger mismatches (doc promises "on PR" but workflow is push-only)
+- Orphaned workflows (no documentation mentions them)
+- Pre-commit config referencing missing executables
 
 **Typical Files Affected:**
-- `.github/workflows/*.yml` (all workflows)
-- `.github/workflows/*.yaml` (workflow configs)
-- Workflow configuration files
-- CI/CD pipeline definitions
+- `.github/workflows/*.yml` (CI workflow definitions)
+- `.pre-commit-config.yaml` (pre-commit hook configuration)
+- `.githooks/*` (repository-local git hooks)
+- `tools/*.py`, `tools/*.sh` (scripts invoked by hooks/workflows)
+- Documentation that describes CI triggers
 
 **Common Fix Patterns:**
-- Fix YAML syntax errors in workflows
-- Add missing workflow triggers (on push, on PR, etc.)
-- Correct workflow permissions
-- Fix broken job dependencies
-- Add missing environment variables
-- Update workflow actions to correct versions
-- Fix workflow file references
+- Create the missing script OR remove the dead workflow step that calls it
+- Replace placeholder steps with real validation logic (or delete the step)
+- Re-enable disabled jobs (remove `if: false`) when the block is no longer needed
+- Align triggers with documented behavior (add `pull_request:` when docs say "on PR")
+- Wire orphaned workflows into docs, or retire them if obsolete
+- Fix YAML syntax errors and pin action versions
+- Add missing workflow permissions and environment variables
 
 ---
 

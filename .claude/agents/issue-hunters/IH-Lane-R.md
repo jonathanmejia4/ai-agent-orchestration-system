@@ -149,6 +149,17 @@ Validation tool: checks different fields
 
 ---
 
+## False-Positive Rules
+
+Do NOT file an issue when:
+- Differing TDD phrasings are semantically equivalent (e.g., "test first, implement, verify" vs. "write failing test, minimal implementation, assert green").
+- An idempotence rule is narrowly scoped by design (check the scope statement in the guideline before flagging "not covered").
+- A "trivial" assertion is actually a regression sentinel guarding against re-introduction of a known bug — read adjacent comments.
+- Work-order fields differ between the planning stage and execution stage — verify which stage the schema covers.
+- An output path variation is documented as intentional (e.g., dry-run mode writes to a scratch path).
+
+---
+
 ## Known Resolved (Skip These)
 
 | Pattern                      | Issue |

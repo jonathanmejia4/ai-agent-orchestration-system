@@ -163,6 +163,17 @@ Multiple commits since last entry
 
 ---
 
+## False-Positive Rules
+
+Do NOT file an issue when:
+- A file intentionally opts out of document-version headers (e.g., generated files, fixtures, snapshots).
+- A changelog is scoped to a subsystem with its own release cadence — different last-updated dates are expected.
+- A template version mismatch is transient during an in-progress bump (check open PRs / working tree).
+- `.task/base/` is empty because no regeneration has occurred yet — not drift unless a regeneration has happened.
+- A "stale" path reference points to a known alias or compat shim (check for symlink or redirect).
+
+---
+
 ## Known Resolved (Skip These)
 
 | Pattern                            | Issue |

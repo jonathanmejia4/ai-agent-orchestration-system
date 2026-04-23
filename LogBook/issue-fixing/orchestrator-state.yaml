@@ -6,9 +6,12 @@ lanes_skipped: []
 
 config:
   lanes_to_run:
+    - A
     - B
+    - C
     - D
     - E
+    - F
     - G
     - H
     - I
@@ -31,9 +34,12 @@ config:
     - Z
 
 lanes:
+  A: { status: pending, issues_fixed: 0, issue_ids: [] }
   B: { status: pending, issues_fixed: 0, issue_ids: [] }
+  C: { status: pending, issues_fixed: 0, issue_ids: [] }
   D: { status: pending, issues_fixed: 0, issue_ids: [] }
   E: { status: pending, issues_fixed: 0, issue_ids: [] }
+  F: { status: pending, issues_fixed: 0, issue_ids: [] }
   G: { status: pending, issues_fixed: 0, issue_ids: [] }
   H: { status: pending, issues_fixed: 0, issue_ids: [] }
   I: { status: pending, issues_fixed: 0, issue_ids: [] }
@@ -56,6 +62,6 @@ lanes:
   Z: { status: pending, issues_fixed: 0, issue_ids: [] }
 
 progress:
-  total_lanes: 23
+  total_lanes: 26
   completed_lanes: 0
   total_fixed: 0

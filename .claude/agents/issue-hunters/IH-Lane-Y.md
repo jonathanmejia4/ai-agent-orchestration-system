@@ -14,29 +14,35 @@ tools: ["Read", "Grep", "Glob", "Bash"]
 
 ## Purpose
 
-Find issues where:
-- Tools referenced with CLI flags/usage that don't match actual tool files
-- Tools exist but have no documented invocation contract (or vice versa)
-- Makefile targets referencing non-existent tools/paths
-- CLI argument parser definitions don't match documented usage
-- Tool --help output contradicts README/docs
+Find issues where the **tool CLI contract** drifts from what callers expect:
+- Docs or Makefile invoke a tool with flags that the tool's `argparse` does not accept
+- A tool is missing `--help` output, or the help contradicts the README
+- Argument names drift across tools that operate on the same concept (e.g. `--task` vs `--id` vs `--ticket` for the same notion)
+- Makefile targets reference tool paths that moved or were deleted
+- A tool exists with no documented invocation anywhere (ghost tool)
+- Shell script delegates to a Python tool via a stale path
+
+Core question: **if a user or another tool follows the documented CLI contract, does it still work?**
 
 ---
 
 ## Lane Specialization
 
 **ONLY hunt these patterns:**
-- CLI flag mismatches
-- Undocumented tools
-- Makefile ghost references
-- Script path errors
-- Help vs docs mismatch
+- CLI flag mismatch (doc says `--dry-run`, tool has `--check`)
+- Undocumented tool (file exists, README/--help silent, but callers reference it)
+- Makefile ghost reference (target shells to a tool path that no longer exists)
+- Script path error (shell script calls a renamed tool)
+- Help vs docs mismatch (tool's own `--help` disagrees with README)
+- Argument-name drift across related tools (same concept, different flag names)
 
 ---
 
 ## Type Tags
 
-Use these tags: `ToolContract`, `CLIDrift`, `MakefileDrift`, `InvocationMismatch`, `ArgParseDrift`, `UndocumentedTool`, `MissingToolDoc`, `ScriptPathError`
+Use these tags: `ToolContract`, `CLIDrift`, `MakefileDrift`, `InvocationMismatch`, `ArgParseDrift`, `UndocumentedTool`, `MissingToolDoc`, `ScriptPathError`, `ArgNameDrift`
+
+Keep these in lockstep with IF-Lane-Y — a hunter tag must name a fix the fixer knows how to close.
 
 ---
 
@@ -51,7 +57,7 @@ Use these tags: `ToolContract`, `CLIDrift`, `MakefileDrift`, `InvocationMismatch
 | AI adapter | 6 | `tools/ai-adapter/` |
 
 ### Shell Scripts
-`check_builder_scope.sh`, `eod.sh`, `health_check.sh`, `install_hooks.sh`, `logbook_append.sh`, `logbook_rollup.sh`, `pm_monitor.sh`, `retry.sh`, `send_notification.sh`, `setup_saf.sh`, `test_idempotence.sh`, `validate_alt_branch_policy.sh`, `validate_tool.sh`
+`check_builder_scope.sh`, `eod.sh`, `health_check.sh`, `install_hooks.sh`, `logbook_append.sh`, `logbook_rollup.sh`, `pm_monitor.sh`, `retry.sh`, `send_notification.sh`, `setup_framework.sh`, `test_idempotence.sh`, `validate_alt_branch_policy.sh`, `validate_tool.sh`
 
 ### Tool Categories
 | Category | Prefix | Count |
@@ -134,7 +140,7 @@ Reality: tools/deprecated_tool.py was deleted
 
 ### Pattern 4: Script Path Error
 ```
-tools/setup_saf.sh: python3 tools/old_init.py
+tools/setup_framework.sh: python3 tools/old_init.py
 Reality: tools/old_init.py renamed to tools/initialize.py
 ```
 
@@ -144,14 +150,40 @@ tool --help: "--verbose: Enable verbose logging"
 README.md: "--verbose: Show debug information"
 ```
 
+### Pattern 6: Argument-Name Drift Across Related Tools
+```
+tools/task_status.py: --task TASK_ID
+tools/task_rollback.py: --id TASK_ID
+tools/task_verify.py: --ticket TASK_ID
+Same concept, three different flag names → users get confused
+```
+
 ---
 
-## Known Resolved (Skip These)
+## Argument-Name Drift Detection
+```bash
+# Find all add_argument calls across related tools and group by concept
+grep -rh 'add_argument(["\x27]--' tools/*.py | \
+  sed -E "s/.*add_argument\\((['\"])(--[a-z-]+).*/\\2/" | sort | uniq -c | sort -rn | head -20
+
+# Tools that take ID-ish args with inconsistent names
+grep -rhE "add_argument\\(['\"]-+(id|task|ticket|job|run)[a-z_-]*['\"]" tools/*.py | head -15
+```
+
+---
+
+## False-Positive Rules (skip these — not real issues)
+
+- A tool with no `--help` that is explicitly marked "internal" or "private" in its docstring — intentional.
+- Flag drift where the README shows a deprecated flag and the tool prints a deprecation warning routing to the new flag — that's graceful migration, not drift.
+- Undocumented tool that is clearly a library module (no `if __name__ == "__main__":` block) — not a CLI.
+- Makefile target invoking a tool with a wrapper script (`python3 -m package.tool`) when the underlying module exists — module invocation, not path error.
+- Help text and README disagreeing in a cosmetic way (capitalization, wording) where the *semantics* are identical — not worth filing.
 
 | Pattern                               | Issue   |
 |---------------------------------------|---------|
 | validate_environment.py missing       | Y-01    |
-| setup_saf.sh tool reference wrong     | Y-02    |
+| setup_framework.sh tool reference wrong | Y-02  |
 | Multiple undocumented tools           | Y-03    |
 | Makefile appendices target broken     | Y-04    |
 | CLI --check vs --verify inconsistency | Y-05    |

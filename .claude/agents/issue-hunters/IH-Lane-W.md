@@ -14,29 +14,35 @@ tools: ["Read", "Grep", "Glob", "Bash"]
 
 ## Purpose
 
-Find issues where:
-- tests/ drift and integration harness mismatch with docs/schemas
-- Tests claiming coverage but missing fixtures/utilities
-- Validation scripts referenced but absent/unwired
-- Test conftest.py inconsistencies across directories
-- CI workflow test steps not matching test directory structure
+Find issues where the test and validation scaffolding no longer holds together:
+- `tests/` layout drifts from what CI runs, what docs claim, or what loader code imports
+- Tests claim coverage but the fixtures/utilities they import do not exist
+- Validation scripts exist on disk but no CI workflow or hook actually invokes them
+- Multiple `conftest.py` files define the same fixture, causing silent shadowing
+- CI workflow steps point at test directories that are empty or renamed
+- A documented test command (in README or CONTRIBUTING) no longer produces the claimed result
+
+Core question: **if someone follows the docs to run the tests, will they actually run?**
 
 ---
 
 ## Lane Specialization
 
 **ONLY hunt these patterns:**
-- CI-test path mismatches
-- Missing fixture files
-- Validation scripts not wired
-- Conftest fixture conflicts
-- Coverage gaps
+- CI-test path mismatch (workflow runs `pytest tests/X/` but tests/X/ is empty or renamed)
+- Missing fixture file (test imports from `tests/fixtures/foo`, file absent)
+- Validation script not wired (tool exists, zero CI/hook references)
+- Conftest fixture conflict (same fixture name in two conftests)
+- Coverage gap claimed-but-missing (docs promise "all tools tested", tool has no test file)
+- Broken test command in docs (README says `make test-unit`, target is gone)
 
 ---
 
 ## Type Tags
 
-Use these tags: `TestHarnessDrift`, `MissingFixture`, `ValidationGap`, `CI-TestMismatch`, `ConftestDrift`, `CoverageGap`, `TestSchemaGap`, `HarnessWiringGap`
+Use these tags: `TestHarnessDrift`, `MissingFixture`, `ValidationGap`, `CI-TestMismatch`, `ConftestDrift`, `CoverageGap`, `TestSchemaGap`, `HarnessWiringGap`, `BrokenTestCommand`
+
+Keep type tags aligned with the fixer — each tag here should map to a fix pattern in IF-Lane-W.
 
 ---
 
@@ -177,6 +183,22 @@ Result: Fixture shadowing
 Docs claim: "All tools have tests"
 Reality: tools/important_tool.py has no test file
 ```
+
+### Pattern 6: Broken Test Command in Docs
+```
+README.md: "Run unit tests: make test-unit"
+Reality: Makefile has no test-unit target (renamed to unit-tests)
+```
+
+---
+
+## False-Positive Rules (skip these — not real issues)
+
+- A tool with no dedicated `tests/test_<name>.py` file when it is covered by an integration or e2e test file (check `grep -r "<tool_name>" tests/` before flagging as coverage gap).
+- Two conftests defining a same-named fixture when one is explicitly a scoped override (look for `scope="module"` or `scope="function"` differences — pytest resolution is deterministic, not a conflict).
+- A validation script with zero direct CI references when it is invoked transitively (e.g., called from another tool that IS wired into CI).
+- Missing fixture import that is actually resolved via pytest plugin auto-discovery (check `pyproject.toml`/`setup.cfg` for registered fixture plugins).
+- A CI workflow pointing at an "empty" directory that contains only `__init__.py` — this is still collectable by pytest.
 
 ---
 

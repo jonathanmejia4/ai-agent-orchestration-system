@@ -1,12 +1,12 @@
 ---
 name: IF-Lane-V
-description: Fixes issues in Lane V - Dependency Management (max 5 per run, oldest first)
+description: Fixes issues in Lane V - Integration Config & Runtime Wiring (max 5 per run, oldest first)
 model: haiku
 color: green
 tools: ["Read", "Write", "Edit", "Grep", "Glob", "Bash"]
 ---
 
-# Issue Fixer: Lane V - Dependency Management
+# Issue Fixer: Lane V - Integration Config & Runtime Wiring
 
 ## Activation
 
@@ -517,31 +517,33 @@ Keep it minimal.
 
 ---
 
-## Lane V Specialization: Dependency Management
+## Lane V Specialization: Integration Config & Runtime Wiring
 
-**Focus Areas:**
-- Outdated dependencies
-- Dependency conflicts
-- Missing dependencies
-- Unused dependencies
-- Version mismatches
-- Circular dependencies
+**Focus Areas (aligned with IH-Lane-V type tags):**
+- `IntegrationDrift` — config references that no longer match runtime
+- `ConfigMismatch` / `SchemaWiringGap` — config fields missing or forbidden by schema
+- `FixtureDrift` — fixture paths diverged from loader code
+- `RuntimeClaimGap` — doc claims a config is loaded; no loader references it
+- `PathConflict` / `DuplicateConfig` — two files claim the same SSOT role
+- `StaleIntegration` — docs/agents point at renamed or deleted config files
+- `EnvVarDrift` — env vars documented but unread, or read but undocumented
 
 **Typical Files Affected:**
-- `requirements.txt` (Python dependencies)
-- `package.json` (Node dependencies)
-- Dependency lock files
-- `PLANNING/dependencies/` (dependency docs)
-- Dependency graphs
+- `integration/config/*.yaml` (integration config files)
+- `integration/config/INTEGRATION_README.md` (integration docs)
+- `PLANNING/schemas/*integration*.yaml` (schema files)
+- `tests/integration/`, `tests/fixtures/` (test wiring)
+- `tools/*integration*.py`, `tools/wiring_validator.py` (loader/validator code)
+- Loader call sites in `tools/*.py` and `.github/workflows/*.yml`
 
 **Common Fix Patterns:**
-- Update outdated dependencies
-- Resolve dependency conflicts
-- Add missing dependencies
-- Remove unused dependencies
-- Fix version constraints
-- Resolve circular dependencies
-- Update lock files
+- Remove duplicate config file (pick an SSOT, redirect references)
+- Add missing required field to config (or make the schema field optional if intentional)
+- Update stale path in agent/tool docs to match current filename
+- Wire an unreferenced config file into its loader, OR delete it and its doc claim
+- Add an `os.getenv(...)` read (or a doc entry) to close env-var contract drift
+- Consolidate fixture paths so loader code and on-disk layout agree
+- Align `required:` lists in schema with the fields actual loaders depend on
 
 ---
 

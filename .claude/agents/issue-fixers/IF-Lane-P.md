@@ -1,12 +1,12 @@
 ---
 name: IF-Lane-P
-description: Fixes issues in Lane P - Security & Compliance (max 5 per run, oldest first)
+description: Fixes issues in Lane P - Security & Policy (max 5 per run, oldest first)
 model: haiku
 color: green
 tools: ["Read", "Write", "Edit", "Grep", "Glob", "Bash"]
 ---
 
-# Issue Fixer: Lane P - Security & Compliance
+# Issue Fixer: Lane P - Security & Policy
 
 ## Activation
 
@@ -517,32 +517,40 @@ Keep it minimal.
 
 ---
 
-## Lane P Specialization: Security & Compliance
+## Lane P Specialization: Security & Policy
 
-**Focus Areas:**
-- Security vulnerabilities
-- Missing security controls
-- Compliance violations
-- Authentication/authorization issues
-- Input validation gaps
-- Sensitive data exposure
+**Focus Areas (aligned with IH-Lane-P hunter):**
+- SEC-XXX policies defined but not enforced in CI
+- Missing security tests for declared policies
+- ACL rules conflicting with write boundaries
+- Security scanner gaps or bypass conditions (`continue-on-error: true`)
+- Authentication/authorization policy drift
+- Exposed credentials or hardcoded secrets
+- Missing security gate wiring
+
+**Type Tags Handled (match hunter):**
+`Security`, `ACL`, `PolicyMismatch`, `UnwiredSecurityGate`, `SECPolicy`, `AccessControl`, `AuthGap`, `RBACDrift`, `SecurityTestMissing`, `ScannerGap`
 
 **Typical Files Affected:**
-- Security policy files
-- Authentication/authorization code
-- Input validation functions
-- `tools/*.py` (security tools)
-- `PLANNING/policies/security-*.md`
-- `.github/workflows/security-*.yml`
+- `PLANNING/policies/*.md` (SEC-XXX policy definitions)
+- `.github/workflows/security-gates.yml`, `security-scan.yml`, `secrets-scan.yml`
+- `.claude/agents/Critic-SecurityPolicy.md`, `Critic-ACL.md`
+- `.claude/guidelines/AGENT_BOUNDARIES_REFERENCE.md`
+- `tests/security/*`
+- Authentication/authorization source modules
 
 **Common Fix Patterns:**
-- Add missing input validation
-- Implement security controls
-- Fix authentication issues
-- Add authorization checks
-- Secure sensitive data handling
-- Update security policies
-- Add security scanning to CI
+- Wire SEC-XXX validator step into `security-gates.yml`
+- Add missing `tests/security/<policy>_test.*` coverage
+- Remove `continue-on-error: true` from security scans
+- Resolve ACL ↔ write-boundary contradictions (align to SSOT)
+- Add JWT/RBAC enforcement where policy claims it but reality does not
+- Externalize hardcoded secrets to env or secret manager
+- Cross-reference policy docs to their enforcing workflow
+
+**False-Positive Guard:**
+- A policy referenced only in documentation (not in agent contracts) may be informational; confirm enforcement is actually expected before filing as a fix.
+- `SAFE`/`UNSAFE` tier labels in permission tables are NOT "SAF" branding — leave as-is.
 
 ---
 

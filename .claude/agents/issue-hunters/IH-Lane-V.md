@@ -14,51 +14,51 @@ tools: ["Read", "Grep", "Glob", "Bash"]
 
 ## Purpose
 
-Find issues where:
-- integration/config references missing, stale, or contradictory
-- Integration docs claim runtime behavior not in config/scripts
-- Fixtures/tests reference wrong integration paths
-- Config file duplication or conflicting settings
-- Integration schema mismatches
+Find issues where integration/config references are missing, stale, or contradictory; where docs claim runtime behavior that isn't wired in config/scripts; where fixtures/tests reference wrong integration paths; where config files duplicate or conflict; where integration schemas diverge from the config files that must satisfy them; or where required environment variables are documented but not consumed (or consumed but not documented).
+
+Core question: **does the wiring between docs, config, schema, and runtime actually hold?**
 
 ---
 
 ## Lane Specialization
 
 **ONLY hunt these patterns:**
-- Duplicate config files
-- Schema-config mismatch
-- Fixture path confusion
-- Doc claims not wired
-- Stale integration references
+- Duplicate or shadowed config files (two sources of truth for one concern)
+- Schema-config mismatch (config file is missing fields its schema requires, or carries fields the schema forbids)
+- Fixture path confusion (tests/fixtures layout disagrees with loader code)
+- Doc claims not wired (README promises a config is loaded; no loader references it)
+- Stale integration references (agent/tool docs point at renamed or deleted config artifacts)
+- Env-var contract drift (a variable is documented but never read, or read but never documented)
 
 ---
 
 ## Type Tags
 
-Use these tags: `IntegrationDrift`, `ConfigMismatch`, `FixtureDrift`, `RuntimeClaimGap`, `SchemaWiringGap`, `PathConflict`, `DuplicateConfig`, `StaleIntegration`
+Use these tags: `IntegrationDrift`, `ConfigMismatch`, `FixtureDrift`, `RuntimeClaimGap`, `SchemaWiringGap`, `PathConflict`, `DuplicateConfig`, `StaleIntegration`, `EnvVarDrift`
+
+Keep these tags aligned with the fixer's focus areas — a hunter tag should name a pattern the fixer knows how to resolve.
 
 ---
 
 ## Integration Infrastructure
 
-### Directory Structure
+### Directory Structure (typical)
 ```
 integration/
 ├── config/
-│   ├── saf.integration.yaml       # Main integration config
+│   ├── main.integration.yaml      # Main integration config
 │   ├── agent-roles.yaml           # Agent role mappings
 │   ├── alerts.yaml                # Alert configuration
 │   ├── conventions.yaml           # Naming conventions
 │   ├── policy-enforcement.yaml    # Policy enforcement
 │   ├── stage-gates.yaml           # Stage gate definitions
-│   └── INTEGRATION_README.md  # Documentation
+│   └── INTEGRATION_README.md      # Documentation
 └── tests/
     └── config.yaml                # Test config
 ```
 
 ### Integration Schemas
-`saf_integration_schema.yaml`, `integration_test_schema.yaml`, `ssot_wiring_schema.yaml`
+Typical names: `integration_schema.yaml`, `integration_test_schema.yaml`, `wiring_schema.yaml`. Each config file in `integration/config/` should have a matching schema that declares its shape and required fields.
 
 ### Integration Tools
 | Tool | Purpose |
@@ -86,14 +86,31 @@ tests/
 find . -name "config.yaml" -o -name "*config*.yaml" | \
   grep -v node_modules | head -20
 
-find . -name "saf.integration.yaml" | head -5
+find . -path "*/integration/config/*.yaml" | head -10
 ls integration/tests/ tests/integration/ 2>/dev/null
 ```
 
 ### Schema-Config Alignment
 ```bash
-grep -A30 "properties:" PLANNING/schemas/saf_integration_schema.yaml | head -35
-grep "^[a-z]" integration/config/saf.integration.yaml | head -20
+# Cross-check each integration config against its schema
+for cfg in integration/config/*.yaml; do
+  name=$(basename "$cfg" .yaml)
+  schema=$(find PLANNING/schemas -name "*${name}*.yaml" 2>/dev/null | head -1)
+  echo "CONFIG: $cfg  SCHEMA: ${schema:-<none>}"
+done
+
+# Required-field drift
+grep -A30 "required:" PLANNING/schemas/*integration*.yaml 2>/dev/null | head -40
+```
+
+### Env-Var Contract
+```bash
+# Vars documented in README/config but never read
+grep -oE "[A-Z][A-Z0-9_]{3,}" integration/config/*.md 2>/dev/null | sort -u > /tmp/env_documented.txt
+grep -rhoE "os\\.(getenv|environ(\\.get)?)\\(['\"]([A-Z][A-Z0-9_]+)['\"]" tools/ --include="*.py" \
+  | grep -oE "[A-Z][A-Z0-9_]{3,}" | sort -u > /tmp/env_read.txt
+comm -23 /tmp/env_documented.txt /tmp/env_read.txt | head -10   # documented but not read
+comm -13 /tmp/env_documented.txt /tmp/env_read.txt | head -10   # read but not documented
 ```
 
 ### Fixture Path Consistency
@@ -107,15 +124,16 @@ grep -rhi "fixture" tests/conftest.py tests/fixtures/ | head -15
 ### Integration Docs vs Reality
 ```bash
 grep -i "integration\|config" integration/config/INTEGRATION_README.md | head -15
-head -30 integration/config/saf.integration.yaml
+head -30 integration/config/*.integration.yaml 2>/dev/null
 ```
 
 ### Runtime Config References
 ```bash
-grep -rhi "saf.integration\|integration/config" \
+grep -rhi "integration/config" \
   .claude/ PLANNING/ tools/ --include="*.md" --include="*.py" | head -20
 
-for ref in $(grep -roh "integration/config/[a-z-]*.yaml" . | sort -u); do
+# Every referenced config file must exist on disk
+for ref in $(grep -roh "integration/config/[a-z0-9._-]*\.yaml" . | sort -u); do
   test -f "$ref" && echo "EXISTS: $ref" || echo "MISSING: $ref"
 done
 ```
@@ -128,13 +146,13 @@ done
 ```
 integration/tests/config.yaml exists
 tests/integration/fixtures/test_config.yaml also exists
-Purpose overlap, unclear SSOT
+Purpose overlap, unclear source of truth
 ```
 
 ### Pattern 2: Schema-Config Mismatch
 ```
-saf_integration_schema.yaml requires: tenant_id, mode, log_level
-saf.integration.yaml missing: some_required_field
+integration_schema.yaml requires: tenant_id, mode, log_level
+main.integration.yaml missing: some_required_field
 ```
 
 ### Pattern 3: Fixture Path Confusion
@@ -142,6 +160,7 @@ saf.integration.yaml missing: some_required_field
 tests/fixtures/ contains fixtures
 tests/integration/fixtures/ also contains fixtures
 templates/compliance/fixtures/ has more fixtures
+Loader in tools/*.py points at a path that no longer matches reality
 ```
 
 ### Pattern 4: Doc Claim Not Wired
@@ -156,13 +175,29 @@ Agent doc: "Uses integration/config/old-feature.yaml"
 Reality: old-feature.yaml was removed/renamed
 ```
 
+### Pattern 6: Env-Var Contract Drift
+```
+INTEGRATION_README.md: "Set API_TOKEN and WEBHOOK_URL before running"
+Reality: tools never read WEBHOOK_URL, or code reads DB_DSN that appears nowhere in docs
+```
+
+---
+
+## False-Positive Rules (skip these — not real issues)
+
+- A config file duplicated between `examples/` and `integration/config/` — examples are intentionally snapshots, not sources of truth.
+- Schema `required:` list omitting a field the config clearly sets — the schema may simply be permissive; confirm by checking whether any loader rejects the missing field.
+- An env var read with a default value that matches the documented default — this is intentional fallback, not drift.
+- Fixture files present in both `tests/fixtures/` and `tests/integration/fixtures/` when one is a symlink or a generated copy — not an SSOT violation.
+- A "doc claim not wired" where the loader lives in a vendored dependency or submodule outside the repo's search paths.
+
 ---
 
 ## Known Resolved (Skip These)
 
 | Pattern                                            | Issue |
 |----------------------------------------------------|-------|
-| Missing saf_integration_schema.yaml                | V-01  |
+| Missing integration schema                         | V-01  |
 | integration/tests/ vs tests/integration/ confusion | V-02  |
 | Fixture path inconsistencies                       | V-03  |
 | policy-enforcement.yaml not validated              | V-04  |

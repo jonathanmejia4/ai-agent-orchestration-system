@@ -1,12 +1,12 @@
 ---
 name: IF-Lane-Q
-description: Fixes issues in Lane Q - Performance & Scalability (max 5 per run, oldest first)
+description: Fixes issues in Lane Q - Planner Contract & Task Planning (max 5 per run, oldest first)
 model: haiku
 color: green
 tools: ["Read", "Write", "Edit", "Grep", "Glob", "Bash"]
 ---
 
-# Issue Fixer: Lane Q - Performance & Scalability
+# Issue Fixer: Lane Q - Planner Contract & Task Planning
 
 ## Activation
 
@@ -517,31 +517,37 @@ Keep it minimal.
 
 ---
 
-## Lane Q Specialization: Performance & Scalability
+## Lane Q Specialization: Planner Contract & Task Planning
 
-**Focus Areas:**
-- Performance bottlenecks
-- Inefficient algorithms
-- Resource leaks
-- Scalability issues
-- Slow queries
-- Unnecessary computations
+**Focus Areas (aligned with IH-Lane-Q hunter):**
+- Planner output schema drift (field-name/type mismatches)
+- Duplicate or conflicting task schemas
+- DAG tool vs. schema field misalignment
+- Missing or under-specified acceptance criteria in Planner outputs
+- Planner → Builder handoff format gaps
+- Inconsistent task-lifecycle artifact formats (`.task/*.yaml`)
+
+**Type Tags Handled (match hunter):**
+`PlannerContract`, `TaskPlan`, `DependencyContractDrift`, `ACDrift`, `PlanSchema`, `TaskSpec`, `DAGDrift`, `MetadataMismatch`, `AcceptanceCriteria`
 
 **Typical Files Affected:**
-- Various code files (performance-critical paths)
-- Database query files
-- Caching implementations
-- Resource management code
-- Performance-critical tools
+- `PLANNING/schemas/action_plan_schema.yaml`, `planner_output_schema.yaml`
+- `PLANNING/schemas/task_schema.yaml`, `task_spec_schema.yaml`, `task_manifest_schema.yaml`
+- `.claude/agents/Planner.md`, `.claude/agents/Builder.md`
+- `tools/dag_validator.py`, `tools/find_cycles.py`, `tools/validate_action_plan.py`, `tools/validate_task_manifest.py`
+- `.task/*.yaml` artifact consumers
 
 **Common Fix Patterns:**
-- Optimize slow algorithms
-- Add caching where appropriate
-- Fix resource leaks
-- Improve query efficiency
-- Reduce unnecessary I/O
-- Optimize data structures
-- Add performance benchmarks
+- Align Planner agent output with declared schema field names/types
+- Consolidate duplicate task schemas to a single SSOT (add alias if backward-compat needed)
+- Update `dag_validator.py` to match the canonical graph schema
+- Add required `acceptance_criteria` fields to Planner output spec
+- Cross-reference Planner output contract from Builder input contract
+- Normalize `.task/` artifact naming and field lists across tooling
+
+**False-Positive Guard:**
+- A new schema field added for future use is not drift unless a consumer already expects it.
+- Differences between `task_spec` and `task_manifest` may be intentional (different lifecycle stages); verify before filing.
 
 ---
 

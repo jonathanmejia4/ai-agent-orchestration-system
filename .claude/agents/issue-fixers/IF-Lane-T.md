@@ -1,12 +1,12 @@
 ---
 name: IF-Lane-T
-description: Fixes issues in Lane T - Error Handling & Recovery (max 5 per run, oldest first)
+description: Fixes issues in Lane T - PM Governance & Approval (max 5 per run, oldest first)
 model: haiku
 color: green
 tools: ["Read", "Write", "Edit", "Grep", "Glob", "Bash"]
 ---
 
-# Issue Fixer: Lane T - Error Handling & Recovery
+# Issue Fixer: Lane T - PM Governance & Approval
 
 ## Activation
 
@@ -517,31 +517,40 @@ Keep it minimal.
 
 ---
 
-## Lane T Specialization: Error Handling & Recovery
+## Lane T Specialization: PM Governance & Approval
 
-**Focus Areas:**
-- Missing error handling
-- Poor error messages
-- No recovery mechanisms
-- Uncaught exceptions
-- Silent failures
-- No rollback capability
+**Focus Areas (aligned with IH-Lane-T hunter):**
+- PM write-boundary contradictions across agent spec and boundary reference
+- Approval gates that are referenced in policy but not actually wired in CI
+- PM operating-manual vs. PM agent-spec mismatches
+- Rollback-procedure drift between policy and workflow
+- Escalation threshold inconsistencies (e.g., "3 failures" vs "2 failures")
+- Work-order schema drift between PM producer and Builder consumer
+- Missing escalation paths
+
+**Type Tags Handled (match hunter):**
+`PMGovernance`, `ApprovalGap`, `PromotionDrift`, `RollbackDrift`, `WriteBoundary`, `EscalationGap`, `GateEnforcement`, `WorkOrderDrift`
 
 **Typical Files Affected:**
-- `tools/*.py` (error handling)
-- `.claude/agents/*.md` (agent error recovery)
-- Application code (try/catch blocks)
-- Rollback procedures
-- Error logging code
+- `.claude/agents/Project-Manager.md`
+- `.claude/guidelines/pm-write-boundaries.md`, `AGENT_BOUNDARIES_REFERENCE.md`
+- `PLANNING/ESCALATION_PROTOCOL.md`, `PLANNING/ROLLBACK_PROCEDURES.md`
+- `PLANNING/schemas/pm_state_schema.yaml`, `pm_decision_schema.yaml`, `escalation_message_schema.yaml`, `work_order_schema.yaml`, `review_request_schema.yaml`
+- `tools/pm_promote.py`, `validate_pm_state.py`, `stage_gate_enforcer.py`, `escalation_handler.py`, `gate_validator.py`, `enforce_write_boundaries.py`
+- `.github/workflows/promote-to-main.yml`, `preview-check.yml`, `rollback-validation.yml`, `stage-gates.yml`, `quality-gate.yml`, `security-gates.yml`
+- PM-exclusive paths: `LogBook/pm/`, `PLANNING/MASTER_PLAN.md`, `PLANNING/WORK_ORDER_QUEUE.yaml`, `ISSUE_CATALOG.md`, `PLANNING/MILESTONE_TRACKER.md`
 
 **Common Fix Patterns:**
-- Add try/catch blocks
-- Improve error messages
-- Add recovery mechanisms
-- Implement rollback procedures
-- Add error logging
-- Handle edge cases
-- Add fallback behavior
+- Wire `gate_validator.py` or `stage_gate_enforcer.py` into the referenced workflow step
+- Unify escalation thresholds across PM agent, Escalation Protocol, and `escalation_handler.py`
+- Align PM write-boundary spec to the agent-boundaries reference (pick SSOT)
+- Update `work_order_schema.yaml` to match actual PM output and Builder expectation
+- Add missing rollback trigger command or document existing one
+- Close approval-gate bypass by removing `continue-on-error: true` on gate steps
+
+**False-Positive Guard:**
+- A gate that is intentionally advisory (not blocking) is not a bypass — confirm policy intent first.
+- Different escalation thresholds may be per-operation (see Timeout Matrix); check context before filing.
 
 ---
 

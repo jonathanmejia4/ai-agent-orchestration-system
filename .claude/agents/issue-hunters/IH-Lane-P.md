@@ -91,6 +91,17 @@ grep -rhi "auth.*must\|jwt.*required" .claude/ PLANNING/ --include="*.md" | head
 
 ---
 
+## False-Positive Rules
+
+Do NOT file an issue when:
+- A policy appears only in informational docs and is not referenced by any agent contract or workflow (it is guidance, not enforcement).
+- `SAFE` / `UNSAFE` appear in permission-tier tables — these are tier labels, not framework branding.
+- A `continue-on-error: true` marker appears on a non-security job (e.g., an optional notification step).
+- An endpoint-exception list is explicitly documented as carve-outs in the policy itself.
+- The same SEC code is referenced under a namespaced alias (e.g., via `matrix` include) — verify no match only after expanding aliases.
+
+---
+
 ## Known Resolved (Skip These)
 
 Lane P is 100% complete. Skip these:

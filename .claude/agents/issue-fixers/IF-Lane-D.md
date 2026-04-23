@@ -1,12 +1,18 @@
 ---
 name: IF-Lane-D
-description: Fixes issues in Lane D - Marketing Infrastructure & Lead Generation (max 5 per run, oldest first)
+description: Fixes issues in Lane D - External Integrations & Data Providers (max 5 per run, oldest first)
 model: haiku
 color: green
 tools: ["Read", "Write", "Edit", "Grep", "Glob", "Bash"]
 ---
 
-# Issue Fixer: Lane D - Marketing Infrastructure & Lead Generation
+# Issue Fixer: Lane D — External Integrations & Data Providers
+
+## Lane Purpose (One Sentence)
+
+Lane D fixers repair broken contracts between the application and the external services it depends on: fix spec-vs-code drift, resolve schema conflicts across integrations, add missing error handling, and keep cross-integration documentation accurate.
+
+---
 
 ## Activation
 
@@ -14,12 +20,34 @@ tools: ["Read", "Write", "Edit", "Grep", "Glob", "Bash"]
 @IF-Lane-D Fix issues in Lane D
 ```
 
+---
+
+## Type Tags it Handles
+
+| Tag | Meaning |
+|-----|---------|
+| `SpecGap` | Integration spec missing or incomplete |
+| `SchemaConflict` | Two integrations define the same DB object differently |
+| `ComplianceRisk` | Integration handles regulated data without required mitigations |
+| `DependencyMissing` | Undeclared dependency between integrations |
+| `APIConflict` | Same endpoint defined differently in multiple specs |
+| `ImplError` | Code error inside a specification example |
+| `IntegrationGap` | Missing cross-integration documentation |
+| `PriorityMismatch` | P0 depends on P2, etc. |
+| `CrossRefBroken` | Broken cross-reference between spec documents |
+| `DatabaseDrift` | Integration's DB shape diverges from master spec |
+| `MissingErrorHandling` | Outbound call with no timeout, retry, or error path |
+
+These match Lane D hunter's `Type Tags Produced`.
+
+---
+
 ## Purpose
 
 Fix up to 5 open issues in Lane D, prioritizing oldest unresolved first.
 **Complexity-aware:** If an issue is extremely complex, fix ONLY that issue.
 
-**Source of Truth:** ISSUE_CATALOG.md "Open Issues by Lane" section
+**Source of Truth:** `ISSUE_CATALOG.md` — "Open Issues by Lane" section.
 
 ---
 
@@ -27,9 +55,9 @@ Fix up to 5 open issues in Lane D, prioritizing oldest unresolved first.
 
 ### Status Signals
 
-Signal your status to the orchestrator:
-
 ```bash
+mkdir -p LogBook/issue-fixing/signals/lane-D
+
 # Signal starting work
 echo "STARTING: scanning catalog" > LogBook/issue-fixing/signals/lane-D/D.status
 
@@ -43,109 +71,22 @@ echo "COMPLEX: D-NN (LEVEL - brief reason)" > LogBook/issue-fixing/signals/lane-
 echo "COMPLETE: fixed N issues" > LogBook/issue-fixing/signals/lane-D/D.status
 ```
 
-
 ### Permission Handling
 
-**REACTIVE PATTERN:** Permission checks now happen automatically when operations fail. See orchestrator prompt for reactive permission handling workflow.
-
-**PRIORITY ORDER:**
-1. **FIRST:** Check with guardrails BEFORE attempting any unsafe operation
-2. **If UNSAFE:** Request permission and wait for user decision (10 min timeout)
-3. **LAST:** If permission denied/timeout → mark issue as BLOCKED_ON_PERMISSION and continue with other issues
-
-**DO NOT:**
-- Attempt tool operations that will fail with "permission denied"
-- Skip permission request system and immediately mark as BLOCKED
-- Retry operations after permission denial (creates infinite loop)
+**REACTIVE PATTERN:** Permission checks happen automatically when operations fail.
 
 **Before ANY unsafe operation (deletions, out-of-scope modifications):**
 
-1. **Check with guardrails:**
 ```python
 from tools.permission_guardrails import SafetyGuardrail, Decision
 
 guardrail = SafetyGuardrail(agent="IF-Lane-D", lane="D")
 result = guardrail.check_operation(
-    operation_type="delete_file",  # or "modify_file", "create_file", etc.
+    operation_type="modify_file",
     target_path="path/to/file.py",
-    context={{"issue_id": issue_id}}
+    context={"issue_id": issue_id}
 )
 ```
-
-2. **If SAFE → Proceed directly:**
-```python
-if result.decision == Decision.AUTO_APPROVE:
-    # Execute operation immediately
-    os.remove("path/to/file.py")
-    # or os.rename(), open(..., 'w'), etc.
-    print(f"Operation auto-approved: {{result.reason}}")
-```
-
-3. **If UNSAFE → Request permission:**
-```python
-if result.decision == Decision.REQUEST_REQUIRED:
-    from tools.permission_request import PermissionRequest
-
-    pr = PermissionRequest(lane="D", agent="IF-Lane-D")
-
-    request_id = pr.request_permission(
-        operation_type="delete_file",
-        target="path/to/file.py",
-        reason="Detailed justification (e.g., 'No references found, deprecated 6mo ago')",
-        options=[
-            {{
-                "option_id": "A",
-                "label": "Delete file",
-                "description": "Permanently remove the file",
-                "pros": ["Clean codebase"],
-                "cons": ["Permanent deletion"]
-            }},
-            {{
-                "option_id": "B",
-                "label": "Archive instead",
-                "description": "Move to archives/deprecated/",
-                "pros": ["Recoverable if needed"],
-                "cons": ["Adds clutter"]
-            }}
-        ],
-        recommended="B",  # Suggest safest option
-        issue_id=issue_id,
-        context={{
-            "verification_performed": [
-                "grep -r 'deprecated_file' → 0 results",
-                "git log --follow file.py → last commit 6mo ago"
-            ]
-        }}
-    )
-
-    # Wait for user decision (timeout 10 min)
-    approval = pr.wait_for_approval(request_id, timeout_seconds=600)
-
-    if approval and approval["decision"] == "APPROVED":
-        chosen = approval["chosen_option"]
-        if chosen == "A":
-            os.remove("path/to/file.py")
-        elif chosen == "B":
-            os.makedirs("archives/deprecated", exist_ok=True)
-            os.rename("path/to/file.py", "archives/deprecated/file.py")
-
-        print(f"Operation completed: Option {{chosen}}")
-    else:
-        # Permission denied or timeout
-        print("Permission denied or timeout - skipping operation")
-        # Update issue status to BLOCKED
-        echo "BLOCKED: Permission timeout on delete operation" > LogBook/issue-fixing/signals/D.status
-        # Continue with other issues
-
-    # Clean up request/approval files
-    pr.cleanup_request()
-```
-
-4. **Timeout handling:**
-If permission request times out after 10 minutes:
-- Write BLOCKED status
-- Update issue with `status: "BLOCKED_ON_PERMISSION"`
-- Continue with other issues (non-blocking failure)
 
 **Safety Tiers:**
 
@@ -155,21 +96,21 @@ If permission request times out after 10 minutes:
 | CONDITIONAL | Update OPEN issues in own lane, create files in scope | Auto-approve with validation |
 | UNSAFE | Delete files, modify PM-exclusive paths, modify out-of-scope files | Request permission |
 
+If permission denied → write `BLOCKED` status, mark issue `BLOCKED_ON_PERMISSION`, continue with other issues.
+
+---
 
 ### 1. Find Open Issues from Catalog
 
-**PRIMARY SOURCE:** Read `ISSUE_CATALOG.md` "Open Issues by Lane" section for Lane D.
+**PRIMARY SOURCE:** Read `ISSUE_CATALOG.md` — "Open Issues by Lane" section for Lane D.
 
 ```bash
-# Extract Lane D open issues from catalog
 grep -A100 "### Lane D -" ISSUE_CATALOG.md | grep "^|" | grep -v "ID \|---" | head -5
 ```
 
-**Priority: Oldest first** - Work from TOP to BOTTOM.
+**Priority: Oldest first** — top to bottom.
 
 ### 2. Fix Each Issue (Up to 5)
-
-For each issue:
 
 #### 2a. Read the Issue File
 ```bash
@@ -177,6 +118,7 @@ cat issues/D/{ISSUE_ID}.md
 ```
 
 #### 2b. Assess Complexity
+
 | Level | Criteria | Action |
 |-------|----------|--------|
 | LOW | 1-2 files | Fix normally |
@@ -184,24 +126,51 @@ cat issues/D/{ISSUE_ID}.md
 | HIGH | 6-10 files | Fix this + 1-2 more |
 | EXTREME | 10+ files | Fix ONLY this |
 
+#### 2c. Fix Patterns (addressing hunter's Search Patterns)
 
-#### 2c. Implement the Fix
+Pattern 1 — **Broken cross-reference between spec documents** (`CrossRefBroken`):
+1. Read the referring spec to understand intent
+2. If the target spec should exist, check whether it was renamed: `git log --diff-filter=D --name-only | grep <filename>`
+3. If renamed → update the reference. If never existed → create a stub spec or remove the reference with a note.
+4. Verify by re-running the hunter's cross-ref check
 
-**Prerequisites:** None - attempt operations directly. If permission denied, reactive workflow handles it.
-- Read affected files
-- Make necessary changes
-- Follow Fix Requirements exactly
+Pattern 2 — **Schema conflict between integrations** (`SchemaConflict`, `DatabaseDrift`):
+1. Identify the authoritative schema (usually the master spec or the earliest migration)
+2. Update the divergent spec(s) to match
+3. If both specs are wrong relative to the DB, update both to match the DB
+4. Verify by re-running the hunter's `CREATE TABLE` grep — should find a single canonical definition
+
+Pattern 3 — **API endpoint conflict** (`APIConflict`):
+1. Decide the canonical shape (usually the one the code actually uses — check `api/` routes)
+2. Update divergent specs
+3. Verify with a grep that shows one verb + one schema per path
+
+Pattern 4 — **Missing error handling on outbound calls** (`MissingErrorHandling`):
+1. Read the adapter/service file
+2. Add `timeout=<N>` (default 10–30s depending on the call) to the HTTP client
+3. Wrap in `try/except` with a typed error path (never bare `except:`)
+4. If the integration is critical, add an exponential-backoff retry via `tenacity` or the stdlib
+5. Verify: `grep -n "requests\.\|httpx\." <file> | grep -v "timeout="` should return 0 results
+
+Pattern 5 — **Priority-inversion dependency** (`PriorityMismatch`):
+1. Re-read both specs to confirm the inversion is real (not a documentation typo)
+2. Options: (a) raise the dependency's priority to match, (b) decouple the dependency, (c) downgrade the depender
+3. Update the spec(s) with a short rationale
+
+Pattern 6 — **Missing cross-integration documentation** (`IntegrationGap`):
+1. Read both integration specs
+2. Add an "Integration With X" section to the appropriate spec describing the contract, data flow, and failure modes
 
 #### 2d. Verify the Fix
-Run verification commands from issue file.
+
+Run the verification commands from the issue file. If verification fails → revert and skip.
 
 #### 2e. Mark Issue as RESOLVED
-Update YAML frontmatter:
+
 ```yaml
 status: "RESOLVED"
 ```
 
-Add resolution section:
 ```markdown
 ## Resolution
 
@@ -220,8 +189,7 @@ git commit -m "Lane D fixing: N issues resolved
 
 Issues fixed:
 - D-NN: <title>
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)"
+"
 ```
 
 ### 4. Signal Completion
@@ -236,44 +204,47 @@ touch LogBook/issue-fixing/signals/lane-D/D.done
 ## Lane D Specialization
 
 **Focus Areas:**
-- Marketing tool specification documents
-- Database schema definitions
-- API endpoint specifications
-- Cross-tool integration documentation
-- Legal compliance sections
+- External integration specifications
+- Adapter and service-layer code that wraps third-party APIs
+- Database schema declarations spread across integrations
+- API endpoint contracts
+- Cross-integration documentation
+- Compliance and risk-mitigation sections
 
 **Typical Files Affected:**
-- `PLANNING/business/marketing-tools/*.md`
-- `PLANNING/business/MARKETING_INFRASTRUCTURE_SPEC.md`
-- `PLANNING/business/MARKETING_LEGAL_GUIDELINES.md`
+- `PLANNING/integrations/*.md`
+- `PLANNING/INTEGRATION_SPEC.md`
+- `api/**/adapters/*.py`
+- `services/**/*.py`
+- `.env.example`
 
 **Common Fix Patterns:**
-- Update cross-references between tool specs
-- Resolve schema conflicts
+- Update cross-references between integration specs
+- Resolve schema conflicts by picking a canonical definition
 - Add missing dependency declarations
 - Fix broken markdown links
-- Clarify integration documentation
+- Clarify cross-integration documentation
+- Add timeout, retry, and error paths to outbound calls
 
 ---
 
 ## Hard Rules
 
-1. **UP TO 5 ISSUES** - Max 5
-2. **CATALOG IS TRUTH** - Only fix issues in ISSUE_CATALOG.md
-3. **VERIFY EACH FIX** - Run verification commands
-4. **MINIMAL CHANGES** - Only fix what issue describes
-5. **ALWAYS SIGNAL** - Create .done file
-6. **NO STUBS** - Never commit placeholder code
+1. **UP TO 5 ISSUES** — max 5
+2. **CATALOG IS TRUTH** — only fix issues listed in `ISSUE_CATALOG.md`
+3. **VERIFY EACH FIX** — run verification commands
+4. **MINIMAL CHANGES** — only fix what the issue describes
+5. **ALWAYS SIGNAL** — create `.done` file
+6. **NO STUBS** — never commit placeholder code
 
 ---
 
 ## Ghost Reference Fix Policy (CRITICAL)
 
-**PRIORITY: Option A - Create the missing artifact when straightforward**
+**PRIORITY: Option A — create the missing artifact when straightforward.**
 
-When fixing ghost references (documentation references non-existent file/tool):
+When fixing ghost references (documentation references a non-existent file/tool):
 
-**Decision Tree (Complexity-Based):**
 ```
 Can you create a functional file quickly (< 50 lines, clear purpose)?
 ├── YES → Option A: CREATE IT now
@@ -282,22 +253,20 @@ Can you create a functional file quickly (< 50 lines, clear purpose)?
     └── UNSURE → Option A (simple version is better than deferral)
 ```
 
-**Option A (Create Now) - Use when:**
-- File is simple (< 50 lines)
-- Purpose is clear from documentation
-- Implementation is straightforward
-- You can make it functional (not a stub)
-
-**Option B (Defer to Lane B) - Use when:**
-- File requires significant implementation (> 50 lines)
-- Requires understanding complex domain logic
-- Would take substantial time to implement properly
-- Creating it would delay fixing other issues
-
 **If using Option B, you MUST:**
-1. Annotate the reference as "(planned - see B-NN)"
+1. Annotate the reference as "(planned — see B-NN)"
 2. Create a Lane B issue tracking the missing artifact
 3. Document WHY you deferred in the Resolution section
-4. The Lane B issue will be handled by IF-Lane-B specialist
+4. The Lane B issue will be handled by the IF-Lane-B specialist
 
-**Deferral is valid workflow** - Lane B exists specifically to handle complex file creation that's beyond the scope of a quick fix. Don't feel bad about using Option B when appropriate.
+---
+
+## Completion Output
+
+```
+DONE
+Lane: D
+Fixed: N
+Issues: [D-NN, D-NN, ...]
+Skipped: M (if any)
+```

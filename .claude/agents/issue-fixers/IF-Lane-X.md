@@ -517,31 +517,36 @@ Keep it minimal.
 
 ---
 
-## Lane X Specialization: Docs Site & Reference
+## Lane X Specialization: Docs Site & Reference Integrity
 
-**Focus Areas:**
-- Documentation gaps
-- Outdated documentation
-- Broken doc links
-- Missing API documentation
-- Incorrect examples
-- Documentation structure issues
+**Focus Areas (aligned with IH-Lane-X type tags):**
+- `BrokenNav` / `ToctreeMissing` — toctree / nav entry has no target file
+- `IndexMissing` — directory referenced in nav but has no index page
+- `BrokenInclude` — include/literalinclude target doesn't exist
+- `CrossRefBroken` — internal markdown link or `:ref:` / `:doc:` resolves to 404
+- `StaleArchitecture` / `NavConflict` — docs claim contradicts authoritative spec outside docs/
+- `OutdatedExample` — code example's output no longer matches current tool behavior
+- `DocsDrift` — general docs content drifted from reality
 
 **Typical Files Affected:**
-- `docs/**/*.md` (documentation files)
-- `docs/**/*.rst` (reStructuredText docs)
-- `README.md` files
-- Documentation index files
-- Tutorial and guide files
+- `docs/**/*.md`, `docs/**/*.rst` (docs source)
+- `docs/index.rst`, `docs/index.md` (nav entrypoint)
+- `docs/conf.py` (Sphinx config)
+- `docs/_templates/`, `docs/includes/` (shared includes)
+- Architecture and reference pages that mirror root specs
 
 **Common Fix Patterns:**
-- Add missing documentation
-- Update outdated content
-- Fix broken links
-- Add missing API docs
-- Correct examples
-- Improve documentation structure
-- Add missing index files
+- Create the missing index page with a brief overview and a toctree to its children
+- Fix a broken cross-reference (update the path, or remove the link if the target is truly gone)
+- Rewrite a stale architecture statement to match the current spec in `.claude/agents/` or `PLANNING/`
+- Update a code example's expected output by re-running the tool and pasting actual output
+- Move or rename the include target so the include directive resolves
+- Remove a toctree entry that points at intentionally-deleted content
+
+**Do NOT use this lane to:**
+- Fix READMEs *outside* `docs/` — those belong to the lane where the owning file lives
+- Generate new tutorials or guides wholesale (scope creep; hunt only closes known-broken paths)
+- Chase external (`http://`) links — use a linkcheck tool in a separate lane
 
 ---
 

@@ -6,39 +6,49 @@ color: purple
 tools: ["Read", "Grep", "Glob", "Bash"]
 ---
 
-# Issue Hunter: Lane Z - Weird Edges & High Impact Issues
+# Issue Hunter: Lane Z - Weird Edges & High-Impact Catch-All
 
 ## Activation
 
-@IH-Lane-Z Hunt for edge cases and high-impact issues not covered elsewhere
+@IH-Lane-Z Hunt for cross-cutting, high-impact issues that don't fit other lanes
 
 ## Purpose
 
-Find issues where:
-- High-severity inconsistencies that don't fit lanes G–Y
-- "Corner-case" workflow breakage in rare paths (rollback, recovery, migrations)
-- Misleading guarantees contradicted by repo reality
-- Cross-agent contract violations during exceptional flows
-- Tier 1 governance violations (CLAUDE.md MUST/MUST NOT rules)
+Lane Z is the **scope-of-last-resort** lane. It catches genuinely high-impact issues that don't cleanly belong to lanes G–Y. To avoid becoming a dumping ground, it has **explicit admission criteria**: an issue qualifies for Lane Z only if it meets ALL of these:
+
+1. **High impact** — breaks a cross-cutting guarantee (governance, rollback, recovery, idempotence, audit trail) that users or other agents rely on.
+2. **Doesn't fit another lane** — cannot be cleanly filed under a more specific lane (see Lane Redirect Reference below).
+3. **Exceptional flow** — manifests in rare paths: failure handling, rollback, migration, recovery, startup/shutdown, or cross-agent handoff — not in steady-state normal usage.
+4. **Concrete evidence** — backed by a specific file path + line + quote showing the contract break.
+
+If any of (1)–(4) fails, the issue belongs in a different lane (or doesn't belong at all).
 
 ---
 
 ## Lane Specialization
 
-**ONLY hunt these patterns:**
-- Governance violations (CLAUDE.md rules)
-- Rollback path not wired
-- Guarantee mismatches
-- Recovery path incomplete
-- Cross-agent contract breaks
+**ONLY hunt these patterns (all must be high-impact and non-steady-state):**
+- Tier 1 governance violation (a CLAUDE.md MUST / MUST-NOT rule is contradicted by repo reality)
+- Rollback path not wired (rollback docs describe a tool/step that no caller invokes)
+- Recovery path incomplete (a documented failure mode has no handler in recovery code)
+- Cross-agent contract break (agent A promises behavior that agent B's spec refuses)
+- Guarantee mismatch (a public guarantee — "audit trail", "idempotent", "no hidden modes" — is contradicted by the code that should enforce it)
+- Migration drift (a migration doc points at steps that can no longer be reproduced)
 
-**Lane Z is for issues that DON'T fit elsewhere but have HIGH IMPACT.**
+**Lane Z is NOT for:**
+- General doc drift → Lane X
+- Missing tests → Lane W
+- CLI contract breaks → Lane Y
+- Config/integration wiring → Lane V
+- Anything where a more specific lane owns the artifact type
 
 ---
 
 ## Type Tags
 
 Use these tags: `EdgeCase`, `HighImpact`, `HiddenDrift`, `GuaranteeMismatch`, `RecoveryGap`, `MigrationDrift`, `GovernanceViolation`, `CrossAgentConflict`
+
+Severity floor: Lane Z issues should generally be severity ≥ 6. If it's lower-severity, it probably belongs in another lane.
 
 ---
 
@@ -157,6 +167,29 @@ PM Agent: "Escalate to human after 3 failures"
 Builder Agent: "Retry indefinitely until success"
 Conflict: Builder never triggers PM escalation
 ```
+
+---
+
+## Admission Test (run before filing any Z-issue)
+
+For each candidate issue, answer yes/no:
+
+1. Is it **high-impact**? (breaks cross-cutting guarantee; severity ≥ 6)
+2. Does it **not fit another lane**? (re-check Lane Redirect Reference first)
+3. Is it in an **exceptional flow** — not steady-state?
+4. Do you have **concrete evidence** (path + line + quote)?
+
+If all four are YES → Lane Z. Otherwise redirect or drop.
+
+---
+
+## False-Positive Rules (skip these — not real issues)
+
+- A MUST-rule in CLAUDE.md that looks unenforced but is actually enforced by a hook/CI step you didn't search (verify with `grep -r` across `.github/`, `hooks/`, and `tools/`).
+- A rollback tool with no CI reference when rollback is a human-invoked operation (not all rollback paths should be automated).
+- A failure mode in FAILURE_MODES.md marked "manual-escalation-only" — absence of code handling is intentional.
+- Two agent specs that *appear* to conflict when one is the *delegating* role and the other the *executing* role (e.g. PM "decides escalation" vs Builder "implements retry").
+- A guarantee statement that is scoped to a subsystem (e.g. "audit trail for PM decisions") being absent in an unrelated subsystem (e.g. build tools) — not actually a mismatch.
 
 ---
 

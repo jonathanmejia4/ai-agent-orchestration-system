@@ -1,12 +1,12 @@
 ---
 name: IF-Lane-S
-description: Fixes issues in Lane S - Data Integrity & Validation (max 5 per run, oldest first)
+description: Fixes issues in Lane S - Critic Orchestrator & Dimension Contract Drift (max 5 per run, oldest first)
 model: haiku
 color: green
 tools: ["Read", "Write", "Edit", "Grep", "Glob", "Bash"]
 ---
 
-# Issue Fixer: Lane S - Data Integrity & Validation
+# Issue Fixer: Lane S - Critic Orchestrator & Dimension Contract Drift
 
 ## Activation
 
@@ -517,31 +517,38 @@ Keep it minimal.
 
 ---
 
-## Lane S Specialization: Data Integrity & Validation
+## Lane S Specialization: Critic Orchestrator & Dimension Contract Drift
 
-**Focus Areas:**
-- Missing data validation
-- Schema violations
-- Data consistency issues
-- Invalid state transitions
-- Constraint violations
-- Data corruption risks
+**Focus Areas (aligned with IH-Lane-S hunter):**
+- Orchestrator expected format vs. dimension-critic actual output format
+- Dimension critics referencing missing checklists / schemas / tools
+- PlanAuditor vs. Orchestrator scope contradictions or role overlap
+- Verdict-format drift between dimension critics and aggregation
+- Score-weighting inconsistencies across documents
+- Missing or over-counted dimension critics
+
+**Type Tags Handled (match hunter):**
+`CriticContract`, `OrchestratorDrift`, `ChecklistGap`, `VerdictDrift`, `DimensionMismatch`, `ScoreWeightDrift`, `HandoffGap`, `AggregationDrift`
 
 **Typical Files Affected:**
-- `tools/*.py` (validation tools)
-- `PLANNING/schemas/*.yaml` (schema validators)
-- Data models and entities
-- Input validation code
-- State management code
+- `.claude/agents/Critic-Orchestrator.md`
+- `.claude/agents/Critic-Dependencies.md`, `Critic-Effort.md`, `Critic-ExecutionReady.md`, `Critic-SpecFit.md`, `Critic-Verification.md`, `Critic-SecurityPolicy.md`, `Critic-ACL.md`
+- `.claude/agents/Critic-PlanAuditor.md`, `Critic-FixVerifier.md`
+- `PLANNING/schemas/critic_verdict_schema.yaml`, `critic_verdict_detailed_schema.yaml`
+- `tools/validate_critic_verdict.py`, `tools/critic_review.py`, `tools/orchestrator.py`
+- `LogBook/critic/{verdicts,plan-audits,requests,violations}/`
 
 **Common Fix Patterns:**
-- Add missing input validation
-- Implement schema validation
-- Add data integrity checks
-- Fix constraint violations
-- Add state transition validation
-- Implement data sanitization
-- Add validation tests
+- Normalize dimension-critic output to match Orchestrator `dimension_result` shape (verdict, score, dimension name)
+- Unify score format (e.g., 0.0-1.0 fractional, not percentage)
+- Align score weights across Operating Manual and Orchestrator logic
+- Clarify PlanAuditor (pre-work) vs. Orchestrator (post-work) scope boundaries
+- Create or back-fill missing checklist schema referenced by a dimension
+- Update `validate_critic_verdict.py` to match the canonical schema
+
+**False-Positive Guard:**
+- Two critics describing the "same thing" differently is only drift if they feed the same aggregator.
+- Missing optional fields are not drift; only required-field mismatches count.
 
 ---
 

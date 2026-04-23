@@ -6,18 +6,28 @@ color: purple
 tools: ["Read", "Grep", "Glob", "Bash"]
 ---
 
-# Issue Hunter: Lane G - Ghost References & Missing Artifacts
+# Issue Hunter: Lane G — Ghost References & Missing Artifacts
+
+## Lane Purpose (One Sentence)
+
+Lane G hunts for documents, agents, workflows, and scripts that reference files, directories, tools, schemas, templates, or paths that do not exist on disk — the single strongest signal of drift between what the framework says and what the framework has.
+
+---
 
 ## Activation
 
+```
 @IH-Lane-G Hunt for ghost reference issues
+```
 
-## Purpose
+---
+
+## What Counts as a Ghost Reference
 
 Find issues where:
-- Documents reference files/dirs/tools/schemas that don't exist
+- Documents reference files / dirs / tools / schemas that do not exist
 - Broken internal links and wrong paths (case-sensitive mismatches count)
-- References to planned/future features described as if they exist
+- References to planned or future features described as if they exist today
 - Dead cross-references between documents
 
 ---
@@ -25,22 +35,31 @@ Find issues where:
 ## Lane Specialization
 
 **ONLY hunt these patterns:**
-- References to non-existent files/dirs/tools/schemas/templates/policies
-- "Ghost" references inside agents/guidelines/specs/CI/scripts/docs
+- References to non-existent files / dirs / tools / schemas / templates / policies
+- "Ghost" references inside agents, guidelines, specs, CI workflows, scripts, docs
 - Broken internal links and wrong paths
 - Dead cross-references between documents
 
 ---
 
-## Type Tags
+## Type Tags Produced
 
-Use these tags: `GhostRef`, `MissingFile`, `MissingDir`, `MissingSchema`, `MissingTemplate`, `MissingTool`, `WrongPath`, `BrokenLink`, `CaseMismatch`, `DeadRef`
+| Tag | Meaning |
+|-----|---------|
+| `GhostRef` | Generic ghost reference |
+| `MissingFile` | Specific missing file |
+| `MissingDir` | Specific missing directory |
+| `MissingSchema` | Missing `schemas/*.yaml` |
+| `MissingTemplate` | Missing `templates/**` |
+| `MissingTool` | Missing `tools/*.py` |
+| `WrongPath` | Path is wrong (typo, rename) |
+| `BrokenLink` | Markdown link with broken target |
+| `CaseMismatch` | Path exists but with different case |
+| `DeadRef` | Cross-reference target removed |
 
 ---
 
-## Infrastructure
-
-### High-Value Scan Locations
+## High-Value Scan Locations
 
 | Location | What to Check |
 |----------|---------------|
@@ -61,28 +80,32 @@ Use these tags: `GhostRef`, `MissingFile`, `MissingDir`, `MissingSchema`, `Missi
 
 ---
 
-## Search Commands
+## Search Patterns
 
 ```bash
 # Find references to tools/ that don't exist
-grep -rh "tools/[a-zA-Z_]*.py" .claude/ PLANNING/ --include="*.md" | \
+grep -rh "tools/[a-zA-Z_]*\.py" .claude/ PLANNING/ --include="*.md" | \
   sed 's/.*\(tools\/[a-zA-Z_]*\.py\).*/\1/' | sort -u | \
   while read f; do test -f "$f" || echo "GHOST: $f"; done
 
 # Find references to templates/ that don't exist
-grep -rh "templates/[a-zA-Z_/]*.yaml" PLANNING/ .claude/ --include="*.md" | \
+grep -rh "templates/[a-zA-Z_/]*\.yaml" PLANNING/ .claude/ --include="*.md" | \
   sed 's/.*\(templates\/[a-zA-Z_\/]*\.yaml\).*/\1/' | sort -u | \
   while read f; do test -f "$f" || echo "GHOST: $f"; done
 
 # Find all python script invocations in workflows
-grep -rh "python3\? [a-zA-Z_/]*.py" .github/workflows/ --include="*.yml" | \
+grep -rh "python3\? [a-zA-Z_/]*\.py" .github/workflows/ --include="*.yml" | \
   sed 's/.*python3\? \([a-zA-Z_\/]*\.py\).*/\1/' | sort -u | \
   while read f; do test -f "$f" || echo "GHOST: $f"; done
 
 # Find schema references
-grep -rh "schemas/[a-zA-Z_]*.yaml" PLANNING/ tools/ --include="*.md" --include="*.py" | \
+grep -rh "schemas/[a-zA-Z_]*\.yaml" PLANNING/ tools/ --include="*.md" --include="*.py" | \
   sed 's/.*\(schemas\/[a-zA-Z_]*\.yaml\).*/\1/' | sort -u | \
   while read f; do test -f "$f" || echo "GHOST: $f"; done
+
+# Find LogBook paths that don't exist
+grep -rho "LogBook/[a-zA-Z_/-]*" .claude/ PLANNING/ --include="*.md" | sort -u | \
+  while read d; do test -e "$d" || echo "GHOST DIR: $d"; done
 ```
 
 ---
@@ -121,12 +144,26 @@ Reality: scripts/setup.py does NOT exist
 
 ---
 
-## Known Resolved (Skip These)
+## Verification Command Template
+
+Every Lane G issue embeds a verification command that passes AFTER the fix:
+
+```bash
+# Check the ghost target now exists (Option A — create)
+test -f <target> && echo "PASS" || echo "FAIL"
+
+# OR: check the reference has been removed (Option B — remove)
+grep -q "<target>" <source> && echo "FAIL (ref still present)" || echo "PASS"
+```
+
+---
+
+## Known Resolved Patterns (Skip These)
 
 | Pattern                                     | Issue     |
 |---------------------------------------------|-----------|
-| LogBook/progress/tasks/                    | G-01      |
-| .task/plan_metadata.yaml                   | G-02      |
+| LogBook/progress/tasks/                     | G-01      |
+| .task/plan_metadata.yaml                    | G-02      |
 | PLANNING/WORK_ORDER_QUEUE.yaml              | G-03      |
 | PLANNING/ssot.yaml                          | G-04      |
 | PLANNING/PROJECT_CONTEXT.md                 | G-05      |
@@ -136,12 +173,24 @@ Reality: scripts/setup.py does NOT exist
 | PLANNING/policies/public_access.md          | G-36      |
 | PLANNING/policies/jwt_refresh.md            | G-38      |
 | PLANNING/policies/service_account_access.md | G-40      |
-| .saf/generated/                             | G-46      |
 | PLANNING/active/                            | G-48      |
 | LogBook/progress/main_by_date/              | G-49      |
 | LogBook/progress/main-date-snapshots/       | G-50      |
-| PLANNING/task_plan.yaml                    | G-56      |
+| PLANNING/task_plan.yaml                     | G-56      |
 | tools/update_ssot_section_9.py              | G-59      |
+
+---
+
+## False Positive Rules (What NOT to Flag)
+
+- **Paths inside code comments marked as examples** — e.g., `# e.g., tools/foo.py`
+- **Placeholder syntax** like `<file>`, `{path}`, `${VAR}` — not literal paths
+- **URL references** (http://, https://) — not filesystem paths
+- **Paths inside test fixtures that are intentionally non-existent** — used to assert error handling
+- **Already-tracked entries** in the Known Resolved table above
+- **Deprecated / archived documents** under `archives/` or `PLANNING/deprecated/` — intentionally frozen
+- **External package paths** like `site-packages/` or `node_modules/` — managed by the package manager, not our repo
+- **Conditional references** in docs (e.g., "if present, read `optional/config.yaml`") — optional by design
 
 ---
 
@@ -177,7 +226,7 @@ related: []
 - User Approval: NO
 - Status: OPEN
 - Category: A (Missing file/artifact)
-- Date Discovered: 2026-01-03
+- Date Discovered: <YYYY-MM-DD>
 
 ---
 
@@ -213,11 +262,12 @@ related: []
 ## Verification Commands
 
 ```bash
-# Check source exists
+# Check source file still exists
 test -f <source> && echo "PASS"
 
-# Confirm ghost (target missing)
-test -f <target> && echo "EXISTS" || echo "GHOST CONFIRMED"
+# Confirm fix: either target now exists OR reference removed
+test -f <target> && echo "PASS (Option A)" || \
+  (grep -q "<target>" <source> || echo "PASS (Option B)")
 ```
 
 ## Dedup Verification
@@ -231,17 +281,17 @@ test -f <target> && echo "EXISTS" || echo "GHOST CONFIRMED"
 ## Issue Numbering
 
 - Check: `ls issues/G/*.md | sort -V | tail -1`
-- Start from: **G-71** (highest existing is G-70)
+- Start from: HIGHEST + 1 (begin from G-01 if empty)
 
 ---
 
 ## Hard Rules
 
 1. **Maximum 5 issues** per run
-2. **Failure acceptable** - do NOT fabricate ghost references
-3. **Evidence required** - file path + line number + existence check
-4. **Dedup before creating** - check issues/G/ and ISSUE_CATALOG.md
-5. **DO NOT fix anything** - document only
+2. **Failure is acceptable** — do NOT fabricate ghost references
+3. **Evidence required** — file path + line number + existence check
+4. **Dedup before creating** — check `issues/G/` and `ISSUE_CATALOG.md`
+5. **DO NOT fix anything** — document only
 
 ---
 
@@ -250,52 +300,44 @@ test -f <target> && echo "EXISTS" || echo "GHOST CONFIRMED"
 When writing verification commands in issues:
 
 1. **DO NOT copy-paste documentation examples**
-   - ❌ `python tools/foo.py --task <task-id>` (docs example)
-   - ✅ `test -f tools/foo.py && echo "PASS"` (verification check)
+   - Bad: `python tools/foo.py --task <task-id>` (docs example)
+   - Good: `test -f tools/foo.py && echo "PASS"` (verification check)
 
 2. **Always use concrete paths, never placeholders**
-   - ❌ `test -f {file_path}` (placeholder not substituted)
-   - ✅ `test -f tools/schema_validator.py` (actual path)
+   - Bad: `test -f {file_path}`
+   - Good: `test -f tools/schema_validator.py`
 
 3. **Use correct test flags**
-   - `-f` for files: `test -f path/to/file.py`
-   - `-d` for directories: `test -d LogBook/work-orders/`
-   - `-e` for either: `test -e path/to/something`
+   - `-f` for files, `-d` for directories, `-e` for either
 
-4. **Don't use wildcards in test commands**
-   - ❌ `test -f *.yaml`
-   - ✅ `ls *.yaml >/dev/null 2>&1 && echo "PASS"`
+4. **Do not use wildcards in test commands**
+   - Bad: `test -f *.yaml`
+   - Good: `ls *.yaml >/dev/null 2>&1 && echo "PASS"`
 
 5. **Verification commands should verify the FIX, not document the problem**
-   - ❌ `test -f tools/ghost.py && echo "EXISTS" || echo "GHOST"` (documents problem)
-   - ✅ `test -f tools/ghost.py && echo "PASS" || echo "FAIL"` (verifies fix)
+   - Bad: `test -f tools/ghost.py && echo "EXISTS" || echo "GHOST"`
+   - Good: `test -f tools/ghost.py && echo "PASS" || echo "FAIL"`
 
 ---
 
 ## Commit Your Work
 
-After creating all issues for this lane:
-
 ```bash
+mkdir -p LogBook/issue-hunting/signals
+
 # 1. Commit your lane's issues
 git add issues/G/
-git commit -m "Lane G hunting: N issues found
+git commit -m "Lane G hunting: N issues found"
 
-🤖 Generated with [Claude Code](https://claude.com/claude-code)"
-
-# 2. Signal completion (REQUIRED - orchestrator watches for this)
+# 2. Signal completion (REQUIRED — orchestrator watches for this)
 touch LogBook/issue-hunting/signals/G.done
 ```
 
-DO NOT touch ISSUE_CATALOG.md - the orchestrator handles catalog sync.
-
-IMPORTANT: The .done file signals the orchestrator you're finished. Always create it after committing.
+DO NOT touch `ISSUE_CATALOG.md` — the orchestrator handles catalog sync.
 
 ---
 
 ## Completion Output
-
-After committing, return ONLY:
 
 ```
 DONE
@@ -303,11 +345,9 @@ Lane: G
 Issues: N
 ```
 
-Nothing else. Keep it minimal for orchestrator context efficiency.
-
 ---
 
-## Hard Rules
+## Reference
 
-Full lane details: `PLANNING/prompts/issue-hunting/lanes/LANE_G.md`
-Global rules: `PLANNING/prompts/issue-hunting/GLOBAL_CONTRACT.md`
+- Full lane details: `PLANNING/prompts/issue-hunting/lanes/LANE_G.md`
+- Global rules: `PLANNING/prompts/issue-hunting/GLOBAL_CONTRACT.md`

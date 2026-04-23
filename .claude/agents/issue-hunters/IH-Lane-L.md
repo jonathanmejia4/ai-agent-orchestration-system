@@ -36,7 +36,7 @@ Use these tags: `CI`, `WorkflowDrift`, `HookDrift`, `MissingScript`, `Placeholde
 
 ### Workflows (68 in .github/workflows/)
 
-- Quality gates: quality-gate.yml, security-gates.yml, saf-gates.yml
+- Quality gates: quality-gate.yml, security-gates.yml, framework-gates.yml
 - Validation: schema-validation.yml, task-validation.yml, boundary-check.yml
 - Testing: unit-tests.yml, integration-tests.yml, e2e-tests.yml
 - Digests: digest-daily.yml, digest-monthly.yml, digest-yearly.yml

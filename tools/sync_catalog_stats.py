@@ -40,7 +40,7 @@ CATALOG_PATH = "ISSUE_CATALOG.md"
 ISSUES_DIR = "issues"
 EVIDENCE_DIR = "LogBook/verification/evidence"
 COMPREHENSIVE_REPORT = "LogBook/verification/comprehensive_report.json"
-LANES = ['A', 'B', 'D', 'E', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+LANES = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
 def parse_issue_file(filepath: str) -> dict:
     """Parse an issue file and extract frontmatter + title."""

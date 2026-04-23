@@ -14,29 +14,35 @@ tools: ["Read", "Grep", "Glob", "Bash"]
 
 ## Purpose
 
-Find issues where:
-- docs/ references to files that moved/renamed, broken includes
-- Conflicts between docs/ and root specs about workflows/roles
-- Missing index pages referenced by docs navigation
-- Toctree entries pointing to non-existent files
-- Include directives referencing missing content
+Find issues in the **user-facing docs site** (typically `docs/` built with Sphinx or MkDocs):
+- Toctree / nav entries pointing at files that don't exist
+- Include or `literalinclude` directives targeting missing content
+- Cross-references (markdown links, `:ref:`, `:doc:`) that 404
+- Docs architecture statements that contradict current agent/spec files outside `docs/`
+- Missing index pages that the nav structure assumes are present
+- Outdated code examples that no longer compile or match current APIs
+
+Core question: **if a user lands on the docs site, do all the paths they can follow actually work?**
 
 ---
 
 ## Lane Specialization
 
 **ONLY hunt these patterns:**
-- Broken toctree references
-- Missing index pages
-- Broken include directives
-- Cross-reference failures
-- Docs vs root spec conflicts
+- Broken toctree / nav references (target file missing)
+- Missing index pages (directory listed in nav has no index.md)
+- Broken include directives (include target absent)
+- Cross-reference failures (internal link resolves to 404)
+- Docs vs root spec conflicts (architecture claim in docs/ contradicts .claude/ or PLANNING/)
+- Outdated code example (example output diverged from current tool/API behavior)
 
 ---
 
 ## Type Tags
 
-Use these tags: `DocsDrift`, `BrokenInclude`, `StaleArchitecture`, `BrokenNav`, `ToctreeMissing`, `IndexMissing`, `CrossRefBroken`, `NavConflict`
+Use these tags: `DocsDrift`, `BrokenInclude`, `StaleArchitecture`, `BrokenNav`, `ToctreeMissing`, `IndexMissing`, `CrossRefBroken`, `NavConflict`, `OutdatedExample`
+
+Keep these in sync with the fixer — every tag here should name a fix the IF-Lane-X fixer knows how to execute.
 
 ---
 
@@ -174,9 +180,22 @@ docs/index.rst references: new-feature/index
 Reality: docs/new-feature/ exists but has no index.md
 ```
 
+### Pattern 6: Outdated Code Example
+```
+docs/tutorials/intro.md: "Run `tool.py --format json` — output is `{\"id\": 1}`"
+Reality: Tool now outputs `{\"task_id\": \"...\"}`; docs example never updated
+```
+
 ---
 
-## Known Resolved (Skip These)
+## False-Positive Rules (skip these — not real issues)
+
+- External (`http://` / `https://`) links — those belong to linkcheck, not this lane.
+- Anchor-only links (`#some-section`) when the section heading exists but with a slightly different slug — flag only if the link is clearly unreachable.
+- Architecture statements in `docs/` that appear to contradict `.claude/` when the docs explicitly describe a *legacy* or *v1* flow (check for "legacy:" / "deprecated:" markers first).
+- A toctree entry with a `:orphan:` or `:hidden:` option — this is deliberate.
+- Markdown link with a trailing `)` captured by a greedy regex — re-verify by hand before filing.
+- Missing `index.md` in a directory that is itself unreferenced from the nav tree (no toctree points at it) — that's dead code for Lane Q/R, not a nav break.
 
 | Pattern                         | Issue   |
 |---------------------------------|---------|

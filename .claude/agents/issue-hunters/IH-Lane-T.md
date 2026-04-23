@@ -162,6 +162,17 @@ Builder: Expects fields A, C, E
 
 ---
 
+## False-Positive Rules
+
+Do NOT file an issue when:
+- A gate is intentionally advisory (non-blocking) — check whether policy requires blocking behavior.
+- Escalation thresholds legitimately differ per operation type (see Timeout Matrix / per-tool overrides).
+- A PM write path appears in multiple boundary docs because one is an index pointing at the other (not a contradiction).
+- A rollback procedure is defined in a runbook rather than the PM agent file — verify the agent file references it.
+- A "missing" work-order field is actually computed downstream (e.g., Builder derives it from other fields).
+
+---
+
 ## Known Resolved (Skip These)
 
 | Pattern                           | Issue |

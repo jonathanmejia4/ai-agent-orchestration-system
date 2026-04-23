@@ -517,31 +517,37 @@ Keep it minimal.
 
 ---
 
-## Lane W Specialization: Test Harness Gaps
+## Lane W Specialization: Test & Validation Harness Gaps
 
-**Focus Areas:**
-- Missing tests
-- Test coverage gaps
-- Broken test assertions
-- Outdated test fixtures
-- Test/code mismatches
-- Flaky tests
+**Focus Areas (aligned with IH-Lane-W type tags):**
+- `TestHarnessDrift` / `CI-TestMismatch` — CI points at test paths that moved or vanished
+- `MissingFixture` — test imports a fixture/helper that doesn't exist
+- `ValidationGap` — a validation tool is never invoked by CI, hooks, or any caller
+- `ConftestDrift` — conftest files in different directories conflict or shadow silently
+- `CoverageGap` — docs promise coverage that isn't actually there
+- `HarnessWiringGap` / `TestSchemaGap` — the test infrastructure references schemas or configs that drifted
+- `BrokenTestCommand` — documented `make`/CLI test invocation no longer works
 
 **Typical Files Affected:**
-- `tests/**/*.py` (test files)
-- `tools/test*.py` (test tools)
-- Test fixtures and data
-- Test configuration files
-- CI test workflows
+- `tests/**/*.py`, `tests/**/conftest.py` (test source and fixture roots)
+- `tests/fixtures/**` (shared fixture modules and data files)
+- `.github/workflows/*test*.yml` (CI test wiring)
+- `tools/validate_*.py`, `tools/smoke_test.py` (validation entry points)
+- `Makefile`, `pyproject.toml`, `pytest.ini` (test invocation contracts)
+- README sections documenting how to run tests
 
 **Common Fix Patterns:**
-- Add missing test cases
-- Fix broken test assertions
-- Update test fixtures
-- Align tests with code changes
-- Fix flaky tests
-- Add integration tests
-- Improve test coverage
+- Create the missing fixture module with a minimal, working implementation
+- Update a CI workflow path to match the current `tests/` layout
+- Wire a validator into its appropriate CI workflow or pre-commit hook
+- Rename a conftest fixture (or narrow its scope) to eliminate shadowing
+- Add the missing `tests/test_<tool>.py` with at least one meaningful assertion
+- Restore or rename a Makefile test target so documented commands work again
+- Align a test-schema reference in code with the actual schema file on disk
+
+**Do NOT use this lane to:**
+- Add speculative tests for tools with no stated coverage promise (that's scope creep)
+- Rewrite flaky tests whose flakiness is a separate bug (file a new issue instead)
 
 ---
 

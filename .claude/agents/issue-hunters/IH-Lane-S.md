@@ -151,6 +151,17 @@ Reality: No checklist file for this dimension
 
 ---
 
+## False-Positive Rules
+
+Do NOT file an issue when:
+- A dimension critic returns an extra field the Orchestrator ignores (forward-compatible, not drift).
+- Two critics describe overlapping concerns but feed different aggregators — check the consumer.
+- Score is reported in two formats (0-1 and 0-100) only in separate documents; flag only if both feed the same aggregator.
+- A weight difference appears because one source is the Operating Manual default and the other is a per-run override (check run config).
+- PlanAuditor and Orchestrator appear to evaluate the same artifact, but at different lifecycle stages (pre-work vs. post-work).
+
+---
+
 ## Known Resolved (Skip These)
 
 | Pattern                                  | Issue |

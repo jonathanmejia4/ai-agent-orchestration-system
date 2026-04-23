@@ -90,6 +90,17 @@ grep -A10 "input\|receives" .claude/agents/Builder.md | head -12
 
 ---
 
+## False-Positive Rules
+
+Do NOT file an issue when:
+- Two schemas differ but target different lifecycle stages (e.g., `task_spec` at plan-time vs. `task_manifest` at execution-time).
+- A Planner output uses a new field that is additive only (no consumer rejects it).
+- DAG format differences are between a permissive input format and a strict canonical form (tool normalizes them).
+- An "alias" field is declared in the schema (e.g., `deps: alias of dependencies`).
+- Missing acceptance criteria on a task explicitly marked `ac_required: false` (e.g., a housekeeping or refactor task).
+
+---
+
 ## Known Resolved (Skip These)
 
 Lane Q has 11 resolved issues. Skip these:
