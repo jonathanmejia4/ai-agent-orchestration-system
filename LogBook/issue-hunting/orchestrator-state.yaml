@@ -6,6 +6,7 @@ last_updated: null
 config:
   batch_size: 22
   lanes_to_run:
+    - B
     - D
     - E
     - G
@@ -30,6 +31,7 @@ config:
     - Z
 
 lanes:
+  B: { status: pending, issues: 0, issue_ids: [], committed: false }
   D: { status: pending, issues: 0, issue_ids: [], committed: false }
   E: { status: pending, issues: 0, issue_ids: [], committed: false }
   G: { status: pending, issues: 0, issue_ids: [], committed: false }
@@ -54,7 +56,7 @@ lanes:
   Z: { status: pending, issues: 0, issue_ids: [], committed: false }
 
 progress:
-  total_lanes: 22
+  total_lanes: 23
   completed_lanes: 0
   total_issues: 0
   batches_run: 0

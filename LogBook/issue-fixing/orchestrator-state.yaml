@@ -4,7 +4,34 @@ status: idle
 
 lanes_skipped: []
 
+config:
+  lanes_to_run:
+    - B
+    - D
+    - E
+    - G
+    - H
+    - I
+    - J
+    - K
+    - L
+    - M
+    - N
+    - O
+    - P
+    - Q
+    - R
+    - S
+    - T
+    - U
+    - V
+    - W
+    - X
+    - Y
+    - Z
+
 lanes:
+  B: { status: pending, issues_fixed: 0, issue_ids: [] }
   D: { status: pending, issues_fixed: 0, issue_ids: [] }
   E: { status: pending, issues_fixed: 0, issue_ids: [] }
   G: { status: pending, issues_fixed: 0, issue_ids: [] }
@@ -29,6 +56,6 @@ lanes:
   Z: { status: pending, issues_fixed: 0, issue_ids: [] }
 
 progress:
-  total_lanes: 22
+  total_lanes: 23
   completed_lanes: 0
   total_fixed: 0

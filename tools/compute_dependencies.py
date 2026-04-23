@@ -472,7 +472,7 @@ def main():
     args = parser.parse_args()
 
     print("=" * 70)
-    print("the system ISSUE DEPENDENCIES ANALYZER")
+    print("Issue Dependencies Analyzer")
     print("=" * 70)
     print(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print()

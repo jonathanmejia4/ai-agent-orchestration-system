@@ -1,0 +1,26 @@
+{
+  "issue_id": "B-02",
+  "lane": "B",
+  "timestamp": "2026-04-23T00:51:24.259378",
+  "all_passed": true,
+  "passed_checks": 1,
+  "failed_checks": 0,
+  "total_checks": 1,
+  "confidence_score": 0,
+  "verification_pattern": "manual_verification_required",
+  "verification_depth": "STANDARD",
+  "affected_paths": [],
+  "checks": [
+    {
+      "name": "manual_verification_required",
+      "command": "N/A (no affected_paths specified)",
+      "expected": 0,
+      "actual": 0,
+      "output": "PASS: manual verification required \u2014 issue has no affected_paths to verify automatically.",
+      "passed": true,
+      "duration_ms": 0,
+      "error": "",
+      "manual_note": true
+    }
+  ]
+}

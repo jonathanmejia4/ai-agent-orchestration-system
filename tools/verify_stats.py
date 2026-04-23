@@ -148,7 +148,7 @@ def run_verification(issues_dir: str, verbose: bool = False) -> Tuple[bool, List
     all_passed = True
 
     print("=" * 70)
-    print("🔍 the system ISSUE STATISTICS VERIFICATION")
+    print("Issue Statistics Verification")
     print("=" * 70)
     print(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"Issues Directory: {issues_dir}")

@@ -205,7 +205,7 @@ def get_safety_level(tool_name: str) -> str:
     for pattern in SANDBOXED_NAME_PATTERNS:
         if re.match(pattern, tool_name, re.IGNORECASE):
             return "AUTO:SANDBOX"
-    for pattern in the frameworkE_NAME_PATTERNS:
+    for pattern in SAFE_NAME_PATTERNS:
         if re.match(pattern, tool_name, re.IGNORECASE):
             return "AUTO:SAFE"
 

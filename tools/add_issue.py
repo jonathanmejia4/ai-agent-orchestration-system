@@ -6,13 +6,15 @@ Creates a new issue file with proper formatting and numbering.
 
 Usage:
     python3 tools/add_issue.py A "Issue title" --severity 7 --tags "Tag1,Tag2"
-    python3 tools/add_issue.py B "Missing config file" --severity 5
+    python3 tools/add_issue.py B "Missing config file" --severity 5 --path config.yaml
 
 Arguments:
     lane        Lane letter (A-Z)
     title       Issue title
     --severity  Severity level 1-10 (default: 5)
     --tags      Comma-separated type tags
+    --path      Affected file path (repeatable). Populates affected_paths frontmatter
+                so verify_issue.py can substitute {file_path} in verification commands.
 """
 
 import os
@@ -55,7 +57,8 @@ def severity_to_level(severity: int) -> str:
         return "TRIVIAL"
 
 
-def create_issue(lane: str, title: str, severity: int = 5, tags: list = None) -> str:
+def create_issue(lane: str, title: str, severity: int = 5, tags: list = None,
+                 affected_paths: list = None) -> str:
     """Create a new issue file."""
     lane = lane.upper()
     issue_num = get_next_issue_number(lane)
@@ -65,6 +68,13 @@ def create_issue(lane: str, title: str, severity: int = 5, tags: list = None) ->
     tags = tags or [f"{lane}-Issue"]
     tags_str = ', '.join(f'"{t}"' for t in tags)
 
+    affected_paths = affected_paths or []
+    if affected_paths:
+        paths_yaml = "\n" + "\n".join(f'  - "{p}"' for p in affected_paths)
+        affected_paths_line = f"affected_paths:{paths_yaml}"
+    else:
+        affected_paths_line = "affected_paths: []"
+
     content = f'''---
 issue_id: "{issue_id}"
 lane: "{lane}"
@@ -72,7 +82,7 @@ severity: {severity}
 severity_level: "{severity_level}"
 type_tags: [{tags_str}]
 status: "OPEN"
-affected_paths: []
+{affected_paths_line}
 ---
 
 # [LANE {lane}] Issue {issue_id}: {title}
@@ -138,6 +148,9 @@ def main():
     parser.add_argument('title', type=str, help='Issue title')
     parser.add_argument('--severity', '-s', type=int, default=5, help='Severity 1-10')
     parser.add_argument('--tags', '-t', type=str, help='Comma-separated tags')
+    parser.add_argument('--path', '-p', action='append', default=[],
+                        help='Affected file path (repeatable). Populates affected_paths '
+                             'frontmatter so verify_issue.py can substitute {file_path}.')
 
     args = parser.parse_args()
 
@@ -150,8 +163,14 @@ def main():
         sys.exit(1)
 
     tags = args.tags.split(',') if args.tags else None
+    affected_paths = args.path if args.path else []
 
-    filepath = create_issue(args.lane, args.title, args.severity, tags)
+    if not affected_paths:
+        print("Warning: no --path provided; affected_paths will be empty. "
+              "verify_issue.py will not be able to substitute {file_path} in verification "
+              "commands and will emit a manual-verification note.")
+
+    filepath = create_issue(args.lane, args.title, args.severity, tags, affected_paths)
     print(f"Created: {filepath}")
 
 

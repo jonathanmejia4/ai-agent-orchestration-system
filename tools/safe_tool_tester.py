@@ -274,7 +274,7 @@ def auto_classify_tool(tool_path: Path) -> Tuple[SafetyLevel, Optional[str], boo
         if re.match(pattern, name, re.IGNORECASE):
             return SafetyLevel.SANDBOXED, None, True
 
-    for pattern in the frameworkE_NAME_PATTERNS:
+    for pattern in SAFE_NAME_PATTERNS:
         if re.match(pattern, name, re.IGNORECASE):
             return SafetyLevel.SAFE, None, True
 

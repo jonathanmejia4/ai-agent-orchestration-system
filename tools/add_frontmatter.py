@@ -438,7 +438,7 @@ def process_all_issues(issues_dir: str, lane: Optional[str] = None,
     files = [f for f in files if 'TEMPLATE' not in f.upper()]
 
     print(f"\n{'='*70}")
-    print(f"the system ISSUE FRONTMATTER GENERATOR")
+    print(f"Issue Frontmatter Generator")
     print(f"{'='*70}")
     print(f"Mode: {'DRY RUN' if dry_run else 'APPLYING CHANGES'}")
     print(f"Files to process: {len(files)}")

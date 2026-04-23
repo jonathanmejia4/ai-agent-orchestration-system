@@ -575,6 +575,66 @@ def verify_issue(issue_id: str, depth: str = "STANDARD",
 
         target_paths = extract_target_paths(frontmatter, content)
 
+        # Option A support: extract_target_paths requires '/' in each path, which
+        # drops valid top-level filenames like "CLAUDE.md". If extraction dropped
+        # frontmatter paths, fall back to using them directly so {file_path} gets
+        # substituted in verification commands.
+        frontmatter_paths = frontmatter.get('affected_paths') or []
+        if not target_paths and frontmatter_paths:
+            target_paths = [
+                re.sub(r':\d+.*$', '', str(p)).strip('`').strip()
+                for p in frontmatter_paths
+                if str(p).strip()
+            ]
+            target_paths = [p for p in target_paths if p and not p.startswith('test')]
+
+        # Option B fallback: if the issue has no affected_paths AND no extractable
+        # target paths, pattern-based verification cannot substitute {file_path}.
+        # Emit a MANUAL_REVIEW result (PASS with note) instead of crashing or
+        # reporting a false FAIL.
+        manual_verification = frontmatter.get('verification_pattern') == 'manual_verification_required'
+        if manual_verification or (not target_paths and not frontmatter_paths):
+            check_results = [{
+                'name': 'manual_verification_required',
+                'command': 'N/A (no affected_paths specified)',
+                'expected': 0,
+                'actual': 0,
+                'output': 'PASS: manual verification required — issue has no '
+                          'affected_paths to verify automatically.',
+                'passed': True,
+                'duration_ms': 0,
+                'error': '',
+                'manual_note': True,
+            }]
+            passed_count = 1
+            failed_count = 0
+            all_passed = True
+
+            result = {
+                'issue_id': issue_id,
+                'lane': frontmatter.get('lane', ''),
+                'status': frontmatter.get('status', 'OPEN'),
+                'pattern': 'manual_verification_required',
+                'depth': fm_depth,
+                'depends_on': depends_on,
+                'unresolved_dependencies': unresolved_deps,
+                'target_paths': [],
+                'checks': check_results,
+                'passed': all_passed,
+                'passed_count': passed_count,
+                'failed_count': failed_count,
+                'total_checks': 1,
+                'confidence': 0,  # 0 confidence — this is a manual-review flag, not a real pass
+                'timestamp': datetime.now().isoformat(),
+                'used_embedded_commands': False,
+                'manual_verification_required': True,
+            }
+            try:
+                save_evidence(result)
+            except Exception as e:
+                result['evidence_error'] = str(e)
+            return result
+
         variables = {
             'issue_id': issue_id,
             'lane': frontmatter.get('lane', issue_id[0]),

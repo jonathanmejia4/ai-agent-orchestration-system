@@ -2056,7 +2056,7 @@ def main():
     args = parser.parse_args()
 
     print("=" * 60)
-    print("🔧 the system ISSUE CATALOG RESTRUCTURING TOOL")
+    print("Issue Catalog Restructuring Tool")
     print("=" * 60)
     print(f"⏰ Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"📂 Working directory: {os.getcwd()}")

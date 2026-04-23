@@ -294,7 +294,7 @@ def format_compact_stats(stats: CatalogStats) -> str:
 
     # Header
     lines.append("=" * 70)
-    lines.append("📊 the system ISSUE CATALOG STATISTICS")
+    lines.append("Issue Catalog Statistics")
     lines.append("=" * 70)
     lines.append(f"Last Updated: {stats.last_updated}")
     lines.append("")
