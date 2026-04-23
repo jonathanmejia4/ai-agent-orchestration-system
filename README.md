@@ -6,6 +6,22 @@ Run 40+ AI agents in parallel — each specialized by domain — coordinated by 
 
 ---
 
+## Security Notice
+
+**Do not run this framework in automated CI/CD with access to production secrets.**
+
+This framework lets AI agents modify code autonomously. Permission requests timeout without user response, which defeats safety gates in unattended environments. Run locally with human oversight.
+
+Before running on any codebase:
+- Review all issue files before `/fix-all` (issue files are prompt-injection vectors)
+- Run without production credentials (strip `.env` first if running on a real project)
+- Use branch protection on main; don't let agents push directly
+- Validate issue files with `python3 tools/validate_issue_file.py issues/` before running fixers
+
+See [SECURITY.md](SECURITY.md) for the full threat model.
+
+---
+
 ## Quick Start
 
 ```bash

@@ -3,25 +3,25 @@
 <!-- STATS_START -->
 ## Catalog Statistics
 
-> **Last Updated:** 2026-04-23 10:56:47
+> **Last Updated:** 2026-04-23 11:07:32
 
 | Total | Working | Broken | Progress |
 |-------|---------|--------|----------|
-| 253 | 253 | 0 | [████████████████████] 100.0% |
+| 254 | 254 | 0 | [████████████████████] 100.0% |
 
 ### By Location
 
 | Location | Total | Working | Broken | % |
 |----------|-------|---------|--------|---|
 | ✅ `scripts/` | 3 | 3 | 0 | 100% |
-| ✅ `tools/` | 241 | 241 | 0 | 100% |
+| ✅ `tools/` | 242 | 242 | 0 | 100% |
 | ✅ `tools/hooks/` | 9 | 9 | 0 | 100% |
 
 ### By Type
 
 | Type | Count |
 |------|-------|
-| Python | 233 |
+| Python | 234 |
 | Shell | 20 |
 
 <details>
@@ -34,7 +34,7 @@
 | ✅ Dependency Analysis | 9 | 9 | 0 | 100% |
 | ✅ Generators | 7 | 7 | 0 | 100% |
 | ✅ Health & Monitoring | 6 | 6 | 0 | 100% |
-| ✅ Issue & Catalog Mgmt | 7 | 7 | 0 | 100% |
+| ✅ Issue & Catalog Mgmt | 8 | 8 | 0 | 100% |
 | ✅ LogBook Management | 9 | 9 | 0 | 100% |
 | ✅ Merge & Conflict | 6 | 6 | 0 | 100% |
 | ✅ Metrics & Reporting | 9 | 9 | 0 | 100% |
@@ -133,6 +133,7 @@ python3 tools/sync_catalog_stats.py --verbose
 | `sync_tools_catalog.py` | Working | Syncs tools catalog statistics |
 | `verify_issue.py` | Working | Verifies issue resolution and scans for half-baked fixes |
 | `validate_issue_frontmatter.py` | Working | Validates issue YAML frontmatter |
+| `validate_issue_file.py` | Working | Security validator for issue files (schema, sensitive paths, dangerous shell patterns) |
 
 ### Validation & Quality
 
