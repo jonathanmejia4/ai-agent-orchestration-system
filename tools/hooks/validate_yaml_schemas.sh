@@ -40,16 +40,16 @@ while IFS= read -r yaml_file; do
     SCHEMA=""
 
     case "${yaml_file}" in
-        .brick/brick.yaml|*/.brick/brick.yaml)
-            # Brick manifest files use manifest schema
+        .task/task.yaml|*/.task/task.yaml)
+            # Task manifest files use manifest schema
             SCHEMA="${SCHEMAS_DIR}/brick_manifest_schema.yaml"
             ;;
         *_spec.yaml|*_spec.yml|*-spec.yaml|*-spec.yml)
             # Specification files use specification schema
             SCHEMA="${SCHEMAS_DIR}/brick_specification_schema.yaml"
             ;;
-        *brick.yaml|*brick.yml)
-            # Other brick files default to manifest schema
+        *task.yaml|*task.yml)
+            # Other task files default to manifest schema
             SCHEMA="${SCHEMAS_DIR}/brick_manifest_schema.yaml"
             ;;
         *wiring.yaml|*wiring.yml)

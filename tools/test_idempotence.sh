@@ -2,13 +2,13 @@
 #
 # test_idempotence.sh - Validate Idempotent Generation
 #
-# Tests that running brick generation twice produces identical output.
+# Tests that running task generation twice produces identical output.
 # Essential for verifying template stability and deterministic builds.
 #
 # Usage:
-#   tools/test_idempotence.sh <brick-id>
+#   tools/test_idempotence.sh <task-id>
 #   tools/test_idempotence.sh --template <template-name> --ssot <wiring.yaml>
-#   tools/test_idempotence.sh --dir <brick-directory>
+#   tools/test_idempotence.sh --dir <task-directory>
 #   tools/test_idempotence.sh --help
 #
 # Exit Codes:
@@ -20,7 +20,7 @@
 #   - TEMPLATE_COMPLIANCE_POLICY.md:174, 248, 249, 254, 1380
 #   - IDEMPOTENT_GENERATION_POLICY.md:981
 #
-# Author: SAF System
+# Author: The Framework
 # Created: 2025-12-23
 
 set -euo pipefail
@@ -42,7 +42,7 @@ GEN1_DIR="$TMP_BASE/gen1"
 GEN2_DIR="$TMP_BASE/gen2"
 
 # Default values
-BRICK_ID=""
+TASK_ID=""
 TEMPLATE=""
 SSOT=""
 BRICK_DIR=""
@@ -52,9 +52,9 @@ EXCLUDE_TIMESTAMPS=true
 
 usage() {
     cat << EOF
-Usage: $(basename "$0") [OPTIONS] <brick-id>
+Usage: $(basename "$0") [OPTIONS] <task-id>
        $(basename "$0") --template <template> --ssot <wiring.yaml>
-       $(basename "$0") --dir <brick-directory>
+       $(basename "$0") --dir <task-directory>
 
 Validate idempotent generation by running twice and comparing outputs.
 
@@ -62,15 +62,15 @@ Options:
     -h, --help              Show this help message
     -t, --template NAME     Template name to test
     -s, --ssot FILE         SSOT wiring file path
-    -d, --dir DIR           Brick directory to test
+    -d, --dir DIR           Task directory to test
     -v, --verbose           Verbose output
     -k, --keep-tmp          Keep temporary directories after test
     --include-timestamps    Include timestamps in comparison (default: exclude)
 
 Examples:
-    $(basename "$0") brick-123
-    $(basename "$0") --template user-service --ssot .brick/wiring.yaml
-    $(basename "$0") --dir .brick/
+    $(basename "$0") task-123
+    $(basename "$0") --template user-service --ssot .task/wiring.yaml
+    $(basename "$0") --dir .task/
 
 Exit Codes:
     0 - Idempotent (outputs identical)
@@ -140,15 +140,15 @@ while [[ $# -gt 0 ]]; do
             exit 2
             ;;
         *)
-            BRICK_ID="$1"
+            TASK_ID="$1"
             shift
             ;;
     esac
 done
 
 # Validate inputs
-if [ -z "$BRICK_ID" ] && [ -z "$TEMPLATE" ] && [ -z "$BRICK_DIR" ]; then
-    log_error "Must specify brick-id, --template, or --dir"
+if [ -z "$TASK_ID" ] && [ -z "$TEMPLATE" ] && [ -z "$BRICK_DIR" ]; then
+    log_error "Must specify task-id, --template, or --dir"
     usage
     exit 2
 fi
@@ -166,7 +166,7 @@ if [ "$VERBOSE" = true ]; then
     log "Temp directories: $TMP_BASE"
 fi
 
-# Function to generate brick
+# Function to generate task
 generate_brick() {
     local output_dir="$1"
     local gen_num="$2"
@@ -183,9 +183,9 @@ generate_brick() {
         return 1
     fi
 
-    if [ -n "$BRICK_ID" ]; then
-        if ! python3 "$SCRIPT_DIR/generate_brick.py" "$BRICK_ID" --output "$output_dir" 2>&1; then
-            echo "ERROR: Generation failed for brick $BRICK_ID" >&2
+    if [ -n "$TASK_ID" ]; then
+        if ! python3 "$SCRIPT_DIR/generate_brick.py" "$TASK_ID" --output "$output_dir" 2>&1; then
+            echo "ERROR: Generation failed for task $TASK_ID" >&2
             return 1
         fi
     elif [ -n "$TEMPLATE" ] && [ -n "$SSOT" ]; then
@@ -195,7 +195,7 @@ generate_brick() {
         fi
     else
         echo "ERROR: No valid generation method specified." >&2
-        echo "Provide either --brick-id, or both --template and --ssot." >&2
+        echo "Provide either --task-id, or both --template and --ssot." >&2
         echo "Note: Directory copying is not supported - idempotence requires actual generation." >&2
         return 1
     fi

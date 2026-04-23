@@ -45,7 +45,7 @@
 | breaking_change_frequency.py | UTILITY | Analyzes git history for breaking-change frequency per file. | Change-management analytics utility; document in TOOLS_CATALOG.md. |
 | build_embeddings.py | CORE | Generates vector embeddings for codebase semantic search. | Wire into search infrastructure (currently scaffolded, needs provider wiring). |
 | canonicalize.py | CORE | Canonicalization helpers (sorted keys, stable YAML) for idempotent generation. | Wire into any generator tool per IDEMPOTENT_GENERATION_POLICY. |
-| card_expiry_notifier.py | UTILITY | Customer-service tool for proactive card-expiry notifications. | Product utility unrelated to SAF framework. Document in TOOLS_CATALOG.md. |
+| card_expiry_notifier.py | UTILITY | Customer-service tool for proactive card-expiry notifications. | Product utility unrelated to framework. Document in TOOLS_CATALOG.md. |
 | causal_mapper.py | CORE | Maps input parameters to output files for spec-to-diff traceability. | Wire into Stage -1 preview generation (SPEC_TO_DIFF_PREVIEWS_POLICY). |
 | change_impact_analyzer.py | CORE | Analyzes cross-component impact of proposed changes; assesses risk. | Wire into PM change-review + Builder pre-commit workflow. |
 | check_agent_compatibility.py | CORE | SemVer compatibility validation between agent versions. | Wire into work-order validation and coordination protocol. |
@@ -61,7 +61,7 @@
 | comprehensive_verify.py | CORE | Scans all RESOLVED issues, checks affected_paths exist, categorizes failures. | Wire into verify-catalog / PM audit workflow; overlaps somewhat with batch_verify.py. |
 | compute_dependencies.py | CORE | Computes inter-issue dependencies via path overlap and references. | Wire into issue-fix orchestrator for correct ordering. |
 | conflict_resolver.py | CORE | Detects/resolves work-order, file, state, policy conflicts. | Wire into PM coordination protocol. |
-| convention_checker.py | CORE | Validates code against conventions.yaml (SAF conventions). | Wire into pre-commit hooks + CI. |
+| convention_checker.py | CORE | Validates code against conventions.yaml (the framework conventions). | Wire into pre-commit hooks + CI. |
 | coverage_reporter.py | UTILITY | Test coverage reporting with thresholds. | Standard dev utility; document in TOOLS_CATALOG.md. |
 | critic_self_validation.py | CORE | `enforce_self_validation` decorator + exception classes for Critic verdicts. | Wire as decorator into Critic verdict functions (already referenced by spec). |
 | critical_path_analyzer.py | CORE | DAG critical path + bottleneck analysis for task graphs. | Wire into dag_builder.py output pipeline. |
@@ -94,7 +94,7 @@
 | fix_verification_commands.py | CORE | Fixes 7 classes of malformed verification commands (test -f on dirs, wildcards, etc). | Wire into issue-hunter repair lane. |
 | fixture_suffix_checker.py | CORE | Enforces CONVENTIONS.md:496 — fixtures must use `_fixture` suffix. | Wire into pre-commit hooks. |
 | fixture_validator.py | CORE | Validates test fixtures for correctness/consistency (yaml/json/python). | Wire into CI test-quality gate. |
-| fraud_appeal_processor.py | UTILITY | Customer-service AI-assisted fraud appeal review/auto-unblock. | Product utility unrelated to SAF framework. Document in TOOLS_CATALOG.md. |
+| fraud_appeal_processor.py | UTILITY | Customer-service AI-assisted fraud appeal review/auto-unblock. | Product utility unrelated to framework. Document in TOOLS_CATALOG.md. |
 
 
 | Tool | Classification | Purpose | Wire-in / Duplicate-of |
@@ -155,7 +155,7 @@
 | pii_scanner.py | UTILITY | Detects PII (email/phone/SSN/CC/name/address) in files/logs/DB | Wire into LogBook support-conversation scanner + CI |
 | plugin_compatibility_checker.py | UTILITY | Validates plugin manifests against interface contracts and version requirements | Wire into Stage-2 gate and plugin install flow |
 | plugin_validator.py | UTILITY | Validates plugin structure/entry-points/exports for correctness | Wire into plugin registration alongside plugin_compatibility_checker.py |
-| pm_monitor.sh | CORE | Bash poller watching brick status.yaml → invokes critic_orchestrator.py on READY | Wire as systemd/cron or long-running process next to PM |
+| pm_monitor.sh | CORE | Bash poller watching task status.yaml → invokes critic_orchestrator.py on READY | Wire as systemd/cron or long-running process next to PM |
 | pm_promote.py | CORE | Promotes approved template-upgrade tasks after Critic verification | Wire into PM post-approval workflow |
 | policy_enforcement_engine.py | CORE | Real-time policy compliance checker; validates actions before execution | Wire into orchestrator pre-action gate + all fixer agents |
 | policy_version_checker.py | UTILITY | Validates policy documents are current/properly versioned; flags outdated | Wire into weekly governance review / CI |
@@ -169,9 +169,9 @@
 | protected_paths_checker.py | CORE | Enforces PM-exclusive path restrictions and agent path boundaries | Wire into pre-commit hook and orchestrator write-validation |
 | protected_regions_validator.py | UTILITY | Validates protected regions are properly defined/intact/hash-matched | Overlaps with protected_regions.py (validate subcmd) — consolidate |
 | protected_regions.py | CORE | Unified protected-region tool: extract/validate/reinsert/hash/check-limits/full-check | Canonical tool; consolidates region_* family |
-| qa_metrics_collector.py | ADMIN | Collects/aggregates QA metrics (tests/coverage/defects) across SAF | Wire into weekly QA dashboard |
+| qa_metrics_collector.py | ADMIN | Collects/aggregates QA metrics (tests/coverage/defects) across | Wire into weekly QA dashboard |
 | reconstruct_pm_state.py | CORE | Rebuilds PM STATE.md from LogBook+git+tasks for amnesia recovery | Wire into PM recovery runbook (agent-coordination-protocol) |
-| recovery_orchestrator.py | CORE | Orchestrates checkpoint/rollback/restore recovery procedures for SAF failures | Wire into failure-handling protocol |
+| recovery_orchestrator.py | CORE | Orchestrates checkpoint/rollback/restore recovery procedures for framework failures | Wire into failure-handling protocol |
 | regenerate_verification_commands.py | UTILITY | Regenerates embedded verification command blocks in issue files from frontmatter | Run on-demand when pattern_vars change; could be one-shot |
 | ~~region_extractor.py~~ | REMOVED | Duplicate of `protected_regions.py extract`. | Removed in Phase 3.6. Use `protected_regions.py extract`. |
 | ~~region_hash.py~~ | REMOVED | Duplicate of `protected_regions.py hash`. | Removed in Phase 3.6. Use `protected_regions.py hash`. |
@@ -201,7 +201,7 @@
 | state_manager.py | CORE | Atomic state file persistence with backups/checksums per state-persistence-protocol.md | Wire into agent state workflows |
 | sync_catalog_stats.py | UTILITY | Scans issue files and updates ISSUE_CATALOG.md statistics | Pre-commit / maintenance task |
 | sync_tools_catalog.py | UTILITY | Scans all executable items and updates TOOLS_CATALOG.md | Maintenance task |
-| system_health_check.py | UTILITY | Comprehensive system health check for SAF infrastructure | Ops monitoring tool |
+| system_health_check.py | UTILITY | Comprehensive system health check for the framework infrastructure | Ops monitoring tool |
 | teams_notifier.py | UTILITY | Sends notifications to Microsoft Teams channels via webhooks | Notification infra |
 | template_compatibility_checker.py | CORE | Checks template compatibility constraints before regeneration | Wire into three-way merge regeneration workflow |
 | template_compliance_checker.py | CORE | Validates templates for required files/structure/metadata per TEMPLATE_COMPLIANCE_POLICY | Referenced in TEMPLATE_COMPLIANCE_POLICY.md |
@@ -224,7 +224,7 @@
 | time_box_monitor.py | CORE | Tracks/enforces work order time limits; triggers escalations | Referenced in .claude/agents/Builder.md:434-466 |
 | topological_sort.py | CORE | DAG topological ordering + critical path via Kahn's algorithm | Referenced in DEPENDENCY_GRAPH_AND_TOPOLOGICAL_BUILD_ORDER_POLICY.md |
 | traceability_checker.py | CORE | Enforces traceability by construction (headers, manifests, specs, lineage) | Wire into CI traceability gate |
-| traceability_mapper.py | UTILITY | Maps traceability relationships across SAF artifacts (WO→Tasks→Files) | Analysis tool |
+| traceability_mapper.py | UTILITY | Maps traceability relationships across artifacts (WO→Tasks→Files) | Analysis tool |
 | update_base_version.py | CORE | Stores BASE versions for future three-way merge operations | Referenced in THREE_WAY_MERGE_REGENERATION_POLICY.md:445-470 |
 | update_dashboard.py | UTILITY | Generates LogBook/verification/DASHBOARD.md | Dashboard maintenance |
 | update_future_index.py | UTILITY | Updates PLANNING/future/INDEX.md with current directory contents | Doc maintenance |
@@ -270,28 +270,28 @@
 | verify_phase3.py | UTILITY | Verifies Phase 3 optimizations applied (batch verif, resolution templates, etc.) | One-time phase audit |
 | verify_security_test_coverage.py | CORE | Verifies security-sensitive code has corresponding security tests | Wire into security CI gate |
 | verify_stats.py | CORE | Validates issue stats consistency (Resolved+Open=Total, severity counts) | Wire into pre-commit |
-| version_compatibility_checker.py | CORE | Checks version compatibility across SAF components (tasks/templates/schemas/tools) | Wire into integration validation |
+| version_compatibility_checker.py | CORE | Checks version compatibility across components (tasks/templates/schemas/tools) | Wire into integration validation |
 | version_pin_checker.py | CORE | Enforces CONVENTIONS.md:793 — CI tools must be pinned to specific versions | Wire into pre-commit / CI |
-| wiring_validator.py | CORE | Validates wiring between SAF components (refs/deps/integrations) | Wire into integration gate |
+| wiring_validator.py | CORE | Validates wiring between framework components (refs/deps/integrations) | Wire into integration gate |
 | ~~work_order_validator.py~~ | REMOVED | Duplicate of validate_work_order.py. | Removed in Phase 3.6. Use `validate_work_order.py`. |
 | workflow_state_manager.py | CORE | Manages workflow state transitions + validation + history | Wire into workflow orchestration |
 | tool_safety_config.yaml | CORE | Classifies tools by safety level for automated testing | Config for safe_tool_tester.py |
 | verification_patterns.yaml | CORE | Defines reusable verification patterns referenced in issue frontmatter | Config for verify_issue.py |
 | send_notification.sh | UTILITY | Sends notifications to Teams webhook with exponential backoff retry | Referenced in edge-cases-and-recovery.md Section 3 |
-| setup_saf.sh | ADMIN | Initializes SAF dev environment (dirs, deps, prerequisites) | Referenced in PLANNING/future/enforcement_roadmap.md:320 |
-| test_idempotence.sh | CORE | Tests brick generation idempotence (twice → identical output) | Referenced in TEMPLATE_COMPLIANCE_POLICY.md:174,248 |
+| setup_framework.sh | ADMIN | Initializes framework dev environment (dirs, deps, prerequisites) | Referenced in PLANNING/future/enforcement_roadmap.md:320 |
+| test_idempotence.sh | CORE | Tests task generation idempotence (twice → identical output) | Referenced in TEMPLATE_COMPLIANCE_POLICY.md:174,248 |
 | validate_tool.sh | CORE | Pre-flight validator — tool exists + is executable | Referenced in edge-cases-and-recovery.md:309 |
-| check_builder_scope.sh | CORE | Pre-commit hook enforcing Builder brick scope compliance | Referenced in builder-scope-enforcement.md:316-318 |
+| check_builder_scope.sh | CORE | Pre-commit hook enforcing Builder task scope compliance | Referenced in builder-scope-enforcement.md:316-318 |
 | ~~eod.sh~~ | REMOVED | Collateral removal — wrapped the removed eod_summary.py. | Removed in Phase 3.7. |
-| health_check.sh | UTILITY | SAF system health check (LogBook, config, workflows) | Referenced in docs/DEPLOYMENT.md |
+| health_check.sh | UTILITY | framework system health check (LogBook, config, workflows) | Referenced in docs/DEPLOYMENT.md |
 | logbook_append.sh | CORE | Atomic append to LogBook JSON/text with retry + file locking | Referenced in agent-coordination-protocol.md:766,804,886 |
 | logbook_rollup.sh | ADMIN | Monthly LogBook rollup — aggregates + archives | Referenced in quality-standards.md Section 11.3 |
-| pm_monitor.sh | UTILITY | PM polling daemon — detects brick COMPLETE_READY_FOR_REVIEW | PM orchestration |
+| pm_monitor.sh | UTILITY | PM polling daemon — detects task COMPLETE_READY_FOR_REVIEW | PM orchestration |
 | retry.sh | UTILITY | Wraps commands with exponential backoff retry logic | Infrastructure utility |
 | hooks/check_circular_deps.sh | CORE | Pre-commit hook running circular dep detector on DAG/wiring files | Pre-commit hook |
 | hooks/enforce_pm_boundaries.sh | CORE | Prevents PM from committing to implementation dirs | Pre-commit hook |
 | hooks/generate_logbook_entries.sh | UTILITY | Auto-generates LogBook entries for significant changes (disabled by default) | Optional pre-commit hook |
-| hooks/install_hooks.sh | ADMIN | Installs SAF git hooks (pre-commit/commit-msg/pre-push) | Setup / admin task |
+| hooks/install_hooks.sh | ADMIN | Installs framework git hooks (pre-commit/commit-msg/pre-push) | Setup / admin task |
 | hooks/pm_boundary_check.sh | CORE | Validates agents respect PM-exclusive write boundaries | Pre-commit hook |
 | hooks/validate_naming_conventions.sh | CORE | Enforces file/ID naming patterns on staged files | Pre-commit hook |
 | hooks/validate_policy_versions.sh | CORE | Ensures PLANNING/*_POLICY.md files have version headers + changelogs | Pre-commit hook |

@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Retry Script with Exponential Backoff for SAF
+# Retry Script with Exponential Backoff for the framework
 #
 # Wraps commands with automatic retry logic to handle transient failures
 # like network issues, temporary service unavailability, etc.
@@ -31,7 +31,7 @@
 # Referenced in:
 #     - agent-coordination-protocol.md:461 (Transient failure handling)
 #
-# Author: SAF System
+# Author: The Framework
 # Created: 2025-12-23
 #
 

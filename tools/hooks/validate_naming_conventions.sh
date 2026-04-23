@@ -19,7 +19,7 @@ WARNINGS=()
 
 # Patterns
 UUID_PATTERN="^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
-BRICK_FILE_PATTERN="^brick\.(yaml|yml)$"
+TASK_FILE_PATTERN="^task\.(yaml|yml)$"
 POLICY_FILE_PATTERN="^[A-Z][A-Z0-9_]*_POLICY\.md$"
 SCHEMA_FILE_PATTERN="^[a-z][a-z0-9_]*_schema\.yaml$"
 
@@ -29,14 +29,14 @@ while IFS= read -r file; do
     filename=$(basename "${file}")
     dirname=$(dirname "${file}")
 
-    # Check brick.yaml files for UUID brick IDs
-    if [[ "${filename}" =~ ^brick\.(yaml|yml)$ ]]; then
+    # Check task.yaml files for UUID task IDs
+    if [[ "${filename}" =~ ^task\.(yaml|yml)$ ]]; then
         if [ -f "${REPO_ROOT}/${file}" ]; then
-            # Try to extract brick ID
+            # Try to extract task ID
             brick_id=$(grep -E "^id:" "${REPO_ROOT}/${file}" | head -1 | sed 's/id: *//' | tr -d '"' | tr -d "'" || true)
             if [ -n "${brick_id}" ]; then
                 if ! echo "${brick_id}" | grep -qE "${UUID_PATTERN}"; then
-                    WARNINGS+=("${file}: Brick ID '${brick_id}' is not a valid UUID format")
+                    WARNINGS+=("${file}: Task ID '${brick_id}' is not a valid UUID format")
                 fi
             fi
         fi

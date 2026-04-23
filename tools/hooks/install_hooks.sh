@@ -1,11 +1,11 @@
 #!/bin/bash
-# SAF Git Hooks Installer
+# Framework Git Hooks Installer
 # Version: 1.0.0
 # Last Updated: 2025-12-24
 # Owner: PM
 # Classification: HIGH - Development Tool
 #
-# This script installs SAF git hooks into the local repository.
+# This script installs Framework git hooks into the local repository.
 # Run from the project root: bash tools/hooks/install_hooks.sh
 #
 # Hooks installed:
@@ -36,7 +36,7 @@ HOOKS_SOURCE="$PROJECT_ROOT/.githooks"
 HOOKS_DEST="$PROJECT_ROOT/.git/hooks"
 
 echo -e "${BLUE}========================================${NC}"
-echo -e "${BLUE}SAF Git Hooks Installer${NC}"
+echo -e "${BLUE}Framework Git Hooks Installer${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo ""
 echo "Project root: $PROJECT_ROOT"
@@ -99,7 +99,7 @@ if [ ! -f "$HOOKS_SOURCE/commit-msg" ]; then
     echo -e "${BLUE}Creating commit-msg hook...${NC}"
     cat > "$HOOKS_SOURCE/commit-msg" << 'EOF'
 #!/bin/bash
-# SAF Commit Message Hook
+# Framework Commit Message Hook
 # Validates commit message format
 
 COMMIT_MSG_FILE=$1
@@ -131,7 +131,7 @@ if [ ! -f "$HOOKS_SOURCE/pre-push" ]; then
     echo -e "${BLUE}Creating pre-push hook...${NC}"
     cat > "$HOOKS_SOURCE/pre-push" << 'EOF'
 #!/bin/bash
-# SAF Pre-Push Hook
+# Framework Pre-Push Hook
 # Final validation before pushing to remote
 
 set -e
@@ -219,7 +219,7 @@ echo ""
 
 # Create .gitattributes entry to keep hooks executable
 if [ ! -f "$PROJECT_ROOT/.gitattributes" ]; then
-    echo "# Git attributes for SAF" > "$PROJECT_ROOT/.gitattributes"
+    echo "# Git attributes for the framework" > "$PROJECT_ROOT/.gitattributes"
 fi
 
 if ! grep -q ".githooks" "$PROJECT_ROOT/.gitattributes" 2>/dev/null; then

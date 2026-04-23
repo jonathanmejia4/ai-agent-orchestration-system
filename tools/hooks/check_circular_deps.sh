@@ -11,7 +11,7 @@ DETECTOR="${REPO_ROOT}/tools/circular_dep_detector.py"
 DAG_VALIDATOR="${REPO_ROOT}/tools/dag_validator.py"
 
 # Check if any DAG-related files are staged
-STAGED_DAG=$(git diff --cached --name-only --diff-filter=ACMR | grep -E "(wiring\.yaml|dependencies\.yaml|brick\.yaml|dag.*\.yaml)" || true)
+STAGED_DAG=$(git diff --cached --name-only --diff-filter=ACMR | grep -E "(wiring\.yaml|dependencies\.yaml|task\.yaml|dag.*\.yaml)" || true)
 
 if [ -z "${STAGED_DAG}" ]; then
     # No DAG files staged, skip

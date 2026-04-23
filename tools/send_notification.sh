@@ -18,7 +18,7 @@
 #     - .claude/guidelines/edge-cases-and-recovery.md - Section 3: Notification Failure Handling
 #     - integration/config/saf.integration.yaml - Webhook configuration
 #
-# Author: SAF System
+# Author: Framework System
 # Created: 2025-12-23
 
 set -euo pipefail
@@ -28,7 +28,7 @@ if [ $# -eq 0 ]; then
     echo "Usage: $0 <message>"
     echo
     echo "Examples:"
-    echo "  $0 'Brick 3.2 completed successfully'"
+    echo "  $0 'Task 3.2 completed successfully'"
     echo "  $0 'Critical: Build failed on main branch'"
     exit 2
 fi

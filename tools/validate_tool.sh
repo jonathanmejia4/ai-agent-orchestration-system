@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Tool Validation Script for SAF
+# Tool Validation Script for the framework
 #
 # Validates that a tool exists and is executable before agent workflows attempt to use it.
 # Used as a pre-flight check to prevent runtime errors from missing dependencies.
@@ -35,7 +35,7 @@
 #     - edge-cases-and-recovery.md:351 (security_scanner.py validation)
 #     - edge-cases-and-recovery.md:358 (metric_aggregator.py validation)
 #
-# Author: SAF System
+# Author: The Framework
 # Created: 2025-12-23
 #
 

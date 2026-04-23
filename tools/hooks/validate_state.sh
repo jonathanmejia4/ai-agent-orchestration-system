@@ -26,7 +26,7 @@ fi
 
 # Basic structure validation (check for required sections)
 REQUIRED_SECTIONS=(
-    "## Current Brick"
+    "## Current Task"
     "## Agent States"
     "## Pending Work Orders"
     "## Recent Decisions"

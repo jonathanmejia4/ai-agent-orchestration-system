@@ -30,7 +30,7 @@
 #     - .claude/guidelines/quality-standards.md - Section 11.3: LogBook File Count Limits
 #     - ISSUE_CATALOG.md - Issue A39
 #
-# Author: SAF System
+# Author: Framework System
 # Created: 2025-12-23
 #
 
@@ -148,7 +148,7 @@ if [[ -d "${LOGBOOK_DIR}/progress/bricks" ]]; then
             
             # Move to archive
             mkdir -p "${ARCHIVE_DIR}/${MONTH}/bricks"
-            mv "$brick_file" "${ARCHIVE_DIR}/${MONTH}/bricks/"
+            mv "$brick_file" "${ARCHIVE_DIR}/${MONTH}/tasks/"
         fi
     done < <(find "${LOGBOOK_DIR}/progress/bricks" -type f -print0 2>/dev/null || true)
 fi
@@ -200,7 +200,7 @@ cat > "${ROLLUP_DIR}/${MONTH}.md" <<MARKDOWN
 - **Work Orders:** $work_order_count
 - **Rollbacks:** $rollback_count
 
-## Brick Status Breakdown
+## Task Status Breakdown
 
 - **Approved:** $approved_count
 - **Conditional:** $conditional_count
@@ -212,7 +212,7 @@ cat > "${ROLLUP_DIR}/${MONTH}.md" <<MARKDOWN
 Detailed entries archived to: \`${ARCHIVE_DIR}/${MONTH}/\`
 
 ### Archived Directories
-- \`${ARCHIVE_DIR}/${MONTH}/bricks/\` - Brick completion records
+- \`${ARCHIVE_DIR}/${MONTH}/tasks/\` - Task completion records
 - \`${ARCHIVE_DIR}/${MONTH}/work-orders/\` - Work order files
 - \`${ARCHIVE_DIR}/${MONTH}/rollback/\` - Rollback records
 
@@ -224,7 +224,7 @@ Detailed entries archived to: \`${ARCHIVE_DIR}/${MONTH}/\`
 
 ---
 
-**Maintained By:** SAF-Project-Manager  
+**Maintained By:** Project-Manager  
 **Archive Date:** $(date -u +"%Y-%m-%d")
 
 MARKDOWN

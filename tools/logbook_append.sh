@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# LogBook Atomic Append Script for SAF
+# LogBook Atomic Append Script for the framework
 #
 # Atomically appends data to LogBook JSON/text files with retry logic
 # and file locking to prevent race conditions and data corruption.
@@ -33,7 +33,7 @@
 #     - agent-coordination-protocol.md:804 (Atomic LogBook updates)
 #     - agent-coordination-protocol.md:886 (Retry logic example)
 #
-# Author: SAF System
+# Author: The Framework
 # Created: 2025-12-23
 #
 

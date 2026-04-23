@@ -1,9 +1,9 @@
 #!/bin/bash
 # tools/health_check.sh
-# SAF System Health Check Script
+# The Framework Health Check Script
 # Referenced in: docs/DEPLOYMENT.md
 
-echo "SAF System Health Check"
+echo "The Framework Health Check"
 echo "======================="
 
 # Check LogBook integrity

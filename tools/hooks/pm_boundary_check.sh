@@ -35,9 +35,9 @@ PM_EXCLUSIVE_PATHS=(
 
 # Agent write boundaries
 declare -A AGENT_BOUNDARIES
-AGENT_BOUNDARIES["builder"]="src/ tests/ .brick/logbook.yaml .brick/wiring.yaml"
-AGENT_BOUNDARIES["planner"]="PLANNING/work_orders/ LogBook/planner/ .brick/action_plan.yaml .brick/deps.yaml"
-AGENT_BOUNDARIES["critic"]=".brick/verdict.yaml LogBook/critic/ LogBook/progress/verdicts/"
+AGENT_BOUNDARIES["builder"]="src/ tests/ .task/logbook.yaml .task/wiring.yaml"
+AGENT_BOUNDARIES["planner"]="PLANNING/work_orders/ LogBook/planner/ .task/action_plan.yaml .task/deps.yaml"
+AGENT_BOUNDARIES["critic"]=".task/verdict.yaml LogBook/critic/ LogBook/progress/verdicts/"
 
 # Configuration
 STRICT_MODE=false

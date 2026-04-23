@@ -14,7 +14,7 @@ GIT_USER=$(git config user.name 2>/dev/null || echo "unknown")
 
 # Check if user is PM (case-insensitive check)
 IS_PM=false
-PM_IDENTIFIERS=("SAF-Project-Manager" "PM" "project-manager" "Project Manager")
+PM_IDENTIFIERS=("Project-Manager" "PM" "project-manager" "Project Manager")
 
 for id in "${PM_IDENTIFIERS[@]}"; do
     if echo "${GIT_USER}" | grep -iq "${id}"; then
@@ -96,7 +96,7 @@ if [ ${#VIOLATIONS[@]} -gt 0 ]; then
     echo "FIX: Remove forbidden files from commit using:"
     echo "     git reset HEAD <file>"
     echo ""
-    echo "Or delegate implementation changes to SAF-Builder."
+    echo "Or delegate implementation changes to Builder."
 
     # Log violation
     mkdir -p "$(dirname "${LOG_FILE}")"
