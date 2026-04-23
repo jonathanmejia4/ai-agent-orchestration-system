@@ -1,4 +1,4 @@
-# CLAUDE.md - Project Arrow Core Governance
+# CLAUDE.md - AI Agent Orchestration System Core Governance
 
 > **Document Version:** 1.0.0
 > **Last Updated:** 2026-01-09
@@ -7,7 +7,7 @@
 
 ## Purpose
 
-This is the authoritative governance document for Project Arrow. It defines the fundamental principles, behavioral constraints, and operational boundaries that all AI agents (Issue Hunters, Issue Fixers, Orchestrators) must follow.
+This is the authoritative governance document for the AI Agent Orchestration System. It defines the fundamental principles, behavioral constraints, and operational boundaries that all AI agents (Issue Hunters, Issue Fixers, Orchestrators) must follow.
 
 ---
 
@@ -26,7 +26,7 @@ This is the authoritative governance document for Project Arrow. It defines the 
 | File | Purpose |
 |------|---------|
 | `ISSUE_CATALOG.md` | Central registry of all issues |
-| `TOOLS_CATALOG.md` | Registry of all 111 available tools |
+| `TOOLS_CATALOG.md` | Registry of all available tools (240+) |
 | `.claude/agents/` | Agent definitions for hunters and fixers |
 | `.claude/commands/` | Slash command implementations |
 | `LogBook/` | Audit logs and agent coordination signals |

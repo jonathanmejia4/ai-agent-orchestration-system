@@ -23,7 +23,7 @@ A plugin architecture defines a stable core with well-specified extension points
 ## Related Tools
 
 - `tools/check_agent_compatibility.py` — validates plugin/core compatibility declarations.
-- `tools/dependency-boundary-checker.py` — enforces that the core does not import plugin-private modules.
+- `tools/dependency_boundary_checker.py` — enforces that the core does not import plugin-private modules.
 - `tools/validate_composition.py` — checks composed plugin configurations for conflicts.
 
 ## Status

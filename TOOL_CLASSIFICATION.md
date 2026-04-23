@@ -28,7 +28,7 @@
 | add_verification_commands.py | CORE | Adds copy-paste ready bash verification commands to issue files. | Wire into issue-hunter lanes as standard step after issue creation. |
 | agent_health_monitor.py | CORE | Monitors agent health; detects stalled/crashed agents; integrates heartbeat daemon. | Wire into PM monitoring lane / recurring health-check command. |
 | agent_session_state.py | CORE | Manages agent session state persistence and recovery across sessions. | Wire into agent framework (agents call save/load on session boundaries). |
-| ai-adapter.py | UTILITY | Task-based text processing (summarize, polish, diff-simplify) via prompt templates. | Standalone CLI utility; document in TOOLS_CATALOG.md. |
+| ai_adapter.py | UTILITY | Task-based text processing (summarize, polish, diff-simplify) via prompt templates. | Standalone CLI utility; document in TOOLS_CATALOG.md. |
 | alert_manager.py | CORE | Alert management with multi-channel notifications and deduplication. | Wire into monitoring stack; hook up to PM escalation events. |
 | alt_branch_stats.py | UTILITY | Counts alternative branch statuses (success/failure/pending) across LogBook. | Small focused utility; document in TOOLS_CATALOG.md. |
 | analyze_verification_failures.py | CORE | Categorizes verification failures by type (malformed_cmd, missing file, etc). | Wire into verify-catalog / PM review to surface systemic failure patterns. |
@@ -70,11 +70,11 @@
 | dag_validator.py | CORE | 7 mechanical checks on DAG (acyclic, connected, orphans, duplicates, etc). | Wire alongside dag_builder.py into task-plan CI. |
 | dependency_analyzer.py | CORE | General codebase dependency graph builder (modules/tasks/templates/tools). | Wire into change-impact analysis workflow; overlaps with dependency_graph_generator.py. |
 | ~~dependency_graph_generator.py~~ | REMOVED | Duplicate of dependency_analyzer.py. | Removed in Phase 3.6. Use `dependency_analyzer.py`. |
-| dependency-boundary-checker.py | CORE | SEC-032 Anti-Corruption Layer enforcement (vendor SDK isolation). | Wire into pre-commit hooks for security enforcement. |
+| dependency_boundary_checker.py | CORE | SEC-032 Anti-Corruption Layer enforcement (vendor SDK isolation). | Wire into pre-commit hooks for security enforcement. |
 | deprecated_template_scanner.py | CORE | Scans repo for deprecated template usage with early warnings. | Wire into CI per TEMPLATE_VERSIONING_AND_DEPRECATION_POLICY. |
 | ~~deprecated_template_usage.py~~ | REMOVED | Duplicate of deprecated_template_scanner.py. | Removed in Phase 3.6. Use `deprecated_template_scanner.py`. |
 | detect_missing_manifests.py | CORE | Detects missing package/module manifest files. | Wire into build validation / pre-commit. |
-| detect_vendor_type_leakage.py | CORE | Detects vendor-specific types leaking into public APIs (SEC validation). | Wire into pre-commit + Critic review (complements dependency-boundary-checker). |
+| detect_vendor_type_leakage.py | CORE | Detects vendor-specific types leaking into public APIs (SEC validation). | Wire into pre-commit + Critic review (complements dependency_boundary_checker). |
 | doc_coverage.py | CORE | Documentation coverage analysis (docstrings on modules/classes/functions). | Wire into CI alongside coverage_reporter.py. |
 | embedded_test_data_checker.py | CORE | Enforces CONVENTIONS.md:509 — no large embedded data in test files. | Wire into pre-commit hooks. |
 | enforce_write_boundaries.py | CORE | Enforces PM-only write paths per PM_Operating_Manual.md. | Wire into pre-commit hook (already referenced); overlaps conceptually with access_control_validator. |

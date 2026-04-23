@@ -6,7 +6,7 @@ Processes input data through task-specific handlers using prompt templates.
 Supports summarization, text polishing, and diff simplification.
 
 Usage:
-    python ai-adapter.py --task summarize_daily --in input.json --out output.json
+    python ai_adapter.py --task summarize_daily --in input.json --out output.json
 """
 import argparse
 import json
@@ -209,7 +209,7 @@ def process_task(task: str, data: Dict[str, Any], prompts_dir: str) -> Dict[str,
 def main():
     # Handle --version and --list-tasks before full argument parsing
     if "--version" in sys.argv:
-        print(f"ai-adapter v{VERSION}")
+        print(f"ai_adapter v{VERSION}")
         sys.exit(0)
 
     if "--list-tasks" in sys.argv:

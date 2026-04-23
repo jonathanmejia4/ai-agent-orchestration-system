@@ -22,7 +22,7 @@ The Anti-Corruption Layer (ACL) pattern isolates this system's internal domain m
 
 ## Related Tools
 
-- `tools/dependency-boundary-checker.py` — validates that imports respect layer boundaries.
+- `tools/dependency_boundary_checker.py` — validates that imports respect layer boundaries.
 - `tools/check_cross_references.py` — catches vendor types leaking into internal modules.
 - `tools/schema_validator.py` — validates incoming vendor payloads against declared schemas before translation.
 

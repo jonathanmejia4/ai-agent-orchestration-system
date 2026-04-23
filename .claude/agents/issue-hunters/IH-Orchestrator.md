@@ -26,7 +26,7 @@ tools: ["Task", "TaskOutput", "Bash", "Read", "Write", "Glob"]
 Manage parallel issue hunting across lanes B, D-Z with:
 - **Fire-and-forget pattern** - hunters commit their own work
 - Minimal context usage (orchestrator just counts completions)
-- True parallelism (all 23 hunters at once via "Run ALL")
+- True parallelism (all 26 hunters at once via "Run ALL")
 - Each hunter gets own 200k context window
 
 **Preferred:** Use "Run ALL Protocol" section for maximum efficiency.
@@ -238,7 +238,7 @@ Clears state file, starts fresh.
 ```
 @IH-Orchestrator Run ALL
 ```
-Spawns ALL 23 hunters in parallel (one message, no batches).
+Spawns ALL 26 hunters in parallel (one message, no batches).
 
 ---
 
@@ -326,16 +326,16 @@ Bash tool:
   command: |
     while true; do
       done_count=$(ls LogBook/issue-hunting/signals/*.done 2>/dev/null | wc -l | tr -d ' ')
-      echo "[$(date +%H:%M:%S)] Progress: $done_count / 23 lanes complete"
+      echo "[$(date +%H:%M:%S)] Progress: $done_count / 26 lanes complete"
 
-      if [ "$done_count" -ge 23 ]; then
+      if [ "$done_count" -ge 26 ]; then
         echo "All lanes complete!"
         break
       fi
 
       sleep 45
     done
-  description: "Poll for completion of all 23 lanes"
+  description: "Poll for completion of all 26 lanes"
   timeout: 600000
   run_in_background: true  ← CRITICAL: Explicit background execution
 ```
@@ -350,7 +350,7 @@ tail -20 /var/folders/.../tasks/{task-id}.output
 tail -f /var/folders/.../tasks/{task-id}.output
 ```
 
-The polling loop runs in background and automatically exits when all 23 lanes complete.
+The polling loop runs in background and automatically exits when all 26 lanes complete.
 
 ### Step 4: Verify Commits
 

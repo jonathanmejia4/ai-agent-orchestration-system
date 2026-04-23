@@ -1,4 +1,4 @@
-# Project Arrow Tools Inventory
+# AI Agent Orchestration System — Tools Inventory
 
 > **Last Updated:** 2026-01-08
 > **Total Tools:** 24 (23 Python + 1 Shell)

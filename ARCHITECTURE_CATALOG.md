@@ -36,7 +36,7 @@
 ## Directory Tree (Quick Reference)
 
 ```
-project-arrow/
+ai-agent-orchestration-system/
 ├── .claude/
 │   ├── agents/
 │   │   ├── issue-fixers/ (24 files)

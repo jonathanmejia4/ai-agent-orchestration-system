@@ -68,7 +68,7 @@ This public repository is a **sanitized showcase** that demonstrates:
 
 - The private codebase or its issues
 - Production agent prompts and policies
-- Full lane configurations (22 lanes in production)
+- Full lane configurations (the private system used a subset of the 26 lanes defined in this repo)
 - Detection heuristics and governance rules
 
 ### Caveats

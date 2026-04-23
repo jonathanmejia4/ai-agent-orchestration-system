@@ -1,6 +1,6 @@
 # Issue Catalog
 
-> **Last Updated:** 2026-04-23 10:59:06
+> **Last Updated:** 2026-04-23 11:21:07
 > **Purpose:** Central registry of all issues discovered and their resolution status
 
 ---
@@ -18,6 +18,7 @@
 | Lane | Specialization | Description |
 |------|----------------|-------------|
 | A | API Contract Drift | OpenAPI/docs vs route implementation mismatches |
+| B | Broken Flows | Broken navigation, dead-end user paths |
 | C | Configuration Drift | Code vs `.env.example` / `config.yaml` mismatches |
 | D | Marketing Infrastructure | Lead generation, campaigns, funnels |
 | E | Customer Services | Support, data protection, GDPR |
@@ -85,6 +86,12 @@
 | ID | Title | Severity | Type Tags | Status |
 |----|-------|----------|-----------|--------|
 <!-- LANE_A_ISSUES -->
+
+### Lane B - Broken Flows
+
+| ID | Title | Severity | Type Tags | Status |
+|----|-------|----------|-----------|--------|
+<!-- LANE_B_ISSUES -->
 
 ### Lane C - Configuration Drift
 

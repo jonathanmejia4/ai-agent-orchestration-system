@@ -12,7 +12,7 @@ Checks for vendor SDK isolation violations and dependency boundary breaches.
 Issue S-06: Created to resolve ghost reference in Critic-ACL.md
 
 Usage:
-    python tools/dependency-boundary-checker.py [options]
+    python tools/dependency_boundary_checker.py [options]
 
 Options:
     --path <path>       Path to check (default: src/)

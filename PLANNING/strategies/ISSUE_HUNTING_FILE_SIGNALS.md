@@ -12,10 +12,10 @@ This document describes the **file-based signal strategy** for running all 21 is
 
 ### The Problem
 
-When using `TaskOutput` to collect results from sub-agents, Claude returns the **entire transcript** of each agent's session - every file read, every search, every tool call. With 21 hunters, this means:
+When using `TaskOutput` to collect results from sub-agents, Claude returns the **entire transcript** of each agent's session - every file read, every search, every tool call. With 26 hunters, this means:
 
 ```
-21 hunters × ~12,000 tokens each = 252,000+ tokens
+26 hunters × ~12,000 tokens each = 252,000+ tokens
 ```
 
 This exceeds the 200k context limit and causes the orchestrator to fail.
@@ -198,7 +198,7 @@ while true; do
     echo "$(date +%H:%M:%S) - Completed: $count/21"
 
     if [ "$count" -ge 21 ]; then
-        echo "All 21 hunters complete!"
+        echo "All 26 hunters complete!"
         break
     fi
 
@@ -263,10 +263,10 @@ Copy and paste this to run issue hunting:
 ```
 Read .claude/agents/issue-hunters/IH-Orchestrator.md
 
-Run ALL 21 lanes using the "Run ALL Protocol" with file-based signals:
+Run ALL 26 lanes using the "Run ALL Protocol" with file-based signals:
 
 1. Clean signals directory (rm -f signals/*.done) and reset state
-2. Spawn ALL 21 hunters in ONE message (model: opus, run_in_background: true)
+2. Spawn ALL 26 hunters in ONE message (model: opus, run_in_background: true)
 3. Poll signals/*.done until count = 21 (DO NOT use TaskOutput!)
 4. Sync catalog: python3 tools/sync_catalog_stats.py
 5. git commit catalog update and push

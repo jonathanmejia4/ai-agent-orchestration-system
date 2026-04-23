@@ -20,7 +20,7 @@
 
 ### The Default Lanes Are Just Examples
 
-The 22 lanes (D-Z) were designed for a software development workflow. For a **marketing business**, you might want completely different lanes like:
+The 26 lanes (A-Z) were designed for a software development workflow. For a **marketing business**, you might want completely different lanes like:
 
 | Your Lane | What It Could Hunt For |
 |-----------|------------------------|

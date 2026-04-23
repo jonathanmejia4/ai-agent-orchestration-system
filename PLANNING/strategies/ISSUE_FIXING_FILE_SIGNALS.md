@@ -12,10 +12,10 @@ This document describes the **file-based signal strategy** for running all 21 is
 
 ### The Problem
 
-When using `TaskOutput` to collect results from sub-agents, Claude returns the **entire transcript** of each agent's session - every file read, every edit, every tool call. With 21 fixers, this means:
+When using `TaskOutput` to collect results from sub-agents, Claude returns the **entire transcript** of each agent's session - every file read, every edit, every tool call. With 26 fixers, this means:
 
 ```
-21 fixers × ~12,000 tokens each = 252,000+ tokens
+26 fixers × ~12,000 tokens each = 252,000+ tokens
 ```
 
 This exceeds the 200k context limit and causes the orchestrator to fail.
@@ -301,7 +301,7 @@ while true; do
     echo "$(date +%H:%M:%S) - Completed: $count/21"
 
     if [ "$count" -ge 21 ]; then
-        echo "All 21 fixers complete!"
+        echo "All 26 fixers complete!"
         break
     fi
 
@@ -365,10 +365,10 @@ Copy and paste this to run issue fixing:
 ```
 Read .claude/agents/issue-fixers/IF-Orchestrator.md
 
-Run ALL 21 lanes using the "Run ALL Protocol" with file-based signals:
+Run ALL 26 lanes using the "Run ALL Protocol" with file-based signals:
 
 1. Clean signals directory (rm -f LogBook/issue-fixing/signals/*.done) and reset state
-2. Spawn ALL 21 fixers in ONE message (model: opus, run_in_background: true)
+2. Spawn ALL 26 fixers in ONE message (model: opus, run_in_background: true)
 3. Poll LogBook/issue-fixing/signals/*.done until count = 21 (DO NOT use TaskOutput!)
 4. Sync catalog: python3 tools/sync_catalog_stats.py
 5. git commit catalog update and push
@@ -420,7 +420,7 @@ Run ALL 21 lanes using the "Run ALL Protocol" with file-based signals:
 | File | Purpose |
 |------|---------|
 | `.claude/agents/issue-fixers/IF-Orchestrator.md` | Orchestrator agent definition |
-| `.claude/agents/issue-fixers/IF-Lane-{X}.md` | 21 fixer agent definitions |
+| `.claude/agents/issue-fixers/IF-Lane-{X}.md` | 26 fixer agent definitions |
 | `LogBook/issue-fixing/signals/` | Signal files directory |
 | `LogBook/issue-fixing/signals/.gitkeep` | Keeps directory in git |
 | `LogBook/issue-fixing/orchestrator-state.yaml` | Run state persistence |
@@ -495,7 +495,7 @@ Context Usage (Orchestrator):
 ├── Free space: 85k tokens remaining
 └── Status: SUCCESS ✓
 
-All 21 fixers completed without context overflow.
+All 26 fixers completed without context overflow.
 ```
 
 **Comparison:**
@@ -564,13 +564,13 @@ Both systems can run at the same time:
 Terminal 1 (Hunters):
 $ claude
 > [paste hunter prompt]
-> Spawning 21 hunters...
+> Spawning 26 hunters...
 > Polling issue-hunting/signals/...
 
 Terminal 2 (Fixers):
 $ claude
 > [paste fixer prompt]
-> Spawning 21 fixers...
+> Spawning 26 fixers...
 > Polling issue-fixing/signals/...
 ```
 

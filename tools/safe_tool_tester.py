@@ -173,13 +173,13 @@ DEFAULT_CLASSIFICATIONS = {
         "critic_review.py", "reconstruct_pm_state.py", "workflow_state_manager.py",
         "smoke_test.py", "test_runner.py", "integration_test_runner.py",
         "run_integration_tests.py", "performance_profiler.py", "sphinx_executor.py",
-        "ai-adapter.py", "build_embeddings.py", "generate.py",
+        "ai_adapter.py", "build_embeddings.py", "generate.py",
         "monetization_health_check.py", "protected_regions.py",
         "send_notification.sh", "eod.sh", "pm_monitor.sh", "retry.sh",
         "setup_saf.sh", "install_hooks.sh", "health_check.sh",
         "logbook_append.sh", "logbook_rollup.sh", "test_idempotence.sh",
         "validate_alt_branch_policy.sh", "validate_tool.sh", "check_builder_scope.sh",
-        "dependency-boundary-checker.py",
+        "dependency_boundary_checker.py",
     ],
 }
 

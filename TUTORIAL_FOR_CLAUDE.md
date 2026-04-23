@@ -49,15 +49,15 @@ This is a **parallel issue management system** with two phases:
 ## Architecture
 
 ```
-project-arrow/
+ai-agent-orchestration-system/
 ├── .claude/agents/
-│   ├── issue-hunters/           # 22 hunter agents (D-Z)
+│   ├── issue-hunters/           # 26 hunter agents (A-Z)
 │   │   ├── IH-Orchestrator.md   # Controls all hunters
-│   │   ├── IH-Lane-D.md         # Lane D hunter
+│   │   ├── IH-Lane-A.md         # Lane A hunter
 │   │   └── ...
-│   └── issue-fixers/            # 22 fixer agents (D-Z)
+│   └── issue-fixers/            # 26 fixer agents (A-Z)
 │       ├── IF-Orchestrator.md   # Controls all fixers
-│       ├── IF-Lane-D.md         # Lane D fixer
+│       ├── IF-Lane-A.md         # Lane A fixer
 │       └── ...
 ├── issues/                       # Issue files by lane
 │   ├── D/                        # Marketing issues
@@ -81,8 +81,12 @@ project-arrow/
 
 | Lane | Focus Area | What to Look For |
 |------|------------|------------------|
+| A | API Contract Drift | OpenAPI/docs vs route implementation mismatches |
+| B | Broken Flows | Broken navigation, dead-end user paths |
+| C | Configuration Drift | Code vs `.env.example` / `config.yaml` mismatches |
 | D | Marketing Infrastructure | Lead gen, campaigns, funnels |
 | E | Customer Services | Support, GDPR, data protection |
+| F | Frontend Accessibility | WCAG 2.1 AA violations in HTML/JSX/Vue |
 | G | Ghost References | Missing files, broken links |
 | H | Stubs & Placeholders | TODOs, NotImplemented, incomplete |
 | I | Agent Contradictions | Guidelines vs implementation |
@@ -127,9 +131,9 @@ rm -f LogBook/issue-hunting/signals/*.done
 # Reset orchestrator-state.yaml to running state
 ```
 
-#### 4. Spawn ALL 22 Hunters (ONE message)
+#### 4. Spawn ALL 26 Hunters (ONE message)
 ```
-For EACH lane D,E,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z:
+For EACH lane A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z:
   Task:
     description: "Hunt Lane {X}"
     model: opus
@@ -144,8 +148,8 @@ For EACH lane D,E,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z:
 ```bash
 while true; do
     count=$(ls LogBook/issue-hunting/signals/*.done 2>/dev/null | wc -l)
-    echo "Completed: $count/22"
-    [ "$count" -ge 22 ] && break
+    echo "Completed: $count/26"
+    [ "$count" -ge 26 ] && break
     sleep 45
 done
 ```
@@ -346,7 +350,7 @@ touch LogBook/issue-fixing/signals/{X}.done
 
 ## File Signal Pattern
 
-**Why?** TaskOutput returns full agent transcripts (~50k tokens each). With 22 agents, that's 1.1M tokens. File signals use ~3k total.
+**Why?** TaskOutput returns full agent transcripts (~50k tokens each). With 26 agents, that's 1.3M tokens. File signals use ~3k total.
 
 **How it works:**
 1. Orchestrator spawns agents with `run_in_background: true`

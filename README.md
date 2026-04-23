@@ -1,5 +1,9 @@
 # AI Agent Orchestration System
 
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)
+![Claude Code](https://img.shields.io/badge/Claude_Code-required-orange.svg)
+
 **Production-grade multi-agent framework for automated issue detection and resolution using Claude Code.**
 
 Run 40+ AI agents in parallel — each specialized by domain — coordinated by an orchestrator that uses only 3,000 tokens instead of 265,000.
@@ -19,6 +23,17 @@ Before running on any codebase:
 - Validate issue files with `python3 tools/validate_issue_file.py issues/` before running fixers
 
 See [SECURITY.md](SECURITY.md) for the full threat model.
+
+---
+
+## Requirements
+
+- **Claude Code CLI** installed (this framework uses Claude Code slash commands and Task tool)
+- **Claude Sonnet** (orchestrator agents — Haiku cannot use Task tool)
+- **Claude Haiku** (lane agents — cost-optimized for parallel execution)
+- **Python 3.9+**
+- **macOS or Linux** (Windows not supported — shell scripts assume POSIX)
+- **Git** (framework uses git hooks and history)
 
 ---
 
@@ -46,18 +61,20 @@ pip install pyyaml
 
 ## What This Does
 
+**See it work:** [examples/QUICK_START_WALKTHROUGH.md](examples/QUICK_START_WALKTHROUGH.md) — real terminal output from a live run.
+
 This framework gives you:
 
-- **23 specialized agent lanes** (A-Z) that hunt for issues in parallel
-- **23 matching fixer agents** that resolve issues automatically
+- **26 specialized agent lanes** (A-Z) that hunt for issues in parallel
+- **26 matching fixer agents** that resolve issues automatically
 - **File-signal orchestration** — agents communicate via `.done` files, not transcripts
 - **Issue lifecycle tracking** — hunt → catalog → fix → verify
-- **100+ tools** for security scanning, code quality, dependency analysis, and more
+- **240+ tools** for security scanning, code quality, dependency analysis, and more
 
 ### The Key Innovation: File-Signal Orchestration
 
 Traditional approach: orchestrator reads each agent's full output transcript.
-- **Cost:** ~265,000 tokens for 23 agents = context window blown
+- **Cost:** ~265,000 tokens for 26 agents = context window blown
 
 This framework's approach: agents write signal files when done.
 - **Cost:** ~3,000 tokens to check `ls signals/*.done | wc -l`
@@ -69,7 +86,7 @@ This framework's approach: agents write signal files when done.
 
 | Command | What It Does |
 |---------|--------------|
-| `/find-all` | Hunt for issues across all 23 lanes in parallel |
+| `/find-all` | Hunt for issues across all 26 lanes in parallel |
 | `/fix-all` | Fix all open issues across all lanes in parallel |
 | `/verify-fixes` | Verify all RESOLVED issues are actually fixed |
 | `/verify-catalog` | Systematically re-verify every RESOLVED issue in the catalog |
@@ -91,14 +108,14 @@ Each lane focuses on one domain so agents don't conflict:
 | P | Security & Policy | Exposed credentials, missing validation |
 | X | Documentation | Outdated SOPs, broken internal links |
 
-All 23 lanes are customizable. See [CUSTOMIZATION_GUIDE.md](CUSTOMIZATION_GUIDE.md).
+All 26 lanes are customizable. See [CUSTOMIZATION_GUIDE.md](CUSTOMIZATION_GUIDE.md).
 
 ### 2. File-Signal Coordination
 
 ```
-Orchestrator: Spawns 23 hunter agents in parallel
+Orchestrator: Spawns 26 hunter agents in parallel
 Each hunter: Scans its lane → files issues → touch signals/X.done
-Orchestrator: Polls ls signals/*.done until all 23 complete
+Orchestrator: Polls ls signals/*.done until all 26 complete
 Orchestrator: Syncs catalog → reports results
 ```
 
@@ -124,12 +141,12 @@ Issues live as individual markdown files with YAML frontmatter in `issues/{LANE}
 ai-agent-orchestration-system/
 ├── .claude/
 │   ├── agents/
-│   │   ├── issue-hunters/      # 23 lane hunters + orchestrator
-│   │   └── issue-fixers/       # 23 lane fixers + orchestrator
+│   │   ├── issue-hunters/      # 26 lane hunters + orchestrator
+│   │   └── issue-fixers/       # 26 lane fixers + orchestrator
 │   ├── commands/               # /find-all, /fix-all, /verify-fixes
 │   └── guidelines/             # 30+ operational guidelines
 ├── issues/                     # A-Z lane directories
-├── tools/                      # 100+ Python tools
+├── tools/                      # 240+ Python tools
 ├── LogBook/
 │   ├── issue-hunting/signals/  # Completion signal files
 │   └── issue-fixing/signals/   # Completion signal files
@@ -163,7 +180,7 @@ See [CUSTOMIZATION_GUIDE.md](CUSTOMIZATION_GUIDE.md) for full details, including
 
 ---
 
-## Tools (100+)
+## Tools (240+)
 
 ### Issue Management
 ```bash
@@ -199,7 +216,6 @@ See [TOOLS_CATALOG.md](TOOLS_CATALOG.md) for the full inventory.
 | [CUSTOMIZATION_GUIDE.md](CUSTOMIZATION_GUIDE.md) | How to adapt lanes for your project |
 | [TUTORIAL_FOR_HUMANS.md](TUTORIAL_FOR_HUMANS.md) | Setup and daily workflow guide |
 | [TUTORIAL_FOR_CLAUDE.md](TUTORIAL_FOR_CLAUDE.md) | Context for Claude agents |
-| [USAGE.md](USAGE.md) | Detailed usage patterns |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System design and principles |
 
 ---
@@ -210,6 +226,15 @@ See [TOOLS_CATALOG.md](TOOLS_CATALOG.md) for the full inventory.
 - **Never use TaskOutput** — poll signal files instead (saves 99% context)
 - **Complete fixes only** — no stubs, no placeholders
 - **Always verify** — run verification commands before marking RESOLVED
+
+---
+
+## Limitations
+
+- **Claude Code only** — the orchestration uses Task tool + slash commands that are specific to Claude Code. Cannot port to OpenAI, raw Claude API, or other LLMs without major rewrite.
+- **Interactive use only** — permission requests timeout in headless environments. Don't run in CI without supervision.
+- **Not battle-tested at scale** — designed for parallel execution but large-scale production runs haven't been publicly benchmarked.
+- **English only** — all search patterns and agent prompts assume English.
 
 ---
 

@@ -76,16 +76,16 @@ See `CUSTOMIZATION_GUIDE.md` for more details.
 
 ```bash
 # Clone the repo (if not already)
-git clone git@github.com:YOUR_USERNAME/project-arrow.git
-cd project-arrow
+git clone git@github.com:YOUR_USERNAME/ai-agent-orchestration-system.git
+cd ai-agent-orchestration-system
 
 # Install dependencies
 pip install pyyaml
 
 # Verify structure
-ls .claude/agents/issue-hunters/  # Should show 22 hunters + orchestrator
-ls .claude/agents/issue-fixers/   # Should show 22 fixers + orchestrator
-ls issues/                        # Should show lane folders (D, E, G, H, ...)
+ls .claude/agents/issue-hunters/  # Should show 26 hunters + orchestrator
+ls .claude/agents/issue-fixers/   # Should show 26 fixers + orchestrator
+ls issues/                        # Should show lane folders (A-Z)
 ```
 
 ---
@@ -99,11 +99,11 @@ Copy and paste this EXACT prompt into Claude Code:
 ```
 Read .claude/agents/issue-hunters/IH-Orchestrator.md
 
-Run ALL 22 lanes (D-Z, excluding A,B,C,F) using the "Run ALL Protocol" with file-based signals:
+Run ALL 26 lanes (A-Z) using the "Run ALL Protocol" with file-based signals:
 
 1. Clean signals directory (rm -f LogBook/issue-hunting/signals/*.done) and reset state
-2. Spawn ALL 22 hunters in ONE message (model: opus, run_in_background: true)
-3. Poll LogBook/issue-hunting/signals/*.done until count = 22 (DO NOT use TaskOutput!)
+2. Spawn ALL 26 hunters in ONE message (model: opus, run_in_background: true)
+3. Poll LogBook/issue-hunting/signals/*.done until count = 26 (DO NOT use TaskOutput!)
 4. Sync catalog: python3 tools/sync_catalog_stats.py
 5. git commit catalog update and push
 6. Report minimal summary
@@ -126,7 +126,7 @@ Run lanes D, E, G using the "Run ALL Protocol" pattern:
 ### What Happens
 
 1. **Orchestrator** cleans up previous signals
-2. **22 agents** spawn in parallel (each gets 200k context)
+2. **26 agents** spawn in parallel (each gets 200k context)
 3. **Agents hunt** for issues in their specialized lane
 4. **Agents commit** their findings to `issues/{LANE}/`
 5. **Agents signal** completion via `.done` files
@@ -136,7 +136,7 @@ Run lanes D, E, G using the "Run ALL Protocol" pattern:
 
 ### Expected Duration
 
-- 22 lanes in parallel: ~10-15 minutes
+- 26 lanes in parallel: ~10-15 minutes
 - Single lane: ~2-5 minutes
 
 ---
@@ -213,7 +213,7 @@ Fix only lanes E and G:
 
 ### Expected Duration
 
-- Full run (22 lanes): ~15-30 minutes
+- Full run (26 lanes): ~15-30 minutes
 - Complex issues (EXTREME): May take longer
 - Already at 100%: Skipped instantly
 
@@ -338,8 +338,12 @@ git push
 
 | Lane | What It Hunts For |
 |------|-------------------|
+| A | API contract drift |
+| B | Broken flows / dead-end user paths |
+| C | Configuration drift |
 | D | Marketing infrastructure issues |
 | E | Customer service problems |
+| F | Frontend accessibility violations |
 | G | Ghost references (missing files/links) |
 | H | Stubs and placeholders (TODOs) |
 | I | Agent vs guideline contradictions |

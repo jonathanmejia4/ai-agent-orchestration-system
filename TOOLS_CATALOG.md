@@ -3,16 +3,17 @@
 <!-- STATS_START -->
 ## Catalog Statistics
 
-> **Last Updated:** 2026-04-23 11:07:32
+> **Last Updated:** 2026-04-23 11:21:07
 
 | Total | Working | Broken | Progress |
 |-------|---------|--------|----------|
-| 254 | 254 | 0 | [████████████████████] 100.0% |
+| 255 | 255 | 0 | [████████████████████] 100.0% |
 
 ### By Location
 
 | Location | Total | Working | Broken | % |
 |----------|-------|---------|--------|---|
+| ✅ `.github/workflows/` | 1 | 1 | 0 | 100% |
 | ✅ `scripts/` | 3 | 3 | 0 | 100% |
 | ✅ `tools/` | 242 | 242 | 0 | 100% |
 | ✅ `tools/hooks/` | 9 | 9 | 0 | 100% |
@@ -23,15 +24,17 @@
 |------|-------|
 | Python | 234 |
 | Shell | 20 |
+| Workflow | 1 |
 
 <details>
 <summary>By Category (click to expand)</summary>
 
 | Category | Total | Working | Broken | % |
 |----------|-------|---------|--------|---|
+| ✅ CI/CD Core | 1 | 1 | 0 | 100% |
 | ✅ Checkers & Scanners | 23 | 23 | 0 | 100% |
 | ✅ Critic System | 1 | 1 | 0 | 100% |
-| ✅ Dependency Analysis | 9 | 9 | 0 | 100% |
+| ✅ Dependency Analysis | 8 | 8 | 0 | 100% |
 | ✅ Generators | 7 | 7 | 0 | 100% |
 | ✅ Health & Monitoring | 6 | 6 | 0 | 100% |
 | ✅ Issue & Catalog Mgmt | 8 | 8 | 0 | 100% |
@@ -54,13 +57,13 @@
 | ✅ Template Management | 15 | 15 | 0 | 100% |
 | ✅ Testing | 4 | 4 | 0 | 100% |
 | ✅ Traceability & Audit | 4 | 4 | 0 | 100% |
-| ✅ Utilities | 59 | 59 | 0 | 100% |
+| ✅ Utilities | 60 | 60 | 0 | 100% |
 | ✅ Validation | 18 | 18 | 0 | 100% |
 | ✅ Verification | 20 | 20 | 0 | 100% |
 
 ### Category Health Status
 
-**Healthy (100%):** 28 categories
+**Healthy (100%):** 29 categories
 
 **Needs Attention:** None
 

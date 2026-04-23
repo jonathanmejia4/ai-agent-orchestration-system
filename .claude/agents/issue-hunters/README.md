@@ -1,6 +1,6 @@
 # Issue Hunter Sub-Agents
 
-> **Purpose:** Specialized agents for parallel issue hunting across 22 lanes (D-Z)
+> **Purpose:** Specialized agents for parallel issue hunting across 26 lanes (A-Z)
 > **Location:** `.claude/agents/issue-hunters/`
 > **Global Rules:** `PLANNING/prompts/issue-hunting/GLOBAL_CONTRACT.md`
 
