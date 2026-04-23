@@ -28,6 +28,32 @@ import argparse
 from datetime import datetime
 from pathlib import Path
 
+
+def _atomic_write(path, content: str) -> None:
+    """Atomically write text content to *path*.
+
+    Writes to a per-process sibling temp file and calls os.replace to
+    rename. On POSIX this is atomic — readers see either the old or new
+    content, never a half-written file. Per-process temp name means
+    concurrent writers don't collide on the intermediate file.
+    """
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    tmp = p.with_suffix(f"{p.suffix}.tmp.{os.getpid()}")
+    try:
+        with open(tmp, 'w', encoding='utf-8') as f:
+            f.write(content)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, p)
+    except Exception:
+        if tmp.exists():
+            try:
+                tmp.unlink()
+            except FileNotFoundError:
+                pass
+        raise
+
 # Import failure analyzer
 try:
     from analyze_verification_failures import analyze_all_failures, generate_catalog_section
@@ -43,10 +69,7 @@ COMPREHENSIVE_REPORT = "LogBook/verification/comprehensive_report.json"
 LANES = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
 def parse_issue_file(filepath: str) -> dict:
-    """Parse an issue file and extract frontmatter + title."""
-    with open(filepath, 'r', encoding='utf-8') as f:
-        content = f.read()
-
+    """Parse an issue file and extract frontmatter + title (safe YAML)."""
     result = {
         'issue_id': None,
         'lane': None,
@@ -57,44 +80,49 @@ def parse_issue_file(filepath: str) -> dict:
         'status': 'UNKNOWN',
     }
 
-    # Parse YAML frontmatter
+    try:
+        content = Path(filepath).read_text(encoding='utf-8')
+    except Exception as e:
+        print(f"Error reading {filepath}: {e}", file=sys.stderr)
+        return result
+
+    # Parse YAML frontmatter with yaml.safe_load
     if content.startswith('---'):
-        end = content.find('---', 3)
-        if end != -1:
-            frontmatter = content[3:end]
+        parts = content.split('---', 2)
+        if len(parts) >= 3:
+            try:
+                import yaml  # local import keeps top-level optional
+                frontmatter = yaml.safe_load(parts[1])
+            except yaml.YAMLError as e:
+                print(f"YAML error in {filepath}: {e}", file=sys.stderr)
+                frontmatter = None
+            except Exception as e:
+                print(f"Error parsing frontmatter in {filepath}: {e}", file=sys.stderr)
+                frontmatter = None
 
-            # Extract issue_id
-            match = re.search(r'^issue_id:\s*["\']?([^"\']+)["\']?', frontmatter, re.MULTILINE)
-            if match:
-                result['issue_id'] = match.group(1).strip()
+            if isinstance(frontmatter, dict):
+                result['issue_id'] = frontmatter.get('issue_id') or Path(filepath).stem
+                if frontmatter.get('lane') is not None:
+                    result['lane'] = str(frontmatter.get('lane'))
+                sev = frontmatter.get('severity')
+                if isinstance(sev, int):
+                    result['severity'] = sev
+                elif isinstance(sev, str) and sev.strip().isdigit():
+                    result['severity'] = int(sev.strip())
+                sev_level = frontmatter.get('severity_level')
+                if isinstance(sev_level, str):
+                    result['severity_level'] = sev_level
+                tags = frontmatter.get('type_tags')
+                if isinstance(tags, list):
+                    result['type_tags'] = [str(t) for t in tags]
+                elif isinstance(tags, str):
+                    # Comma-separated fallback
+                    result['type_tags'] = [t.strip() for t in tags.split(',') if t.strip()]
+                status = frontmatter.get('status')
+                if isinstance(status, str):
+                    result['status'] = status
 
-            # Extract lane
-            match = re.search(r'^lane:\s*["\']?([^"\']+)["\']?', frontmatter, re.MULTILINE)
-            if match:
-                result['lane'] = match.group(1).strip()
-
-            # Extract severity (numeric)
-            match = re.search(r'^severity:\s*(\d+)', frontmatter, re.MULTILINE)
-            if match:
-                result['severity'] = int(match.group(1))
-
-            # Extract severity_level
-            match = re.search(r'^severity_level:\s*["\']?(HIGH|MEDIUM|LOW|CRITICAL|TRIVIAL)["\']?', frontmatter, re.MULTILINE)
-            if match:
-                result['severity_level'] = match.group(1)
-
-            # Extract type_tags
-            match = re.search(r'^type_tags:\s*\[([^\]]+)\]', frontmatter, re.MULTILINE)
-            if match:
-                tags = match.group(1)
-                result['type_tags'] = [t.strip().strip('"\'') for t in tags.split(',')]
-
-            # Extract status
-            match = re.search(r'^status:\s*["\']?(OPEN|RESOLVED)["\']?', frontmatter, re.MULTILINE)
-            if match:
-                result['status'] = match.group(1)
-
-    # Extract title from heading
+    # Extract title from heading (same behavior as before)
     match = re.search(r'^#\s*\[LANE [A-Z]\]\s*Issue\s+[A-Z]-\d+:\s*(.+)$', content, re.MULTILINE)
     if match:
         result['title'] = match.group(1).strip()
@@ -723,9 +751,8 @@ def update_catalog(stats: dict, verbose: bool = False) -> bool:
     open_issues = scan_open_issues(verbose=verbose)
     content = update_open_issues_tables(content, open_issues, verbose=verbose)
 
-    # Write updated content
-    with open(CATALOG_PATH, 'w', encoding='utf-8') as f:
-        f.write(content)
+    # Write updated content (atomic: temp file + os.replace)
+    _atomic_write(CATALOG_PATH, content)
 
     return True
 

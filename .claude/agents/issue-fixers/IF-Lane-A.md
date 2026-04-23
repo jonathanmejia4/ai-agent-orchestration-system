@@ -25,6 +25,26 @@ Fix up to 5 open issues in Lane A, prioritizing oldest unresolved first.
 
 ## Protocol
 
+### Lock Check (REQUIRED before editing any files)
+
+Before applying a fix to an issue, acquire a per-issue lock to prevent
+a concurrent fixer (another session, another dev, or a re-issued retry)
+from racing on the same issue:
+
+```bash
+python3 tools/issue_lock.py acquire A-NN --agent IF-Lane-A
+# If that command exits 0 → proceed. Non-zero → skip this issue.
+```
+
+Release on completion (success or failure):
+
+```bash
+python3 tools/issue_lock.py release A-NN
+```
+
+See IF-Orchestrator.md "Locking Protocol" for full details. 30-minute
+stale-lock timeout auto-reclaims abandoned locks.
+
 ### Status Signals
 
 ```bash

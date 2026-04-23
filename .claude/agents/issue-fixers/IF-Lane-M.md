@@ -25,6 +25,20 @@ Fix up to 5 open issues in Lane M, prioritizing oldest unresolved first.
 
 ## Protocol
 
+### Lock Check (REQUIRED before editing any files)
+
+Acquire a per-issue lock before touching files for the issue. Prevents
+two fixers from racing on the same work:
+
+```bash
+python3 tools/issue_lock.py acquire M-NN --agent IF-Lane-M   # 0 = go, nonzero = skip
+# ...apply fix...
+python3 tools/issue_lock.py release M-NN
+```
+
+See IF-Orchestrator.md "Locking Protocol" for the full contract
+(30-minute stale-lock timeout auto-reclaims abandoned locks).
+
 ### Status Signals
 
 Signal your status to the orchestrator by writing to your status file:

@@ -26,8 +26,11 @@ while true; do
         echo "[$timestamp] Detected: $brick_id COMPLETE_READY_FOR_REVIEW" >> "$DETECTIONS_LOG"
 
         # Update PM state (if STATE.md exists)
+        # Note: `sed -i.bak` is portable across GNU/BSD sed (macOS + Linux).
+        # The .bak file is always created, so rm it immediately.
         if [ -f "$STATE_FILE" ]; then
           sed -i.bak "s/  - $brick_id: IN_PROGRESS/  - $brick_id: PENDING_REVIEW/" "$STATE_FILE"
+          rm -f "$STATE_FILE.bak"
         fi
 
         # Invoke Orchestrator
@@ -65,6 +68,7 @@ EOF
 
         # Mark as processed (change status to UNDER_REVIEW to avoid re-detection)
         sed -i.bak "s/status: COMPLETE_READY_FOR_REVIEW/status: UNDER_REVIEW/" "$status_file"
+        rm -f "$status_file.bak"
 
         echo "✅ [$timestamp] $brick_id status updated to UNDER_REVIEW"
       fi
@@ -75,6 +79,7 @@ EOF
   if [ -f "$STATE_FILE" ]; then
     timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
     sed -i.bak "s/last_check:.*/last_check: \"$timestamp\"/" "$STATE_FILE"
+    rm -f "$STATE_FILE.bak"
   fi
 
   # Sleep before next poll

@@ -171,9 +171,13 @@ config:
   lanes_to_run: [B, D, E, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z]
 
 lanes:
-  E: { status: pending|running|complete|failed, issues: 0, committed: false }
-  G: { status: pending, issues: 0, committed: false }
+  E: { status: pending|running|complete|failed, issues: 0, committed: false, started_at: null, updated_at: null }
+  G: { status: pending, issues: 0, committed: false, started_at: null, updated_at: null }
   # ... all lanes
+  # NOTE: On lane state transitions (pending → running → complete),
+  # refresh `started_at` (ISO8601, on first transition to running) and
+  # `updated_at` (ISO8601, on every status change). Soft guidance —
+  # used for "stuck lane" diagnostics, not enforced by code.
 
 progress:
   total_lanes: 23

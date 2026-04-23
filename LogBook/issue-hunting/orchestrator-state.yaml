@@ -34,32 +34,32 @@ config:
     - Z
 
 lanes:
-  A: { status: pending, issues: 0, issue_ids: [], committed: false }
-  B: { status: pending, issues: 0, issue_ids: [], committed: false }
-  C: { status: pending, issues: 0, issue_ids: [], committed: false }
-  D: { status: pending, issues: 0, issue_ids: [], committed: false }
-  E: { status: pending, issues: 0, issue_ids: [], committed: false }
-  F: { status: pending, issues: 0, issue_ids: [], committed: false }
-  G: { status: pending, issues: 0, issue_ids: [], committed: false }
-  H: { status: pending, issues: 0, issue_ids: [], committed: false }
-  I: { status: pending, issues: 0, issue_ids: [], committed: false }
-  J: { status: pending, issues: 0, issue_ids: [], committed: false }
-  K: { status: pending, issues: 0, issue_ids: [], committed: false }
-  L: { status: pending, issues: 0, issue_ids: [], committed: false }
-  M: { status: pending, issues: 0, issue_ids: [], committed: false }
-  N: { status: pending, issues: 0, issue_ids: [], committed: false }
-  O: { status: pending, issues: 0, issue_ids: [], committed: false }
-  P: { status: pending, issues: 0, issue_ids: [], committed: false }
-  Q: { status: pending, issues: 0, issue_ids: [], committed: false }
-  R: { status: pending, issues: 0, issue_ids: [], committed: false }
-  S: { status: pending, issues: 0, issue_ids: [], committed: false }
-  T: { status: pending, issues: 0, issue_ids: [], committed: false }
-  U: { status: pending, issues: 0, issue_ids: [], committed: false }
-  V: { status: pending, issues: 0, issue_ids: [], committed: false }
-  W: { status: pending, issues: 0, issue_ids: [], committed: false }
-  X: { status: pending, issues: 0, issue_ids: [], committed: false }
-  Y: { status: pending, issues: 0, issue_ids: [], committed: false }
-  Z: { status: pending, issues: 0, issue_ids: [], committed: false }
+  A: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  B: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  C: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  D: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  E: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  F: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  G: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  H: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  I: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  J: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  K: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  L: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  M: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  N: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  O: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  P: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  Q: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  R: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  S: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  T: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  U: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  V: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  W: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  X: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  Y: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
+  Z: { status: pending, issues: 0, issue_ids: [], committed: false, started_at: null, updated_at: null }
 
 progress:
   total_lanes: 26

@@ -52,6 +52,19 @@ Fix up to 5 open issues in Lane G, prioritizing oldest unresolved first.
 
 ## Protocol
 
+### Lock Check (REQUIRED before editing any files)
+
+Acquire a per-issue lock before touching files for the issue. Prevents
+two fixers from racing:
+
+```bash
+python3 tools/issue_lock.py acquire G-NN --agent IF-Lane-G   # 0 = go, nonzero = skip
+# ...apply fix...
+python3 tools/issue_lock.py release G-NN
+```
+
+See IF-Orchestrator.md "Locking Protocol" for the full contract.
+
 ### Status Signals
 
 ```bash

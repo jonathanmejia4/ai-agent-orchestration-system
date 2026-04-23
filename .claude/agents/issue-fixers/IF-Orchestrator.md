@@ -512,6 +512,52 @@ Check ISSUE_CATALOG.md for updated statistics.
 
 Location: `LogBook/issue-fixing/orchestrator-state.yaml`
 
+Lane entries carry `started_at` and `updated_at` fields. Orchestrator /
+fixer transitions SHOULD refresh these as work moves (pending → running →
+complete). Soft guidance; used for "stuck lane" diagnostics, not enforced
+by code.
+
+---
+
+## Locking Protocol
+
+To prevent two fixers from racing on the same issue (same human, two
+sessions; or orchestrator re-issuing a retry), fixers MUST take a
+per-issue lock BEFORE editing files.
+
+**Lock path:** `LogBook/issue-fixing/locks/{ISSUE_ID}.lock`
+**Lock payload:** JSON `{agent, acquired_at, issue_id}`
+**Stale timeout:** 30 minutes (1800s). Older locks are considered
+abandoned and may be reclaimed.
+
+**Helper:** `tools/issue_lock.py` — exposes `acquire(issue_id, agent_id)`,
+`release(issue_id)`, `is_locked(issue_id)`.
+
+**Fixer workflow:**
+
+```python
+from tools.issue_lock import acquire, release
+if not acquire(issue_id, agent_id="IF-Lane-G"):
+    # Someone else is working on it. Skip and move on.
+    continue
+try:
+    # ... do the fix ...
+finally:
+    release(issue_id)
+```
+
+**CLI equivalent:**
+
+```bash
+python3 tools/issue_lock.py acquire G-71 --agent IF-Lane-G
+# ... fix ...
+python3 tools/issue_lock.py release G-71
+```
+
+Locks are NOT a replacement for catalog status tracking; they are a
+short-lived mutex to prevent concurrent edits. Always release on
+completion (or rely on the 30-min stale timeout).
+
 ---
 
 ## Reference

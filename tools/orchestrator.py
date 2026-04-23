@@ -320,8 +320,31 @@ def load_state() -> Optional[OrchestratorState]:
                 return OrchestratorState.from_dict(data)
     return None
 
+def _atomic_write_text(path: Path, content: str) -> None:
+    """Atomically write text — temp file + os.replace (POSIX-atomic).
+
+    Per-process temp filename so parallel writers don't collide on the
+    intermediate file.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(f"{path.suffix}.tmp.{os.getpid()}")
+    try:
+        with open(tmp, 'w', encoding='utf-8') as f:
+            f.write(content)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, path)
+    except Exception:
+        if tmp.exists():
+            try:
+                tmp.unlink()
+            except FileNotFoundError:
+                pass
+        raise
+
+
 def save_state(state: OrchestratorState) -> None:
-    """Save orchestrator state to file"""
+    """Save orchestrator state to file (atomic: temp + rename)"""
     if not YAML_AVAILABLE:
         print("Warning: Cannot save state - PyYAML not installed")
         return
@@ -329,8 +352,8 @@ def save_state(state: OrchestratorState) -> None:
     LOGBOOK_DIR.mkdir(parents=True, exist_ok=True)
     state.last_checkpoint = datetime.now().isoformat()
 
-    with open(STATE_FILE, 'w') as f:
-        yaml.dump(state.to_dict(), f, default_flow_style=False)
+    serialized = yaml.dump(state.to_dict(), default_flow_style=False)
+    _atomic_write_text(STATE_FILE, serialized)
 
 # =============================================================================
 # COST TRACKING
@@ -889,8 +912,7 @@ Respond with PROMOTE to accept this task, or REJECT with reason.
             }
         }
 
-        with open(log_file, 'w') as f:
-            yaml.dump(log_data, f, default_flow_style=False)
+        _atomic_write_text(log_file, yaml.dump(log_data, default_flow_style=False))
 
 # =============================================================================
 # CLI

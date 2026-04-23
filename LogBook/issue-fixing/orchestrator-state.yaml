@@ -34,32 +34,32 @@ config:
     - Z
 
 lanes:
-  A: { status: pending, issues_fixed: 0, issue_ids: [] }
-  B: { status: pending, issues_fixed: 0, issue_ids: [] }
-  C: { status: pending, issues_fixed: 0, issue_ids: [] }
-  D: { status: pending, issues_fixed: 0, issue_ids: [] }
-  E: { status: pending, issues_fixed: 0, issue_ids: [] }
-  F: { status: pending, issues_fixed: 0, issue_ids: [] }
-  G: { status: pending, issues_fixed: 0, issue_ids: [] }
-  H: { status: pending, issues_fixed: 0, issue_ids: [] }
-  I: { status: pending, issues_fixed: 0, issue_ids: [] }
-  J: { status: pending, issues_fixed: 0, issue_ids: [] }
-  K: { status: pending, issues_fixed: 0, issue_ids: [] }
-  L: { status: pending, issues_fixed: 0, issue_ids: [] }
-  M: { status: pending, issues_fixed: 0, issue_ids: [] }
-  N: { status: pending, issues_fixed: 0, issue_ids: [] }
-  O: { status: pending, issues_fixed: 0, issue_ids: [] }
-  P: { status: pending, issues_fixed: 0, issue_ids: [] }
-  Q: { status: pending, issues_fixed: 0, issue_ids: [] }
-  R: { status: pending, issues_fixed: 0, issue_ids: [] }
-  S: { status: pending, issues_fixed: 0, issue_ids: [] }
-  T: { status: pending, issues_fixed: 0, issue_ids: [] }
-  U: { status: pending, issues_fixed: 0, issue_ids: [] }
-  V: { status: pending, issues_fixed: 0, issue_ids: [] }
-  W: { status: pending, issues_fixed: 0, issue_ids: [] }
-  X: { status: pending, issues_fixed: 0, issue_ids: [] }
-  Y: { status: pending, issues_fixed: 0, issue_ids: [] }
-  Z: { status: pending, issues_fixed: 0, issue_ids: [] }
+  A: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  B: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  C: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  D: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  E: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  F: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  G: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  H: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  I: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  J: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  K: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  L: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  M: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  N: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  O: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  P: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  Q: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  R: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  S: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  T: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  U: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  V: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  W: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  X: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  Y: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
+  Z: { status: pending, issues_fixed: 0, issue_ids: [], started_at: null, updated_at: null }
 
 progress:
   total_lanes: 26

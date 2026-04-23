@@ -26,6 +26,30 @@ from pathlib import Path
 
 CATALOG_PATH = "ISSUE_CATALOG.md"
 
+
+def _atomic_write(path, content: str) -> None:
+    """Atomic temp-file-then-rename write to avoid concurrent-writer corruption.
+
+    Uses a per-process temp filename so parallel writers don't collide on
+    the intermediate file.
+    """
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    tmp = p.with_suffix(f"{p.suffix}.tmp.{os.getpid()}")
+    try:
+        with open(tmp, 'w', encoding='utf-8') as f:
+            f.write(content)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, p)
+    except Exception:
+        if tmp.exists():
+            try:
+                tmp.unlink()
+            except FileNotFoundError:
+                pass
+        raise
+
 # Lane markers in the catalog
 LANE_MARKERS = {
     'D': '<!-- LANE_D_ISSUES -->',
@@ -121,9 +145,8 @@ def add_issue(issue_id: str, title: str, severity: str, type_tags: str, status: 
         f"{row}\n{marker}"
     )
 
-    # Write back
-    with open(CATALOG_PATH, 'w', encoding='utf-8') as f:
-        f.write(new_content)
+    # Atomic write (temp file + os.replace) to prevent concurrent-writer corruption
+    _atomic_write(CATALOG_PATH, new_content)
 
     print(f"✅ Added {issue_id} to catalog: {display_title}")
     return True
@@ -155,8 +178,7 @@ def remove_issue(issue_id: str) -> bool:
     # Remove the row
     new_content = re.sub(pattern, '', content)
 
-    with open(CATALOG_PATH, 'w', encoding='utf-8') as f:
-        f.write(new_content)
+    _atomic_write(CATALOG_PATH, new_content)
 
     print(f"✅ Removed {issue_id} from catalog open issues")
     return True
@@ -193,8 +215,7 @@ def update_issue_status(issue_id: str, new_status: str) -> bool:
         print(f"SKIP: Issue {issue_id} not found or status unchanged")
         return False
 
-    with open(CATALOG_PATH, 'w', encoding='utf-8') as f:
-        f.write(new_content)
+    _atomic_write(CATALOG_PATH, new_content)
 
     print(f"✅ Updated {issue_id} status to {new_status}")
     return True
