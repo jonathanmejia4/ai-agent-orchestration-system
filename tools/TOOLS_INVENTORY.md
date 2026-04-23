@@ -26,14 +26,14 @@
 |------|------|---------|
 | Validate schema | `schema_validator` | `python3 tools/schema_validator.py file.yaml schema.yaml` |
 | Validate action plan | `validate_action_plan` | `python3 tools/validate_action_plan.py .task/action_plan.yaml` |
-| Validate verdict | `validate_verdict` | `python3 tools/validate_verdict.py LogBook/critic/verdict.yaml` |
+| Validate verdict | `validate_review_verdict` | `python3 tools/validate_review_verdict.py LogBook/critic/verdict.yaml` |
 | Check write boundaries | `validate_write_boundaries` | `python3 tools/validate_write_boundaries.py` |
 
 ### Pre-commit Hooks
 
 | Task | Tool | Command |
 |------|------|---------|
-| SSOT validation | `ssot_validator` | `python3 tools/ssot_validator.py .task/wiring.yaml` |
+| Schema validation | `schema_validator` | `python3 tools/schema_validator.py .task/wiring.yaml` |
 | DAG validation | `dag_validator` | `python3 tools/dag_validator.py` |
 | Template version | `template_version_checker` | `python3 tools/template_version_checker.py --check-only` |
 | Retired templates | `retired_template_checker` | `python3 tools/retired_template_checker.py` |
@@ -153,11 +153,11 @@ Validates action plan files against the schema.
 python3 tools/validate_action_plan.py .task/action_plan.yaml
 ```
 
-#### `validate_verdict.py`
+#### `validate_review_verdict.py`
 Validates Critic verdict files.
 
 ```bash
-python3 tools/validate_verdict.py LogBook/critic/verdict.yaml
+python3 tools/validate_review_verdict.py LogBook/critic/verdict.yaml
 ```
 
 #### `validate_write_boundaries.py`
@@ -169,11 +169,11 @@ python3 tools/validate_write_boundaries.py
 
 ### Pre-commit Hook Tools
 
-#### `ssot_validator.py`
-Validates Single Source of Truth (SSOT) wiring files.
+#### `schema_validator.py`
+Validates wiring and schema files against the expected structure.
 
 ```bash
-python3 tools/ssot_validator.py .task/wiring.yaml
+python3 tools/schema_validator.py .task/wiring.yaml
 ```
 
 #### `dag_validator.py`

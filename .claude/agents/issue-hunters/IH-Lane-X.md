@@ -170,7 +170,7 @@ docs/architecture/index.md: "The Planner agent handles execution"
 
 ### Pattern 4: Broken Cross-Reference
 ```
-docs/guides/index.md: [See workflows](../workflows/handoff.md)
+docs/guides/index.md has a link pointing to ../workflows/handoff.md
 Reality: docs/workflows/handoff.md was renamed/moved
 ```
 
@@ -315,8 +315,8 @@ cd docs && make linkcheck
 When writing verification commands in issues:
 
 1. **DO NOT copy-paste documentation examples**
-   - ❌ `python tools/foo.py --task <task-id>` (docs example)
-   - ✅ `test -f tools/foo.py && echo "PASS"` (verification check)
+   - ❌ `python tools/<target>.py --task <task-id>` (docs example)
+   - ✅ `test -f tools/<target>.py && echo "PASS"` (verification check)
 
 2. **Always use concrete paths, never placeholders**
    - ❌ `test -f {file_path}` (placeholder not substituted)
@@ -332,8 +332,8 @@ When writing verification commands in issues:
    - ✅ `ls *.yaml >/dev/null 2>&1 && echo "PASS"`
 
 5. **Verification commands should verify the FIX, not document the problem**
-   - ❌ `test -f tools/ghost.py && echo "EXISTS" || echo "GHOST"` (documents problem)
-   - ✅ `test -f tools/ghost.py && echo "PASS" || echo "FAIL"` (verifies fix)
+   - ❌ `test -f tools/<target>.py && echo "EXISTS" || echo "GHOST"` (documents problem)
+   - ✅ `test -f tools/<target>.py && echo "PASS" || echo "FAIL"` (verifies fix)
 
 
 ## Commit Your Work

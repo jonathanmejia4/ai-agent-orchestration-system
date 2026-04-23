@@ -274,8 +274,8 @@ guide_val=$(grep -o "<pattern>" .claude/guidelines/<file>.md | head -1)
 When writing verification commands in issues:
 
 1. **DO NOT copy-paste documentation examples**
-   - Bad: `python tools/foo.py --task <task-id>`
-   - Good: `test -f tools/foo.py && echo "PASS"`
+   - Bad: `python tools/<target>.py --task <task-id>`
+   - Good: `test -f tools/<target>.py && echo "PASS"`
 
 2. **Always use concrete paths, never placeholders**
 

@@ -80,7 +80,7 @@ This directory contains **authoritative operational guidelines** that all autono
 
 ---
 
-### 5. [Conventions](../../../PLANNING/CONVENTIONS.md)
+### 5. [Conventions](../../PLANNING/CONVENTIONS.md)
 **Use when:** Generating code, checking compliance, or enforcing standards (all agents)
 
 **Core concepts:**
@@ -103,7 +103,7 @@ This directory contains **authoritative operational guidelines** that all autono
 
 ---
 
-### 6. [Generation Escape Hatch Policy](../../../PLANNING/GENERATION_ESCAPE_HATCH_POLICY.md)
+### 6. [Generation Escape Hatch Policy](../../PLANNING/GENERATION_ESCAPE_HATCH_POLICY.md)
 **Use when:** Generator cannot produce required output, manual intervention needed (Planner, PM, Builder)
 
 **Core concepts:**
@@ -124,7 +124,7 @@ This directory contains **authoritative operational guidelines** that all autono
 
 ---
 
-### 7. [Template Drift Detection Policy](../../../PLANNING/TEMPLATE_DRIFT_DETECTION_POLICY.md)
+### 7. [Template Drift Detection Policy](../../PLANNING/TEMPLATE_DRIFT_DETECTION_POLICY.md)
 **Use when:** Templates need synchronization with golden tasks, preventing template rot (all agents)
 
 **Core concepts:**
@@ -147,7 +147,7 @@ This directory contains **authoritative operational guidelines** that all autono
 
 ---
 
-### 8. [Template Variants & Parameter Packs Policy](../../../PLANNING/TEMPLATE_VARIANTS_AND_PARAMETER_PACKS_POLICY.md)
+### 8. [Template Variants & Parameter Packs Policy](../../PLANNING/TEMPLATE_VARIANTS_AND_PARAMETER_PACKS_POLICY.md)
 **Use when:** Preventing template explosion, supporting controlled variation (all agents)
 
 **Core concepts:**
@@ -171,7 +171,7 @@ This directory contains **authoritative operational guidelines** that all autono
 
 ---
 
-### 9. [Traceability by Construction Policy](../../../PLANNING/TRACEABILITY_BY_CONSTRUCTION_POLICY.md)
+### 9. [Traceability by Construction Policy](../../PLANNING/TRACEABILITY_BY_CONSTRUCTION_POLICY.md)
 **Use when:** Creating tasks, generating code, ensuring auditability (all agents)
 
 **Core concepts:**
@@ -194,7 +194,7 @@ This directory contains **authoritative operational guidelines** that all autono
 
 ---
 
-### 10. [Two Test Runs Policy (Early Checkpoints)](../../../PLANNING/TWO_TEST_RUNS_POLICY.md)
+### 10. [Two Test Runs Policy (Early Checkpoints)](../../PLANNING/TWO_TEST_RUNS_POLICY.md)
 **Use when:** Planning tasks, implementing code, testing at structural boundaries (all agents)
 
 **Core concepts:**
@@ -217,7 +217,7 @@ This directory contains **authoritative operational guidelines** that all autono
 
 ---
 
-### 11. [Plugin Architecture Policy](../../../PLANNING/PLUGIN_ARCHITECTURE_POLICY.md)
+### 11. [Plugin Architecture Policy](../../PLANNING/PLUGIN_ARCHITECTURE_POLICY.md)
 **Use when:** Implementing cross-cutting concerns, composing features from capabilities (all agents)
 
 **Core concepts:**
@@ -240,7 +240,7 @@ This directory contains **authoritative operational guidelines** that all autono
 
 ---
 
-### 12. [Schema-Driven Module Generation Policy](../../../PLANNING/SCHEMA_DRIVEN_MODULE_GENERATION_POLICY.md)
+### 12. [Schema-Driven Module Generation Policy](../../PLANNING/SCHEMA_DRIVEN_MODULE_GENERATION_POLICY.md)
 **Use when:** Defining data structures, generating code from specifications (all agents)
 
 **Core concepts:**
@@ -262,7 +262,7 @@ This directory contains **authoritative operational guidelines** that all autono
 
 ---
 
-### 13. [Reference-First Templatization Policy](../../../PLANNING/REFERENCE_FIRST_TEMPLATIZATION_POLICY.md)
+### 13. [Reference-First Templatization Policy](../../PLANNING/REFERENCE_FIRST_TEMPLATIZATION_POLICY.md)
 **Use when:** Creating templates, extracting patterns from proven code (all agents)
 
 **Core concepts:**
@@ -287,7 +287,7 @@ This directory contains **authoritative operational guidelines** that all autono
 
 ---
 
-### 14. [Stage-Gated Generation Pipeline Policy](../../../PLANNING/STAGE_GATED_GENERATION_PIPELINE_POLICY.md)
+### 14. [Stage-Gated Generation Pipeline Policy](../../PLANNING/STAGE_GATED_GENERATION_PIPELINE_POLICY.md)
 **Use when:** Executing any generation workflow, enforcing sequential validation (all agents)
 
 **Core concepts:**
@@ -310,7 +310,7 @@ This directory contains **authoritative operational guidelines** that all autono
 
 ---
 
-### 15. [SSOT Wiring File Policy](../../../PLANNING/SSOT_WIRING_FILE_POLICY.md)
+### 15. [SSOT Wiring File Policy](../../PLANNING/SSOT_WIRING_FILE_POLICY.md)
 **Use when:** Creating tasks, declaring assembly/wiring, verifying completeness (all agents)
 
 **Core concepts:**
@@ -325,7 +325,7 @@ This directory contains **authoritative operational guidelines** that all autono
 
 **5 sections:** Identity & Traceability (task ID, spec refs, lineage) + Interfaces (API endpoints, events, commands) + Composition (plugins attached) + Wiring (file paths, data flow, connections) + Verification Contract (gates, required tests, coverage)
 **File:** `.task/wiring.yaml` (consolidates task.yaml + plugins.yaml + adds interfaces/wiring/verification)
-**Enforcement:** `tools/ssot_validator.py` validates structure, file correspondence, interface registration, composition compliance, verification contract
+**Enforcement:** `tools/schema_validator.py` validates structure, file correspondence, interface registration, composition compliance, verification contract
 **Integration:** SSOT created at Stage 0, updated at Stages 1-2, verified at all gates, frozen after Stage 2, promoted at Stage 4
 **Principle:** Single source of truth → mechanical review (not subjective) → enforceable governance → regeneration safe
 
@@ -333,7 +333,7 @@ This directory contains **authoritative operational guidelines** that all autono
 
 ---
 
-### 16. [Template Families Policy](../../../PLANNING/TEMPLATE_FAMILIES_POLICY.md)
+### 16. [Template Families Policy](../../PLANNING/TEMPLATE_FAMILIES_POLICY.md)
 **Use when:** Creating templates, selecting templates, verifying template compliance (all agents)
 
 **Core concepts:**
@@ -356,7 +356,7 @@ This directory contains **authoritative operational guidelines** that all autono
 
 ---
 
-### 17. [Idempotent Generation Policy](../../../PLANNING/future/IDEMPOTENT_GENERATION_POLICY.md)
+### 17. [Idempotent Generation Policy](../../PLANNING/future/IDEMPOTENT_GENERATION_POLICY.md)
 **Use when:** Creating generators, running templates, verifying generation determinism (all agents)
 
 **Core concepts:**
@@ -382,7 +382,7 @@ This directory contains **authoritative operational guidelines** that all autono
 
 ---
 
-### 18. [Protected Regions Policy](../../../PLANNING/future/PROTECTED_REGIONS_POLICY.md)
+### 18. [Protected Regions Policy](../../PLANNING/future/PROTECTED_REGIONS_POLICY.md)
 **Use when:** Handling one-off customizations in generated code, preserving manual edits during regeneration (all agents)
 
 **Core concepts:**
@@ -409,7 +409,7 @@ This directory contains **authoritative operational guidelines** that all autono
 
 ---
 
-### 19. [Three-Way Merge Regeneration Policy](../../../PLANNING/THREE_WAY_MERGE_REGENERATION_POLICY.md)
+### 19. [Three-Way Merge Regeneration Policy](../../PLANNING/THREE_WAY_MERGE_REGENERATION_POLICY.md)
 **Use when:** Regenerating code with manual edits, reconciling BASE/LOCAL/NEW versions, handling merge conflicts (all agents)
 
 **Core concepts:**
@@ -439,7 +439,7 @@ This directory contains **authoritative operational guidelines** that all autono
 
 ---
 
-### 20. [Template Versioning & Deprecation Policy](../../../PLANNING/TEMPLATE_VERSIONING_AND_DEPRECATION_POLICY.md)
+### 20. [Template Versioning & Deprecation Policy](../../PLANNING/TEMPLATE_VERSIONING_AND_DEPRECATION_POLICY.md)
 **Use when:** Managing template versions, upgrading templates, deprecating old versions, planning template lifecycle (all agents)
 
 **Core concepts:**
@@ -471,7 +471,7 @@ This directory contains **authoritative operational guidelines** that all autono
 
 ---
 
-### 21. [Template Compliance Policy](../../../PLANNING/TEMPLATE_COMPLIANCE_POLICY.md)
+### 21. [Template Compliance Policy](../../PLANNING/TEMPLATE_COMPLIANCE_POLICY.md)
 **Use when:** Creating new templates, updating templates, promoting templates, verifying template quality (all agents)
 
 **Core concepts:**
@@ -508,7 +508,7 @@ This directory contains **authoritative operational guidelines** that all autono
 
 ---
 
-### 22. [Dependency Graph & Topological Build Order Policy](../../../PLANNING/DEPENDENCY_GRAPH_AND_TOPOLOGICAL_BUILD_ORDER_POLICY.md)
+### 22. [Dependency Graph & Topological Build Order Policy](../../PLANNING/DEPENDENCY_GRAPH_AND_TOPOLOGICAL_BUILD_ORDER_POLICY.md)
 **Use when:** Planning task execution, computing build order, identifying parallel work, validating dependencies (PM, Planner, Builder, Critic)
 
 **Core concepts:**
@@ -559,7 +559,7 @@ Critical path: B1 → B4 → B5 → B6 (9.0 hours)
 
 ---
 
-### 23. [Security & Policy Linting as First-Class Gates Policy](../../../PLANNING/SECURITY_POLICY_LINTING_AS_FIRST_CLASS_GATES_POLICY.md)
+### 23. [Security & Policy Linting as First-Class Gates Policy](../../PLANNING/SECURITY_POLICY_LINTING_AS_FIRST_CLASS_GATES_POLICY.md)
 **Use when:** Implementing security checks, enforcing policy compliance, reviewing code security (all agents)
 
 **Core concepts:**
@@ -598,7 +598,7 @@ Critical path: B1 → B4 → B5 → B6 (9.0 hours)
 
 ---
 
-### 24. [Anti-Corruption Layer (ACL) Policy](../../../PLANNING/ANTI_CORRUPTION_LAYER_POLICY.md)
+### 24. [Anti-Corruption Layer (ACL) Policy](../../PLANNING/ANTI_CORRUPTION_LAYER_POLICY.md)
 **Use when:** Integrating external APIs/SDKs, isolating vendor dependencies, preventing vendor coupling (all agents)
 
 **Core concepts:**
@@ -638,7 +638,7 @@ Critical path: B1 → B4 → B5 → B6 (9.0 hours)
 
 ---
 
-### 25. [Metrics Feedback Loop Policy](../../../PLANNING/METRICS_FEEDBACK_LOOP_POLICY.md)
+### 25. [Metrics Feedback Loop Policy](../../PLANNING/METRICS_FEEDBACK_LOOP_POLICY.md)
 **Use when:** Tracking template quality, making investment decisions, continuous improvement (PM, all agents)
 
 **Core concepts:**
@@ -693,7 +693,7 @@ Critical path: B1 → B4 → B5 → B6 (9.0 hours)
 
 ---
 
-### 26. [Spec-to-diff Previews Policy](../../../PLANNING/SPEC_TO_DIFF_PREVIEWS_POLICY.md)
+### 26. [Spec-to-diff Previews Policy](../../PLANNING/SPEC_TO_DIFF_PREVIEWS_POLICY.md)
 **Use when:** Generating code from SSOT changes, regenerating code, assessing generation risk (all agents)
 
 **Core concepts:**
@@ -759,27 +759,27 @@ causal_chain:
 **Read at session start:**
 1. [Agent Operating Principles](./agent-operating-principles.md) - Review governance rules
 2. [Agent Coordination Protocol](./agent-coordination-protocol.md) - Check handoff procedures
-3. [Generation Escape Hatch Policy](../../../PLANNING/GENERATION_ESCAPE_HATCH_POLICY.md) - Review exception handling
-4. [Template Drift Detection Policy](../../../PLANNING/TEMPLATE_DRIFT_DETECTION_POLICY.md) - Review drift management
-5. [Template Variants & Parameter Packs Policy](../../../PLANNING/TEMPLATE_VARIANTS_AND_PARAMETER_PACKS_POLICY.md) - Review variant system
-6. [Traceability by Construction Policy](../../../PLANNING/TRACEABILITY_BY_CONSTRUCTION_POLICY.md) - Review traceability requirements
-7. [Two Test Runs Policy](../../../PLANNING/TWO_TEST_RUNS_POLICY.md) - Review checkpoint requirements
-8. [Plugin Architecture Policy](../../../PLANNING/PLUGIN_ARCHITECTURE_POLICY.md) - Review plugin system
-9. [Schema-Driven Module Generation Policy](../../../PLANNING/SCHEMA_DRIVEN_MODULE_GENERATION_POLICY.md) - Review schema-driven generation
-10. [Reference-First Templatization Policy](../../../PLANNING/REFERENCE_FIRST_TEMPLATIZATION_POLICY.md) - Review reference-first template creation
-11. [Stage-Gated Generation Pipeline Policy](../../../PLANNING/STAGE_GATED_GENERATION_PIPELINE_POLICY.md) - Review 5-stage pipeline and gate enforcement
-12. [SSOT Wiring File Policy](../../../PLANNING/SSOT_WIRING_FILE_POLICY.md) - Review SSOT requirements and validation
-13. [Template Families Policy](../../../PLANNING/TEMPLATE_FAMILIES_POLICY.md) - Review 5 canonical families and family contracts
-14. [Idempotent Generation Policy](../../../PLANNING/future/IDEMPOTENT_GENERATION_POLICY.md) - Review idempotence contract and deterministic generation requirements
-15. [Protected Regions Policy](../../../PLANNING/future/PROTECTED_REGIONS_POLICY.md) - Review protected region system and graduation path
-16. [Three-Way Merge Regeneration Policy](../../../PLANNING/THREE_WAY_MERGE_REGENERATION_POLICY.md) - Review three-way merge workflow and conflict resolution
-17. [Template Versioning & Deprecation Policy](../../../PLANNING/TEMPLATE_VERSIONING_AND_DEPRECATION_POLICY.md) - Review SemVer rules, template lifecycle, and upgrade workflow
-18. [Template Compliance Policy](../../../PLANNING/TEMPLATE_COMPLIANCE_POLICY.md) - Review template compliance contracts, Stage 0.5 gate, and CI enforcement
-19. [Dependency Graph & Topological Build Order Policy](../../../PLANNING/DEPENDENCY_GRAPH_AND_TOPOLOGICAL_BUILD_ORDER_POLICY.md) - Review DAG-based planning, topological sort, and parallel work identification
-20. [Security & Policy Linting as First-Class Gates Policy](../../../PLANNING/SECURITY_POLICY_LINTING_AS_FIRST_CLASS_GATES_POLICY.md) - Review 13 security policies, Stage 1 & 3 security gates, and Critic Dimension 6
-21. [Anti-Corruption Layer Policy](../../../PLANNING/ANTI_CORRUPTION_LAYER_POLICY.md) - Review Ports-and-Adapters architecture, vendor SDK isolation, and adapter wiring
-22. [Metrics Feedback Loop Policy](../../../PLANNING/METRICS_FEEDBACK_LOOP_POLICY.md) - Review 5 key metrics, ROI decision rules, and template investment criteria
-23. [Spec-to-diff Previews Policy](../../../PLANNING/SPEC_TO_DIFF_PREVIEWS_POLICY.md) - Review Stage -1 preview generation, causal mapping, and risk scoring
+3. [Generation Escape Hatch Policy](../../PLANNING/GENERATION_ESCAPE_HATCH_POLICY.md) - Review exception handling
+4. [Template Drift Detection Policy](../../PLANNING/TEMPLATE_DRIFT_DETECTION_POLICY.md) - Review drift management
+5. [Template Variants & Parameter Packs Policy](../../PLANNING/TEMPLATE_VARIANTS_AND_PARAMETER_PACKS_POLICY.md) - Review variant system
+6. [Traceability by Construction Policy](../../PLANNING/TRACEABILITY_BY_CONSTRUCTION_POLICY.md) - Review traceability requirements
+7. [Two Test Runs Policy](../../PLANNING/TWO_TEST_RUNS_POLICY.md) - Review checkpoint requirements
+8. [Plugin Architecture Policy](../../PLANNING/PLUGIN_ARCHITECTURE_POLICY.md) - Review plugin system
+9. [Schema-Driven Module Generation Policy](../../PLANNING/SCHEMA_DRIVEN_MODULE_GENERATION_POLICY.md) - Review schema-driven generation
+10. [Reference-First Templatization Policy](../../PLANNING/REFERENCE_FIRST_TEMPLATIZATION_POLICY.md) - Review reference-first template creation
+11. [Stage-Gated Generation Pipeline Policy](../../PLANNING/STAGE_GATED_GENERATION_PIPELINE_POLICY.md) - Review 5-stage pipeline and gate enforcement
+12. [SSOT Wiring File Policy](../../PLANNING/SSOT_WIRING_FILE_POLICY.md) - Review SSOT requirements and validation
+13. [Template Families Policy](../../PLANNING/TEMPLATE_FAMILIES_POLICY.md) - Review 5 canonical families and family contracts
+14. [Idempotent Generation Policy](../../PLANNING/future/IDEMPOTENT_GENERATION_POLICY.md) - Review idempotence contract and deterministic generation requirements
+15. [Protected Regions Policy](../../PLANNING/future/PROTECTED_REGIONS_POLICY.md) - Review protected region system and graduation path
+16. [Three-Way Merge Regeneration Policy](../../PLANNING/THREE_WAY_MERGE_REGENERATION_POLICY.md) - Review three-way merge workflow and conflict resolution
+17. [Template Versioning & Deprecation Policy](../../PLANNING/TEMPLATE_VERSIONING_AND_DEPRECATION_POLICY.md) - Review SemVer rules, template lifecycle, and upgrade workflow
+18. [Template Compliance Policy](../../PLANNING/TEMPLATE_COMPLIANCE_POLICY.md) - Review template compliance contracts, Stage 0.5 gate, and CI enforcement
+19. [Dependency Graph & Topological Build Order Policy](../../PLANNING/DEPENDENCY_GRAPH_AND_TOPOLOGICAL_BUILD_ORDER_POLICY.md) - Review DAG-based planning, topological sort, and parallel work identification
+20. [Security & Policy Linting as First-Class Gates Policy](../../PLANNING/SECURITY_POLICY_LINTING_AS_FIRST_CLASS_GATES_POLICY.md) - Review 13 security policies, Stage 1 & 3 security gates, and Critic Dimension 6
+21. [Anti-Corruption Layer Policy](../../PLANNING/ANTI_CORRUPTION_LAYER_POLICY.md) - Review Ports-and-Adapters architecture, vendor SDK isolation, and adapter wiring
+22. [Metrics Feedback Loop Policy](../../PLANNING/METRICS_FEEDBACK_LOOP_POLICY.md) - Review 5 key metrics, ROI decision rules, and template investment criteria
+23. [Spec-to-diff Previews Policy](../../PLANNING/SPEC_TO_DIFF_PREVIEWS_POLICY.md) - Review Stage -1 preview generation, causal mapping, and risk scoring
 
 **Reference during:**
 - Issuing work orders → Use work order template
@@ -806,7 +806,7 @@ causal_chain:
 - SSOT completeness → Verify all 5 sections populated (identity, interfaces, composition, wiring, verification), block promotion if SSOT incomplete
 - SSOT hash validation → Check SSOT hash unchanged after gates passed (no retroactive edits), block if SSOT modified after tests
 - SSOT reference validation → Verify template refs point to golden templates, schema refs point to valid schemas, spec refs point to approved specs
-- SSOT compliance → Run `tools/ssot_validator.py --verify-task` before promotion, block if validator fails
+- SSOT compliance → Run `tools/schema_validator.py --verify-task` before promotion, block if validator fails
 - SSOT metrics → Track % tasks with complete SSOT (target: 100%), % SSOT violations (target: 0%), phantom file/endpoint detection rate, time to fix SSOT violations
 - Template family governance → Approve new template families (if needed beyond 5 canonical), enforce "template may only generate one class of artifact" rule
 - Family membership verification → Verify template has family field before promotion, verify family contract complete, verify stage alignment declared, block templates without family membership
@@ -859,27 +859,27 @@ causal_chain:
 **Read at session start:**
 1. [Code Generation Methodology](./code-generation-methodology.md) - Review decomposition rules
 2. [Agent Operating Principles](./agent-operating-principles.md) - Check micro-task discipline
-3. [Generation Escape Hatch Policy](../../../PLANNING/GENERATION_ESCAPE_HATCH_POLICY.md) - Know when to trigger escape hatch
-4. [Template Drift Detection Policy](../../../PLANNING/TEMPLATE_DRIFT_DETECTION_POLICY.md) - Know drift detection workflow
-5. [Template Variants & Parameter Packs Policy](../../../PLANNING/TEMPLATE_VARIANTS_AND_PARAMETER_PACKS_POLICY.md) - Know variant selection
-6. [Traceability by Construction Policy](../../../PLANNING/TRACEABILITY_BY_CONSTRUCTION_POLICY.md) - Know traceability requirements
-7. [Two Test Runs Policy](../../../PLANNING/TWO_TEST_RUNS_POLICY.md) - Know checkpoint definition requirements
-8. [Plugin Architecture Policy](../../../PLANNING/PLUGIN_ARCHITECTURE_POLICY.md) - Know plugin system and orthogonal functionality
-9. [Schema-Driven Module Generation Policy](../../../PLANNING/SCHEMA_DRIVEN_MODULE_GENERATION_POLICY.md) - Know schema types and schema-first workflow
-10. [Reference-First Templatization Policy](../../../PLANNING/REFERENCE_FIRST_TEMPLATIZATION_POLICY.md) - Know Task Type A/B distinction and battle-tested criteria
-11. [Stage-Gated Generation Pipeline Policy](../../../PLANNING/STAGE_GATED_GENERATION_PIPELINE_POLICY.md) - Know 5-stage pipeline and gate criteria
-12. [SSOT Wiring File Policy](../../../PLANNING/SSOT_WIRING_FILE_POLICY.md) - Know SSOT structure and creation requirements
-13. [Template Families Policy](../../../PLANNING/TEMPLATE_FAMILIES_POLICY.md) - Know 5 canonical families and family-per-stage mapping
-14. [Idempotent Generation Policy](../../../PLANNING/future/IDEMPOTENT_GENERATION_POLICY.md) - Know idempotence contract requirements and 5 causes of non-idempotence
-15. [Protected Regions Policy](../../../PLANNING/future/PROTECTED_REGIONS_POLICY.md) - Know region vs plugin decision criteria and graduation path
-16. [Three-Way Merge Regeneration Policy](../../../PLANNING/THREE_WAY_MERGE_REGENERATION_POLICY.md) - Know three-way merge workflow, three merge rules, and conflict types
-17. [Template Versioning & Deprecation Policy](../../../PLANNING/TEMPLATE_VERSIONING_AND_DEPRECATION_POLICY.md) - Know SemVer rules, template lifecycle states, and Template Upgrade Task workflow
-18. [Template Compliance Policy](../../../PLANNING/TEMPLATE_COMPLIANCE_POLICY.md) - Know compliance requirements for template selection, fixture planning, and Stage 0.5 gate
-19. [Dependency Graph & Topological Build Order Policy](../../../PLANNING/DEPENDENCY_GRAPH_AND_TOPOLOGICAL_BUILD_ORDER_POLICY.md) - Know DAG output requirements, topological sort, and parallel work planning
-20. [Security & Policy Linting as First-Class Gates Policy](../../../PLANNING/SECURITY_POLICY_LINTING_AS_FIRST_CLASS_GATES_POLICY.md) - Know 13 security policies, SSOT security schema extensions, and security test requirements
-21. [Anti-Corruption Layer Policy](../../../PLANNING/ANTI_CORRUPTION_LAYER_POLICY.md) - Know Ports-and-Adapters architecture, vendor SDK isolation rules, and adapter creation workflow
-22. [Metrics Feedback Loop Policy](../../../PLANNING/METRICS_FEEDBACK_LOOP_POLICY.md) - Know per-task specification schema, ROI decision rules, and when to templatize/harden/retire
-23. [Spec-to-diff Previews Policy](../../../PLANNING/SPEC_TO_DIFF_PREVIEWS_POLICY.md) - Know preview generation workflow, causal mapping requirements, and preview approval criteria
+3. [Generation Escape Hatch Policy](../../PLANNING/GENERATION_ESCAPE_HATCH_POLICY.md) - Know when to trigger escape hatch
+4. [Template Drift Detection Policy](../../PLANNING/TEMPLATE_DRIFT_DETECTION_POLICY.md) - Know drift detection workflow
+5. [Template Variants & Parameter Packs Policy](../../PLANNING/TEMPLATE_VARIANTS_AND_PARAMETER_PACKS_POLICY.md) - Know variant selection
+6. [Traceability by Construction Policy](../../PLANNING/TRACEABILITY_BY_CONSTRUCTION_POLICY.md) - Know traceability requirements
+7. [Two Test Runs Policy](../../PLANNING/TWO_TEST_RUNS_POLICY.md) - Know checkpoint definition requirements
+8. [Plugin Architecture Policy](../../PLANNING/PLUGIN_ARCHITECTURE_POLICY.md) - Know plugin system and orthogonal functionality
+9. [Schema-Driven Module Generation Policy](../../PLANNING/SCHEMA_DRIVEN_MODULE_GENERATION_POLICY.md) - Know schema types and schema-first workflow
+10. [Reference-First Templatization Policy](../../PLANNING/REFERENCE_FIRST_TEMPLATIZATION_POLICY.md) - Know Task Type A/B distinction and battle-tested criteria
+11. [Stage-Gated Generation Pipeline Policy](../../PLANNING/STAGE_GATED_GENERATION_PIPELINE_POLICY.md) - Know 5-stage pipeline and gate criteria
+12. [SSOT Wiring File Policy](../../PLANNING/SSOT_WIRING_FILE_POLICY.md) - Know SSOT structure and creation requirements
+13. [Template Families Policy](../../PLANNING/TEMPLATE_FAMILIES_POLICY.md) - Know 5 canonical families and family-per-stage mapping
+14. [Idempotent Generation Policy](../../PLANNING/future/IDEMPOTENT_GENERATION_POLICY.md) - Know idempotence contract requirements and 5 causes of non-idempotence
+15. [Protected Regions Policy](../../PLANNING/future/PROTECTED_REGIONS_POLICY.md) - Know region vs plugin decision criteria and graduation path
+16. [Three-Way Merge Regeneration Policy](../../PLANNING/THREE_WAY_MERGE_REGENERATION_POLICY.md) - Know three-way merge workflow, three merge rules, and conflict types
+17. [Template Versioning & Deprecation Policy](../../PLANNING/TEMPLATE_VERSIONING_AND_DEPRECATION_POLICY.md) - Know SemVer rules, template lifecycle states, and Template Upgrade Task workflow
+18. [Template Compliance Policy](../../PLANNING/TEMPLATE_COMPLIANCE_POLICY.md) - Know compliance requirements for template selection, fixture planning, and Stage 0.5 gate
+19. [Dependency Graph & Topological Build Order Policy](../../PLANNING/DEPENDENCY_GRAPH_AND_TOPOLOGICAL_BUILD_ORDER_POLICY.md) - Know DAG output requirements, topological sort, and parallel work planning
+20. [Security & Policy Linting as First-Class Gates Policy](../../PLANNING/SECURITY_POLICY_LINTING_AS_FIRST_CLASS_GATES_POLICY.md) - Know 13 security policies, SSOT security schema extensions, and security test requirements
+21. [Anti-Corruption Layer Policy](../../PLANNING/ANTI_CORRUPTION_LAYER_POLICY.md) - Know Ports-and-Adapters architecture, vendor SDK isolation rules, and adapter creation workflow
+22. [Metrics Feedback Loop Policy](../../PLANNING/METRICS_FEEDBACK_LOOP_POLICY.md) - Know per-task specification schema, ROI decision rules, and when to templatize/harden/retire
+23. [Spec-to-diff Previews Policy](../../PLANNING/SPEC_TO_DIFF_PREVIEWS_POLICY.md) - Know preview generation workflow, causal mapping requirements, and preview approval criteria
 
 **Reference during:**
 - Breaking down specs → Apply task size constraints (≤4 hours)
@@ -912,7 +912,7 @@ causal_chain:
 - SSOT creation (Stage 0) → Create minimal SSOT with 5 sections: identity (task ID, spec ref, schema ref), interfaces (API endpoints, events), composition (empty), wiring (empty), verification (gate criteria, required tests)
 - SSOT interface declaration → Declare all API endpoints (method, path, request, response, auth), all events (published, subscribed), all commands (CLI, queue messages)
 - SSOT verification contract → Define all 5 stage gates (criteria + tests), list required test files, specify coverage threshold
-- SSOT validation → Use `examples/ssot/minimal-wiring.yaml` as template, validate SSOT with `tools/ssot_validator.py --validate` before committing
+- SSOT validation → Use `examples/ssot/minimal-wiring.yaml` as template, validate SSOT with `tools/schema_validator.py --validate` before committing
 - Template family selection (per stage) → Stage 0: Schema family, Stage 1: Code + Config families, Stage 2: Config family, Stage 3: Code + Test families, Stage 4: Doc + Config families
 - Family membership declaration → Declare template family for each template in task plan, ensure no forbidden families used at each stage (Test family forbidden at Stage 1, Code family forbidden at Stage 4)
 - Variant symmetry planning → If Code family uses variants (auth: role-based, validation: strict), Test family MUST use matching variants, declare variant symmetry in task plan
@@ -958,26 +958,26 @@ causal_chain:
 **Read at session start:**
 1. [Code Generation Methodology](./code-generation-methodology.md) - Review implementation rules
 2. [Quality Standards & Verification](./quality-standards.md) - Check quality requirements
-3. [Template Drift Detection Policy](../../../PLANNING/TEMPLATE_DRIFT_DETECTION_POLICY.md) - Know template update responsibilities
-4. [Template Variants & Parameter Packs Policy](../../../PLANNING/TEMPLATE_VARIANTS_AND_PARAMETER_PACKS_POLICY.md) - Know variant implementation
-5. [Traceability by Construction Policy](../../../PLANNING/TRACEABILITY_BY_CONSTRUCTION_POLICY.md) - Know manifest structure and provenance headers
-6. [Two Test Runs Policy](../../../PLANNING/TWO_TEST_RUNS_POLICY.md) - Know checkpoint-driven development workflow
-7. [Plugin Architecture Policy](../../../PLANNING/PLUGIN_ARCHITECTURE_POLICY.md) - Know plugin attachment and extension points
-8. [Schema-Driven Module Generation Policy](../../../PLANNING/SCHEMA_DRIVEN_MODULE_GENERATION_POLICY.md) - Know schema implementation and validation workflow
-9. [Reference-First Templatization Policy](../../../PLANNING/REFERENCE_FIRST_TEMPLATIZATION_POLICY.md) - Know reference implementation requirements and template extraction workflow
-10. [Stage-Gated Generation Pipeline Policy](../../../PLANNING/STAGE_GATED_GENERATION_PIPELINE_POLICY.md) - Know 5-stage pipeline and gate execution requirements
-11. [SSOT Wiring File Policy](../../../PLANNING/SSOT_WIRING_FILE_POLICY.md) - Know SSOT update workflow and validation
-12. [Template Families Policy](../../../PLANNING/TEMPLATE_FAMILIES_POLICY.md) - Know family contracts and stage alignment
-13. [Idempotent Generation Policy](../../../PLANNING/future/IDEMPOTENT_GENERATION_POLICY.md) - Know idempotent generation workflow and canonicalization utilities
-14. [Protected Regions Policy](../../../PLANNING/future/PROTECTED_REGIONS_POLICY.md) - Know extract → regenerate → reinsert workflow and region limits
-15. [Three-Way Merge Regeneration Policy](../../../PLANNING/THREE_WAY_MERGE_REGENERATION_POLICY.md) - Know BASE version storage, three-way merge execution, and conflict detection workflow
-16. [Template Versioning & Deprecation Policy](../../../PLANNING/TEMPLATE_VERSIONING_AND_DEPRECATION_POLICY.md) - Know template version enforcement, Template Upgrade Task execution, and compatibility checking
-17. [Template Compliance Policy](../../../PLANNING/TEMPLATE_COMPLIANCE_POLICY.md) - Know compliance suite usage, fixture creation, and compliance failure resolution
-18. [Dependency Graph & Topological Build Order Policy](../../../PLANNING/DEPENDENCY_GRAPH_AND_TOPOLOGICAL_BUILD_ORDER_POLICY.md) - Know topological order execution, wave-based execution, and predecessor verification
-19. [Security & Policy Linting as First-Class Gates Policy](../../../PLANNING/SECURITY_POLICY_LINTING_AS_FIRST_CLASS_GATES_POLICY.md) - Know security policy enforcement, SSOT security validation, and security test generation
-20. [Anti-Corruption Layer Policy](../../../PLANNING/ANTI_CORRUPTION_LAYER_POLICY.md) - Know adapter implementation workflow, port interface creation, and vendor type translation
-21. [Metrics Feedback Loop Policy](../../../PLANNING/METRICS_FEEDBACK_LOOP_POLICY.md) - Know per-task metrics collection, LogBook manifest creation, and metrics reporting
-22. [Spec-to-diff Previews Policy](../../../PLANNING/SPEC_TO_DIFF_PREVIEWS_POLICY.md) - Know preview generation (dry-run mode), preview artifact creation, and "no apply without preview" rule
+3. [Template Drift Detection Policy](../../PLANNING/TEMPLATE_DRIFT_DETECTION_POLICY.md) - Know template update responsibilities
+4. [Template Variants & Parameter Packs Policy](../../PLANNING/TEMPLATE_VARIANTS_AND_PARAMETER_PACKS_POLICY.md) - Know variant implementation
+5. [Traceability by Construction Policy](../../PLANNING/TRACEABILITY_BY_CONSTRUCTION_POLICY.md) - Know manifest structure and provenance headers
+6. [Two Test Runs Policy](../../PLANNING/TWO_TEST_RUNS_POLICY.md) - Know checkpoint-driven development workflow
+7. [Plugin Architecture Policy](../../PLANNING/PLUGIN_ARCHITECTURE_POLICY.md) - Know plugin attachment and extension points
+8. [Schema-Driven Module Generation Policy](../../PLANNING/SCHEMA_DRIVEN_MODULE_GENERATION_POLICY.md) - Know schema implementation and validation workflow
+9. [Reference-First Templatization Policy](../../PLANNING/REFERENCE_FIRST_TEMPLATIZATION_POLICY.md) - Know reference implementation requirements and template extraction workflow
+10. [Stage-Gated Generation Pipeline Policy](../../PLANNING/STAGE_GATED_GENERATION_PIPELINE_POLICY.md) - Know 5-stage pipeline and gate execution requirements
+11. [SSOT Wiring File Policy](../../PLANNING/SSOT_WIRING_FILE_POLICY.md) - Know SSOT update workflow and validation
+12. [Template Families Policy](../../PLANNING/TEMPLATE_FAMILIES_POLICY.md) - Know family contracts and stage alignment
+13. [Idempotent Generation Policy](../../PLANNING/future/IDEMPOTENT_GENERATION_POLICY.md) - Know idempotent generation workflow and canonicalization utilities
+14. [Protected Regions Policy](../../PLANNING/future/PROTECTED_REGIONS_POLICY.md) - Know extract → regenerate → reinsert workflow and region limits
+15. [Three-Way Merge Regeneration Policy](../../PLANNING/THREE_WAY_MERGE_REGENERATION_POLICY.md) - Know BASE version storage, three-way merge execution, and conflict detection workflow
+16. [Template Versioning & Deprecation Policy](../../PLANNING/TEMPLATE_VERSIONING_AND_DEPRECATION_POLICY.md) - Know template version enforcement, Template Upgrade Task execution, and compatibility checking
+17. [Template Compliance Policy](../../PLANNING/TEMPLATE_COMPLIANCE_POLICY.md) - Know compliance suite usage, fixture creation, and compliance failure resolution
+18. [Dependency Graph & Topological Build Order Policy](../../PLANNING/DEPENDENCY_GRAPH_AND_TOPOLOGICAL_BUILD_ORDER_POLICY.md) - Know topological order execution, wave-based execution, and predecessor verification
+19. [Security & Policy Linting as First-Class Gates Policy](../../PLANNING/SECURITY_POLICY_LINTING_AS_FIRST_CLASS_GATES_POLICY.md) - Know security policy enforcement, SSOT security validation, and security test generation
+20. [Anti-Corruption Layer Policy](../../PLANNING/ANTI_CORRUPTION_LAYER_POLICY.md) - Know adapter implementation workflow, port interface creation, and vendor type translation
+21. [Metrics Feedback Loop Policy](../../PLANNING/METRICS_FEEDBACK_LOOP_POLICY.md) - Know per-task metrics collection, LogBook manifest creation, and metrics reporting
+22. [Spec-to-diff Previews Policy](../../PLANNING/SPEC_TO_DIFF_PREVIEWS_POLICY.md) - Know preview generation (dry-run mode), preview artifact creation, and "no apply without preview" rule
 
 **Reference during:**
 - Starting implementation → Check Golden Task archive for patterns
@@ -1017,7 +1017,7 @@ causal_chain:
 - Stage traceability → Track which stage task is executing, update task status when stage completes, link gate results to task specification
 - SSOT update (Stage 1) → Update `wiring:` section with file paths (controller, service, repository, tests), update `data_flow:`, update `config_sources:`, update `dependencies:`, update `identity: builder_commit:`
 - SSOT update (Stage 2) → Update `composition: plugins:` with plugin declarations (name, version, config, extension_points), verify plugin compatibility
-- SSOT validation → Run `tools/ssot_validator.py --verify-task .task/` after updating SSOT, fix violations before proceeding
+- SSOT validation → Run `tools/schema_validator.py --verify-task .task/` after updating SSOT, fix violations before proceeding
 - SSOT frozen after Stage 2 → Do NOT modify SSOT in Stages 3-4 (only code), if structure changes needed → rollback to Stage 1
 - Family-aware template usage → Only use templates from allowed families for current stage (Stage 1: Code+Config, Stage 3: Code+Test, Stage 4: Doc+Config), block if forbidden family attempted
 - Family input contract adherence → Provide required parameters from family contract, do NOT provide forbidden parameters (Code forbids test_framework, Test forbids service_logic, Doc forbids code_logic)
@@ -1031,8 +1031,8 @@ causal_chain:
 - Gate testing → Run idempotence test after Stage 1 and Stage 3 (generate twice, assert no diffs), log results in .task/gate_results.yaml
 - Canonicalization usage → Use sortedKeys, canonical_yaml_dump, normalize_line_endings for stable output
 - Idempotence test execution → Run `npm run test:idempotence` after completing Stage 1 and Stage 3, verify byte-identical output, block progression if test fails
-- Protected region preservation → Extract regions before regeneration using `tools/region_extractor.py`, reinsert after regeneration using `tools/region_reinserter.py`
-- Region hash updates → Calculate new hashes when region content changes using `tools/region_hash.py`, update SSOT `.task/wiring.yaml` Section 6 with new hash, lines count, modified_at timestamp
+- Protected region preservation → Extract regions before regeneration using `tools/protected_regions.py extract`, reinsert after regeneration using `tools/protected_regions.py reinsert`
+- Region hash updates → Calculate new hashes when region content changes using `tools/protected_regions.py hash`, update SSOT `.task/wiring.yaml` Section 6 with new hash, lines count, modified_at timestamp
 - Region limit enforcement → Ensure ≤2 regions per file, ≤80 lines per region, block if exceeded (file escape hatch ticket instead)
 - No interface alterations in regions → Do NOT modify function signatures, exported types, route contracts, database schemas in protected regions (interface stability required)
 - Region LogBook entries → Log region creation, modification events in `.task/logbook.yaml` with old_hash, new_hash, lines_changed
@@ -1068,26 +1068,26 @@ causal_chain:
 **Read at session start:**
 1. [Quality Standards & Verification](./quality-standards.md) - Review evaluation criteria
 2. [Agent Coordination Protocol](./agent-coordination-protocol.md) - Check verdict format
-3. [Template Drift Detection Policy](../../../PLANNING/TEMPLATE_DRIFT_DETECTION_POLICY.md) - Know drift classification
-4. [Template Variants & Parameter Packs Policy](../../../PLANNING/TEMPLATE_VARIANTS_AND_PARAMETER_PACKS_POLICY.md) - Know composition validation
-5. [Traceability by Construction Policy](../../../PLANNING/TRACEABILITY_BY_CONSTRUCTION_POLICY.md) - Know traceability verification checklist
-6. [Two Test Runs Policy](../../../PLANNING/TWO_TEST_RUNS_POLICY.md) - Know two-checkpoint evaluation requirements
-7. [Plugin Architecture Policy](../../../PLANNING/PLUGIN_ARCHITECTURE_POLICY.md) - Know 5 plugin verification rules
-8. [Schema-Driven Module Generation Policy](../../../PLANNING/SCHEMA_DRIVEN_MODULE_GENERATION_POLICY.md) - Know schema validation rules and exception verification
-9. [Reference-First Templatization Policy](../../../PLANNING/REFERENCE_FIRST_TEMPLATIZATION_POLICY.md) - Know battle-tested criteria and equivalence verification requirements
-10. [Stage-Gated Generation Pipeline Policy](../../../PLANNING/STAGE_GATED_GENERATION_PIPELINE_POLICY.md) - Know gate evaluation criteria and blocking rules
-11. [SSOT Wiring File Policy](../../../PLANNING/SSOT_WIRING_FILE_POLICY.md) - Know SSOT verification checklist and mechanical checks
-12. [Template Families Policy](../../../PLANNING/TEMPLATE_FAMILIES_POLICY.md) - Know 6 family verification checks and blocking rules
-13. [Idempotent Generation Policy](../../../PLANNING/future/IDEMPOTENT_GENERATION_POLICY.md) - Know 6 idempotence verification checks and blocking rules
-14. [Protected Regions Policy](../../../PLANNING/future/PROTECTED_REGIONS_POLICY.md) - Know 8 protected region verification checks and graduation criteria
-15. [Three-Way Merge Regeneration Policy](../../../PLANNING/THREE_WAY_MERGE_REGENERATION_POLICY.md) - Know merge conflict verification checks and resolution strategy review
-16. [Template Versioning & Deprecation Policy](../../../PLANNING/TEMPLATE_VERSIONING_AND_DEPRECATION_POLICY.md) - Know template version verification checks, lifecycle state validation, and upgrade verification
-17. [Template Compliance Policy](../../../PLANNING/TEMPLATE_COMPLIANCE_POLICY.md) - Know compliance verification checks, blocking rules, and compliance verdict requirements
-18. [Dependency Graph & Topological Build Order Policy](../../../PLANNING/DEPENDENCY_GRAPH_AND_TOPOLOGICAL_BUILD_ORDER_POLICY.md) - Know DAG mechanical checks, execution order verification, and blocking rules
-19. [Security & Policy Linting as First-Class Gates Policy](../../../PLANNING/SECURITY_POLICY_LINTING_AS_FIRST_CLASS_GATES_POLICY.md) - Know 13 security policy checks, security gate verification, and Critic Dimension 6 enforcement
-20. [Anti-Corruption Layer Policy](../../../PLANNING/ANTI_CORRUPTION_LAYER_POLICY.md) - Know vendor type leakage detection, adapter contract verification, and port interface compliance
-21. [Metrics Feedback Loop Policy](../../../PLANNING/METRICS_FEEDBACK_LOOP_POLICY.md) - Know per-task metrics validation, ROI calculation verification, and metrics completeness checks
-22. [Spec-to-diff Previews Policy](../../../PLANNING/SPEC_TO_DIFF_PREVIEWS_POLICY.md) - Know preview artifact verification, causal mapping completeness, and Stage -1 gate enforcement
+3. [Template Drift Detection Policy](../../PLANNING/TEMPLATE_DRIFT_DETECTION_POLICY.md) - Know drift classification
+4. [Template Variants & Parameter Packs Policy](../../PLANNING/TEMPLATE_VARIANTS_AND_PARAMETER_PACKS_POLICY.md) - Know composition validation
+5. [Traceability by Construction Policy](../../PLANNING/TRACEABILITY_BY_CONSTRUCTION_POLICY.md) - Know traceability verification checklist
+6. [Two Test Runs Policy](../../PLANNING/TWO_TEST_RUNS_POLICY.md) - Know two-checkpoint evaluation requirements
+7. [Plugin Architecture Policy](../../PLANNING/PLUGIN_ARCHITECTURE_POLICY.md) - Know 5 plugin verification rules
+8. [Schema-Driven Module Generation Policy](../../PLANNING/SCHEMA_DRIVEN_MODULE_GENERATION_POLICY.md) - Know schema validation rules and exception verification
+9. [Reference-First Templatization Policy](../../PLANNING/REFERENCE_FIRST_TEMPLATIZATION_POLICY.md) - Know battle-tested criteria and equivalence verification requirements
+10. [Stage-Gated Generation Pipeline Policy](../../PLANNING/STAGE_GATED_GENERATION_PIPELINE_POLICY.md) - Know gate evaluation criteria and blocking rules
+11. [SSOT Wiring File Policy](../../PLANNING/SSOT_WIRING_FILE_POLICY.md) - Know SSOT verification checklist and mechanical checks
+12. [Template Families Policy](../../PLANNING/TEMPLATE_FAMILIES_POLICY.md) - Know 6 family verification checks and blocking rules
+13. [Idempotent Generation Policy](../../PLANNING/future/IDEMPOTENT_GENERATION_POLICY.md) - Know 6 idempotence verification checks and blocking rules
+14. [Protected Regions Policy](../../PLANNING/future/PROTECTED_REGIONS_POLICY.md) - Know 8 protected region verification checks and graduation criteria
+15. [Three-Way Merge Regeneration Policy](../../PLANNING/THREE_WAY_MERGE_REGENERATION_POLICY.md) - Know merge conflict verification checks and resolution strategy review
+16. [Template Versioning & Deprecation Policy](../../PLANNING/TEMPLATE_VERSIONING_AND_DEPRECATION_POLICY.md) - Know template version verification checks, lifecycle state validation, and upgrade verification
+17. [Template Compliance Policy](../../PLANNING/TEMPLATE_COMPLIANCE_POLICY.md) - Know compliance verification checks, blocking rules, and compliance verdict requirements
+18. [Dependency Graph & Topological Build Order Policy](../../PLANNING/DEPENDENCY_GRAPH_AND_TOPOLOGICAL_BUILD_ORDER_POLICY.md) - Know DAG mechanical checks, execution order verification, and blocking rules
+19. [Security & Policy Linting as First-Class Gates Policy](../../PLANNING/SECURITY_POLICY_LINTING_AS_FIRST_CLASS_GATES_POLICY.md) - Know 13 security policy checks, security gate verification, and Critic Dimension 6 enforcement
+20. [Anti-Corruption Layer Policy](../../PLANNING/ANTI_CORRUPTION_LAYER_POLICY.md) - Know vendor type leakage detection, adapter contract verification, and port interface compliance
+21. [Metrics Feedback Loop Policy](../../PLANNING/METRICS_FEEDBACK_LOOP_POLICY.md) - Know per-task metrics validation, ROI calculation verification, and metrics completeness checks
+22. [Spec-to-diff Previews Policy](../../PLANNING/SPEC_TO_DIFF_PREVIEWS_POLICY.md) - Know preview artifact verification, causal mapping completeness, and Stage -1 gate enforcement
 
 **Reference during:**
 - Evaluating code → Apply 5-dimension framework
@@ -1122,7 +1122,7 @@ causal_chain:
 - Stage sequence verification → Verify stages executed in order (0 → 1 → 2 → 3 → 4), flag if stage skipped, flag if stages merged, flag if repeated out of order
 - Gate evidence verification → Verify gate results have timestamps, verify sequential execution, verify test outputs included, verify failure analysis provided if failed
 - Stage-specific criteria → Stage 0 (schema validates, no TODOs), Stage 1 (code compiles, routes resolve, types check), Stage 2 (plugins compatible, no conflicts), Stage 3 (tests pass, spec met, coverage ≥80%), Stage 4 (CI green, Critic approved, PM decision logged)
-- SSOT mechanical checks → Run `tools/ssot_validator.py --verify-task .task/` for automated verification (6 checks: structure, file correspondence, interface registration, composition compliance, verification contract, traceability)
+- SSOT mechanical checks → Run `tools/schema_validator.py --verify-task .task/` for automated verification (6 checks: structure, file correspondence, interface registration, composition compliance, verification contract, traceability)
 - SSOT structure validation → Verify all 5 sections present (identity, interfaces, composition, wiring, verification), verify required fields populated, verify valid values (UUIDs, versions, paths)
 - File correspondence check → Verify files in `wiring:` exist on disk, flag phantom files (exist but not in SSOT), flag missing files (in SSOT but not on disk)
 - Interface registration check → Verify routes in `interfaces: api:` registered in code, verify events in `interfaces: events:` published/subscribed, flag phantom endpoints (code has, SSOT doesn't)

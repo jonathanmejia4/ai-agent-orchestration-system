@@ -17,13 +17,12 @@ safe:
   - logbook_validator.py
   - schema_validator.py
   - gate_validator.py
-  - region_validator.py
   - idempotence_validator.py
 
   # Validate_* tools
   - validate_logbook.py
   - validate_action_plan.py
-  - validate_verdict.py
+  - validate_review_verdict.py
   - validate_write_boundaries.py
   - validate_issue_frontmatter.py
   - validate_verification_commands.py
@@ -59,7 +58,6 @@ safe:
   - progress_dashboard.py
   - orchestrator_dashboard.py
   - update_dashboard.py
-  - eod_summary.py
 
   # Scanners & Analyzers
   - pii_scanner.py
@@ -85,8 +83,6 @@ safe:
   - system_health_check.py
 
   # Region tools (read-only)
-  - region_hash.py
-  - region_extractor.py
   - region_interface_checker.py
   - region_reuse_detector.py
   - protected_regions_validator.py
@@ -104,7 +100,6 @@ safe:
   - doc_coverage.py
   - canonicalize.py
   - performance_profiler.py
-  - a11y_audit.py
   - api_docs_validator.py
 
 # DRY_RUN - Tools with safe execution flags
@@ -140,7 +135,6 @@ sandboxed:
 
   # Other modification tools
   - auto_resolve.py
-  - region_reinserter.py
   - update_base_version.py
   - collect_evidence.py
 

@@ -533,7 +533,7 @@ Lane Z fixes cross-cutting, high-impact issues that don't belong to any more spe
 **Typical Files Affected:**
 - Any path can be touched, but changes usually cluster around:
 - `CLAUDE.md` and the files whose contracts it references
-- Rollback / recovery tools (e.g. `tools/task_rollback.py`, `tools/recovery_orchestrator.py`)
+- Rollback / recovery tools (conceptual — see `PLANNING/ROLLBACK_PROCEDURES.md` and `tools/validate_rollback.py`)
 - Agent spec files in `.claude/agents/` (when two specs conflict)
 - `PLANNING/FAILURE_MODES.md`, `PLANNING/ROLLBACK_PROCEDURES.md`
 - LogBook wiring (when audit-trail guarantees break)

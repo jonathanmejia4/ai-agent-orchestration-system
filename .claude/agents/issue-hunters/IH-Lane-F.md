@@ -59,13 +59,14 @@ Use these tags: `MissingAltText`, `UnlabeledButton`, `LowContrast`, `MissingForm
 
 ### Helper Tool
 
-A static analysis tool is available at `tools/a11y_audit.py`. If present, invoke it for structured findings:
+The framework does not bundle a11y tooling. For structured findings, install and run an external tool such as axe-core (https://github.com/dequelabs/axe-core) or pa11y (https://pa11y.org/):
 
 ```bash
-test -f tools/a11y_audit.py && python3 tools/a11y_audit.py --json
+# axe path/to/frontend_file
+# pa11y path/to/frontend_file
 ```
 
-If the tool is not present, fall back to the grep patterns below.
+If no external tool is available, fall back to the grep patterns below.
 
 ---
 
@@ -207,7 +208,7 @@ related: []
 - **Violation check:**
   ```bash
   grep -n "<pattern>" <file>
-  # OR: python3 tools/a11y_audit.py --file <file>
+  # OR: external tool such as axe/pa11y on <file>
   ```
 
 ## Impact Analysis
@@ -229,8 +230,7 @@ related: []
 # Confirm the violation is present in the file
 grep -n "<pattern>" <file> && echo "violation_present: CONFIRMED"
 
-# After fix, re-run audit tool if available
-test -f tools/a11y_audit.py && python3 tools/a11y_audit.py --file <file>
+# After fix, re-run an external a11y tool if available (e.g., axe or pa11y on <file>)
 ```
 
 ## Dedup Verification
@@ -262,7 +262,7 @@ test -f tools/a11y_audit.py && python3 tools/a11y_audit.py --file <file>
 
 1. **Cite the specific WCAG criterion** (e.g., 1.1.1, 1.4.3, 3.3.2)
 2. **Show the offending markup verbatim** in the Evidence section
-3. **Prefer `tools/a11y_audit.py`** if the file exists — it produces structured output
+3. **Prefer an external a11y tool** such as axe-core or pa11y when installed — they produce structured output
 
 ---
 

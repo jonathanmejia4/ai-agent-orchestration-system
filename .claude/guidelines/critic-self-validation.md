@@ -74,7 +74,7 @@ during_review_checklist:
   - id: DUR-004
     check: "Have I checked for SSOT compliance?"
     required: true
-    failure_action: "Run ssot_validator.py"
+    failure_action: "Run schema_validator.py"
 
   - id: DUR-005
     check: "Have I verified idempotence requirements?"
@@ -336,7 +336,7 @@ verdict_entry:
       - name: "test name"
         result: "pass | fail"
     validators_executed:
-      - name: "ssot_validator"
+      - name: "schema_validator"
         result: "pass | fail"
 
   # Required analysis
@@ -576,9 +576,9 @@ class CrossReferenceValidator:
     - [ ] Builder's claimed scope matches actual changes
     - [ ] Builder's LogBook entry exists
 
-[ ] SSOT Compliance
-    - [ ] Ran ssot_validator.py
-    - [ ] No SSOT violations detected
+[ ] Schema Compliance
+    - [ ] Ran schema_validator.py
+    - [ ] No schema violations detected
     - [ ] Any catalog references are accurate
 
 [ ] Test Verification
@@ -746,7 +746,7 @@ if [ -n "$VERDICT_FILES" ]; then
 
     for file in $VERDICT_FILES; do
         # Run verdict validator
-        python tools/validate_verdict.py "$file"
+        python tools/validate_review_verdict.py "$file"
 
         if [ $? -ne 0 ]; then
             echo "ERROR: Verdict validation failed for $file"
@@ -805,7 +805,7 @@ self_validation_record:
       DUR-001: {status: "pass", notes: "Used objective criteria"}
       DUR-002: {status: "pass", notes: "Ran unit tests"}
       DUR-003: {status: "pass", notes: "Reviewed all files"}
-      DUR-004: {status: "pass", notes: "ssot_validator passed"}
+      DUR-004: {status: "pass", notes: "schema_validator passed"}
       DUR-005: {status: "pass", notes: "idempotence_validator passed"}
 
   pre_verdict:

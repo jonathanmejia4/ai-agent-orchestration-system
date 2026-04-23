@@ -535,7 +535,7 @@ Keep it minimal.
 - `.claude/agents/Critic-Dependencies.md`, `Critic-Effort.md`, `Critic-ExecutionReady.md`, `Critic-SpecFit.md`, `Critic-Verification.md`, `Critic-SecurityPolicy.md`, `Critic-ACL.md`
 - `.claude/agents/Critic-PlanAuditor.md`, `Critic-FixVerifier.md`
 - `PLANNING/schemas/critic_verdict_schema.yaml`, `critic_verdict_detailed_schema.yaml`
-- `tools/validate_critic_verdict.py`, `tools/critic_review.py`, `tools/orchestrator.py`
+- `tools/validate_review_verdict.py`, `tools/critic_self_validation.py`, `tools/orchestrator.py`
 - `LogBook/critic/{verdicts,plan-audits,requests,violations}/`
 
 **Common Fix Patterns:**

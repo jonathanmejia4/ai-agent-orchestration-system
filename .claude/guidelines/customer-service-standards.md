@@ -271,7 +271,6 @@ This guideline defines the comprehensive standards for customer-facing systems, 
 - `src/billing/refund_calculator.py`
 - `src/billing/abuse_tracker.py`
 - `src/accounts/subscription_blocks.py`
-- `tools/refund_abuse_monitor.py`
 
 ### 1.11 Chargeback & Dispute Handling
 
@@ -413,7 +412,6 @@ This guideline defines the comprehensive standards for customer-facing systems, 
 - `src/billing/dispute_responder.py`
 - `src/billing/evidence_collector.py`
 - `src/billing/chargeback_monitor.py`
-- `tools/chargeback_ratio_alert.py`
 - `LogBook/billing/chargebacks/`
 
 ### 1.12 Cancellation Flow & Retention
@@ -598,7 +596,6 @@ Why are you canceling? (Select one)
 - `src/feedback/exit_survey.py`
 - `templates/emails/cancellation_confirm.jinja2`
 - `templates/emails/winback.jinja2`
-- `tools/retention_metrics.py`
 
 ### Payment Type Tags
 `PaymentMethodGap`, `SavedPaymentGap`, `CardExpiryGap`, `CardDeclineUXGap`, `GracePeriodGap`, `FraudRecoveryGap`, `AccidentalDiscontinuationRisk`, `InvoiceAccessGap`, `SubscriptionPauseGap`, `ProrationGap`, `RefundPolicyGap`, `RefundAbuseGap`, `ChargebackGap`, `DisputeHandlingGap`, `FriendlyFraudGap`, `CancellationFlowGap`, `RetentionOfferGap`, `WinBackGap`
@@ -1375,7 +1372,7 @@ Why are you canceling? (Select one)
 
 **Files to Check:**
 - `src/accessibility/preferences.py`
-- `tools/a11y_audit.py`
+- External a11y tooling (axe-core or pa11y — not bundled)
 
 ### Accessibility Type Tags
 `A11yScreenReaderGap`, `A11yKeyboardGap`, `A11yContrastGap`, `A11yFontScaleGap`, `A11yAltTextGap`, `A11yCaptionGap`
@@ -1502,7 +1499,6 @@ LogBook/
 tools/
 ├── card_expiry_notifier.py
 ├── account_merge_tool.py
-├── a11y_audit.py
 ├── ux_click_audit.py           # Click count auditor
 ├── fraud_appeal_processor.py
 └── password_breach_check.py
@@ -1826,7 +1822,6 @@ If not useful → Stays in log (may make sense later)
 
 **Files to Check:**
 - `src/billing/nexus_tracker.py`
-- `tools/tax_nexus_monitor.py`
 
 ### 18.3 International Tax Requirements
 
@@ -2025,7 +2020,6 @@ If not useful → Stays in log (may make sense later)
 
 **Files to Check:**
 - `src/billing/tax_reports.py`
-- `tools/tax_filing_exporter.py`
 - `LogBook/billing/tax_reports/`
 
 ### 18.9 Edge Cases

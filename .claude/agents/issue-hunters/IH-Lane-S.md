@@ -63,8 +63,8 @@ Use these tags: `CriticContract`, `OrchestratorDrift`, `ChecklistGap`, `VerdictD
 |------|---------|
 | `critic_verdict_schema.yaml` | Verdict format |
 | `critic_verdict_detailed_schema.yaml` | Detailed verdict |
-| `tools/validate_critic_verdict.py` | Validate verdict format |
-| `tools/critic_review.py` | Critic review helper |
+| `tools/validate_review_verdict.py` | Validate verdict format |
+| `tools/critic_self_validation.py` | Critic self-validation helper |
 | `tools/orchestrator.py` | Orchestrator automation |
 
 ### LogBook Structure
@@ -313,8 +313,8 @@ echo "Actual:" && grep -oE "verdict|score" .claude/agents/Critic-<Dimension>.md
 When writing verification commands in issues:
 
 1. **DO NOT copy-paste documentation examples**
-   - ❌ `python tools/foo.py --task <task-id>` (docs example)
-   - ✅ `test -f tools/foo.py && echo "PASS"` (verification check)
+   - ❌ `python tools/<target>.py --task <task-id>` (docs example)
+   - ✅ `test -f tools/<target>.py && echo "PASS"` (verification check)
 
 2. **Always use concrete paths, never placeholders**
    - ❌ `test -f {file_path}` (placeholder not substituted)
@@ -330,8 +330,8 @@ When writing verification commands in issues:
    - ✅ `ls *.yaml >/dev/null 2>&1 && echo "PASS"`
 
 5. **Verification commands should verify the FIX, not document the problem**
-   - ❌ `test -f tools/ghost.py && echo "EXISTS" || echo "GHOST"` (documents problem)
-   - ✅ `test -f tools/ghost.py && echo "PASS" || echo "FAIL"` (verifies fix)
+   - ❌ `test -f tools/<target>.py && echo "EXISTS" || echo "GHOST"` (documents problem)
+   - ✅ `test -f tools/<target>.py && echo "PASS" || echo "FAIL"` (verifies fix)
 
 
 ## Commit Your Work

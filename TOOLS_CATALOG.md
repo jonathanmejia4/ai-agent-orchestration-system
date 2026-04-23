@@ -3,67 +3,66 @@
 <!-- STATS_START -->
 ## Catalog Statistics
 
-> **Last Updated:** 2026-01-10 12:03:27
+> **Last Updated:** 2026-04-23 10:37:35
 
 | Total | Working | Broken | Progress |
 |-------|---------|--------|----------|
-| 134 | 132 | 2 | [███████████████████░] 98.5% |
+| 252 | 252 | 0 | [████████████████████] 100.0% |
 
 ### By Location
 
 | Location | Total | Working | Broken | % |
 |----------|-------|---------|--------|---|
-| 🔴 `.github/workflows/` | 2 | 0 | 2 | 0% |
-| ✅ `tools/` | 123 | 123 | 0 | 100% |
+| ✅ `scripts/` | 3 | 3 | 0 | 100% |
+| ✅ `tools/` | 240 | 240 | 0 | 100% |
 | ✅ `tools/hooks/` | 9 | 9 | 0 | 100% |
 
 ### By Type
 
 | Type | Count |
 |------|-------|
-| Python | 112 |
+| Python | 232 |
 | Shell | 20 |
-| Workflow | 2 |
 
 <details>
 <summary>By Category (click to expand)</summary>
 
 | Category | Total | Working | Broken | % |
 |----------|-------|---------|--------|---|
-| ✅ Checkers & Scanners | 11 | 11 | 0 | 100% |
-| ✅ Dependency Analysis | 5 | 5 | 0 | 100% |
-| ✅ Generators | 2 | 2 | 0 | 100% |
-| ✅ Health & Monitoring | 3 | 3 | 0 | 100% |
+| ✅ Checkers & Scanners | 23 | 23 | 0 | 100% |
+| ✅ Critic System | 1 | 1 | 0 | 100% |
+| ✅ Dependency Analysis | 9 | 9 | 0 | 100% |
+| ✅ Generators | 7 | 7 | 0 | 100% |
+| ✅ Health & Monitoring | 6 | 6 | 0 | 100% |
 | ✅ Issue & Catalog Mgmt | 7 | 7 | 0 | 100% |
-| ✅ LogBook Management | 6 | 6 | 0 | 100% |
-| ✅ Merge & Conflict | 1 | 1 | 0 | 100% |
-| ✅ Metrics & Reporting | 6 | 6 | 0 | 100% |
-| ✅ Notifications | 2 | 2 | 0 | 100% |
-| 🔴 Other Workflows | 2 | 0 | 2 | 0% |
-| ✅ Policy & Compliance | 2 | 2 | 0 | 100% |
-| ✅ Protected Regions | 9 | 9 | 0 | 100% |
+| ✅ LogBook Management | 9 | 9 | 0 | 100% |
+| ✅ Merge & Conflict | 6 | 6 | 0 | 100% |
+| ✅ Metrics & Reporting | 9 | 9 | 0 | 100% |
+| ✅ Notifications | 5 | 5 | 0 | 100% |
+| ✅ PM & Promotion | 7 | 7 | 0 | 100% |
+| ✅ Policy & Compliance | 6 | 6 | 0 | 100% |
+| ✅ Protected Regions | 5 | 5 | 0 | 100% |
 | ✅ Recovery & Rollback | 3 | 3 | 0 | 100% |
 | ✅ SSOT & Wiring | 1 | 1 | 0 | 100% |
 | ✅ Schema Validation | 1 | 1 | 0 | 100% |
-| ✅ Security | 2 | 2 | 0 | 100% |
-| ✅ Shell Scripts | 11 | 11 | 0 | 100% |
+| ✅ Security | 3 | 3 | 0 | 100% |
+| ✅ Shell Scripts | 10 | 10 | 0 | 100% |
 | ✅ Shell Scripts (Other) | 9 | 9 | 0 | 100% |
-| ✅ Stage Gate | 1 | 1 | 0 | 100% |
-| ✅ Template Management | 3 | 3 | 0 | 100% |
-| ✅ Testing | 3 | 3 | 0 | 100% |
-| ✅ Traceability & Audit | 2 | 2 | 0 | 100% |
-| ✅ Utilities | 27 | 27 | 0 | 100% |
-| ✅ Validation | 3 | 3 | 0 | 100% |
-| ✅ Verification | 12 | 12 | 0 | 100% |
+| ✅ Stage Gate | 2 | 2 | 0 | 100% |
+| ✅ Standalone Scripts | 3 | 3 | 0 | 100% |
+| ✅ Task Management | 1 | 1 | 0 | 100% |
+| ✅ Template Management | 15 | 15 | 0 | 100% |
+| ✅ Testing | 4 | 4 | 0 | 100% |
+| ✅ Traceability & Audit | 4 | 4 | 0 | 100% |
+| ✅ Utilities | 58 | 58 | 0 | 100% |
+| ✅ Validation | 18 | 18 | 0 | 100% |
+| ✅ Verification | 20 | 20 | 0 | 100% |
 
 ### Category Health Status
 
-**Healthy (100%):** 24 categories
+**Healthy (100%):** 28 categories
 
-**Needs Attention:**
-| Category | Progress | Broken |
-|----------|----------|--------|
-| Other Workflows | 0% | 2 |
+**Needs Attention:** None
 
 </details>
 
@@ -77,10 +76,7 @@
 
 | Item | Location | Category | Error | Last Checked |
 |------|----------|----------|-------|--------------|
-| `dependency-catalog.yml` | .github/workflows/ | Other Workflows | while scanning a simple key
-  in "/Users... | 2026-01-10 |
-| `architecture-catalog.yml` | .github/workflows/ | Other Workflows | while scanning a simple key
-  in "/Users... | 2026-01-10 |
+| *None* | - | - | - | - |
 
 <!-- BROKEN_TOOLS_END -->
 

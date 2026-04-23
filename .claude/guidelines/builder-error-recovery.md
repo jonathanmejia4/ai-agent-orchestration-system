@@ -532,10 +532,9 @@ if boundary.errors:
 
 ## Related Documents
 
-- [AGENT_FAILURE_HANDLING_PROTOCOL.md](../../PLANNING/AGENT_FAILURE_HANDLING_PROTOCOL.md)
 - [error-handling-standards.md](./error-handling-standards.md)
 - [builder-scope-enforcement.md](./builder-scope-enforcement.md)
-- [FAILURE_MODES.md](../../PLANNING/FAILURE_MODES.md)
+- [rollback-procedures.md](./rollback-procedures.md)
 
 ---
 

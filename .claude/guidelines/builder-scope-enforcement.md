@@ -344,7 +344,7 @@ enforcement_tools:
 
 ```yaml
 review_enforcement:
-  critic_review:
+  critic_self_validation:
     - check: "Scope compliance"
       verdict_impact: "REJECT if violated"
 

@@ -417,10 +417,9 @@ task:
 
 ## Related Documents
 
-- [Planner_Operating_Manual.md](../../PLANNING/Planner_Operating_Manual.md)
-- [Planner_Decision_Matrix.md](../../PLANNING/Planner_Decision_Matrix.md)
-- [work_order_schema.yaml](../../PLANNING/schemas/work_order_schema.yaml)
-- [TASK_LIFECYCLE_STAGES.md](../../PLANNING/TASK_LIFECYCLE_STAGES.md)
+- [planner-constraints.md](./planner-constraints.md)
+- [planner-templates.md](./planner-templates.md)
+- [AGENT_BOUNDARIES_REFERENCE.md](./AGENT_BOUNDARIES_REFERENCE.md)
 
 ---
 

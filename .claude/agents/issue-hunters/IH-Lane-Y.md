@@ -127,21 +127,21 @@ Tool: parser.add_argument("--check", ...)  # No --dry-run flag
 
 ### Pattern 2: Undocumented Tool
 ```
-File exists: tools/new_feature.py
-README.md: No mention of new_feature.py
-Workflows: Reference tools/new_feature.py
+File exists: tools/<newly-added>.py
+README.md: No mention of <newly-added>.py
+Workflows: Reference tools/<newly-added>.py
 ```
 
 ### Pattern 3: Makefile Ghost Reference
 ```
-Makefile: python3 tools/deprecated_tool.py
-Reality: tools/deprecated_tool.py was deleted
+Makefile: python3 tools/<deleted-tool>.py
+Reality: tools/<deleted-tool>.py was deleted
 ```
 
 ### Pattern 4: Script Path Error
 ```
-tools/setup_framework.sh: python3 tools/old_init.py
-Reality: tools/old_init.py renamed to tools/initialize.py
+tools/setup_framework.sh: python3 tools/<old-name>.py
+Reality: tools/<old-name>.py renamed to tools/<new-name>.py
 ```
 
 ### Pattern 5: Help vs Docs Mismatch
@@ -152,9 +152,9 @@ README.md: "--verbose: Show debug information"
 
 ### Pattern 6: Argument-Name Drift Across Related Tools
 ```
-tools/task_status.py: --task TASK_ID
-tools/task_rollback.py: --id TASK_ID
-tools/task_verify.py: --ticket TASK_ID
+tools/<a>.py: --task TASK_ID
+tools/<b>.py: --id TASK_ID
+tools/<c>.py: --ticket TASK_ID
 Same concept, three different flag names → users get confused
 ```
 
@@ -302,8 +302,8 @@ if __name__ == "__main__":
 When writing verification commands in issues:
 
 1. **DO NOT copy-paste documentation examples**
-   - ❌ `python tools/foo.py --task <task-id>` (docs example)
-   - ✅ `test -f tools/foo.py && echo "PASS"` (verification check)
+   - ❌ `python tools/<target>.py --task <task-id>` (docs example)
+   - ✅ `test -f tools/<target>.py && echo "PASS"` (verification check)
 
 2. **Always use concrete paths, never placeholders**
    - ❌ `test -f {file_path}` (placeholder not substituted)
@@ -319,8 +319,8 @@ When writing verification commands in issues:
    - ✅ `ls *.yaml >/dev/null 2>&1 && echo "PASS"`
 
 5. **Verification commands should verify the FIX, not document the problem**
-   - ❌ `test -f tools/ghost.py && echo "EXISTS" || echo "GHOST"` (documents problem)
-   - ✅ `test -f tools/ghost.py && echo "PASS" || echo "FAIL"` (verifies fix)
+   - ❌ `test -f tools/<target>.py && echo "EXISTS" || echo "GHOST"` (documents problem)
+   - ✅ `test -f tools/<target>.py && echo "PASS" || echo "FAIL"` (verifies fix)
 
 
 ## Commit Your Work

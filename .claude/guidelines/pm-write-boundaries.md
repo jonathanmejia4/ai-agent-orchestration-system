@@ -627,7 +627,7 @@ This document extends `.claude/guidelines/agent-guardrails.md` with specific pat
 
 The following tools enforce PM write boundaries:
 - `tools/validate_logbook.py` - Validates LogBook entries and paths
-- `tools/ssot_validator.py` - Validates SSOT compliance
+- `tools/schema_validator.py` - Validates schema/wiring compliance
 - `tools/idempotence_validator.py` - Validates operation safety
 
 ### 9.3 CI/CD Integration

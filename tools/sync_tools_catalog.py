@@ -221,7 +221,7 @@ TOOL_CATEGORY_PATTERNS = {
     "Checkers & Scanners": [
         "add_fix_checklist", "check_agent", "check_canonicalization", "check_cross",
         "check_dependencies", "check_traceability", "code_quality", "convention_checker",
-        "deprecated_template_scanner", "deprecated_template_usage", "detect_missing",
+        "deprecated_template_scanner", "detect_missing",
         "embedded_test", "env_config", "failure_mode", "file_integrity", "fixture_suffix",
         "fixture_validator", "lisp_syntax", "naming_pattern", "pii_scanner",
         "retired_template", "spec_compliance", "test_mirror", "variant_symmetry"
@@ -255,7 +255,7 @@ TOOL_CATEGORY_PATTERNS = {
     ],
     "Metrics & Reporting": [
         "agent_session", "alt_branch_stats", "coverage_reporter", "doc_coverage",
-        "eod_summary", "metric_aggregator", "metrics_collector", "performance_profiler",
+        "metric_aggregator", "performance_profiler",
         "progress_dashboard", "progress_reporter", "qa_metrics"
     ],
     "Notifications": [
@@ -271,8 +271,8 @@ TOOL_CATEGORY_PATTERNS = {
         "escape_hatch"
     ],
     "Protected Regions": [
-        "protected_paths", "protected_regions", "region_extractor", "region_hash",
-        "region_interface", "region_reinserter", "region_reuse", "region_validator"
+        "protected_paths", "protected_regions",
+        "region_interface", "region_reuse"
     ],
     "Recovery & Rollback": [
         "orchestrator_recovery", "recovery_orchestrator", "snapshot_manager"
@@ -296,14 +296,14 @@ TOOL_CATEGORY_PATTERNS = {
         "integration_test_runner", "run_integration", "smoke_test", "test_runner"
     ],
     "Traceability & Audit": [
-        "a11y_audit", "audit.py", "audit_trail", "traceability_checker", "ux_click"
+        "audit.py", "audit_trail", "traceability_checker", "ux_click"
     ],
     "Validation": [
         "validate_action", "validate_ci", "validate_composition", "validate_critic",
         "validate_crossrefs", "validate_environment", "validate_equivalence",
         "validate_escalation", "validate_integration", "validate_monitoring",
-        "validate_planner", "validate_pm", "validate_rollback", "validate_state",
-        "validate_status", "validate_verdict", "validate_wo", "validate_work",
+        "validate_planner", "validate_pm", "validate_review", "validate_rollback",
+        "validate_state", "validate_status", "validate_wo", "validate_work",
         "validate_write"
     ],
     "Verification": [

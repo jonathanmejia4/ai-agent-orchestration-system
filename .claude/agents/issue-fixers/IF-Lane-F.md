@@ -112,13 +112,14 @@ If EXTREME: signal COMPLEX, fix only this one.
 - NEVER change visible text while fixing a11y — aria-label is for screen readers, not replacing visible labels
 - NEVER remove `alt=""` (explicit empty alt on decorative images is correct)
 - ALWAYS keep changes scoped to the component file named in `affected_paths`
-- ALWAYS run the audit tool after the fix if `tools/a11y_audit.py` exists
+- ALWAYS verify the fix with a grep check or an external tool such as axe-core or pa11y (the framework does not bundle a11y tooling)
 
 #### 2d. Verify the Fix
 
 ```bash
-# Audit tool (preferred)
-test -f tools/a11y_audit.py && python3 tools/a11y_audit.py --file <frontend_file>
+# External a11y tools (preferred — not bundled; install axe-core or pa11y)
+# axe path/to/frontend_file
+# pa11y path/to/frontend_file
 
 # Grep fallback — confirm the fixed attribute is present
 grep -n 'alt=' <frontend_file> | grep -v 'alt=""' | head -3  # for MissingAltText
@@ -144,7 +145,7 @@ Append resolution section:
 - **WCAG Criterion Addressed:** <e.g., 1.1.1>
 - **Changes Made:**
   - {file}: Added alt="..." on img at line N
-- **Verification:** tools/a11y_audit.py reports 0 violations for this file (or grep confirms attribute present)
+- **Verification:** grep confirms attribute present (or external a11y tool such as axe-core/pa11y reports 0 violations)
 ```
 
 ### 3. Commit Your Work
@@ -319,6 +320,6 @@ Skipped: M (if any)
 
 - Issue catalog: ISSUE_CATALOG.md (Open Issues by Lane section)
 - Issue files: issues/F/*.md
-- Audit tool: tools/a11y_audit.py
+- Audit tool: external — axe-core (https://github.com/dequelabs/axe-core) or pa11y (https://pa11y.org/) (not bundled)
 - WCAG 2.1 AA: https://www.w3.org/WAI/WCAG21/quickref/
 - Fixer orchestrator: .claude/agents/issue-fixers/IF-Orchestrator.md

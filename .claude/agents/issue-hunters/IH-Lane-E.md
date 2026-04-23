@@ -267,8 +267,8 @@ If a duplicate exists → SKIP and find a different issue.
 When writing verification commands in issues:
 
 1. **DO NOT copy-paste documentation examples**
-   - Bad: `python tools/foo.py --task <task-id>` (docs example)
-   - Good: `test -f tools/foo.py && echo "PASS"` (verification check)
+   - Bad: `python tools/<target>.py --task <task-id>` (docs example)
+   - Good: `test -f tools/<target>.py && echo "PASS"` (verification check)
 
 2. **Always use concrete paths, never placeholders**
    - Bad: `test -f {file_path}`

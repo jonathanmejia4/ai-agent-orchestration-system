@@ -48,7 +48,7 @@ Fix up to 5 open issues in Lane B, prioritizing oldest unresolved first.
 
 Lane B tracks "half-baked fixes" — cases where a previous fix used **Option B** (remove/annotate reference) instead of **Option A** (create the missing file).
 
-**Example:** A ghost reference issue for `tools/missing.py` was "fixed" by annotating it as "(planned)" instead of actually creating the file. Lane B tracks this debt.
+**Example:** A ghost reference issue for `tools/<missing>.py` was "fixed" by annotating it as "(planned)" instead of actually creating the file. Lane B tracks this debt.
 
 **Your Job:** Create the missing files that should have been created in the first place.
 

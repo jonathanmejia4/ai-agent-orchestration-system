@@ -36,7 +36,7 @@ Use these tags: `EnforcementGap`, `ClaimMismatch`, `UnwiredGate`, `PolicyDrift`,
 
 ### Pre-Commit Hooks (check .pre-commit-config.yaml)
 
-- ssot-validator, dag-validator, retired-template-check
+- schema-validator, dag-validator, retired-template-check
 - cross-reference-check, template-version-check
 - write-boundaries, builder-scope, verdict-validator
 
@@ -91,7 +91,7 @@ grep -rhi "security.*enforce\|must.*security" .claude/ PLANNING/ --include="*.md
 
 Lane J is 100% complete. Skip these fixed patterns:
 - J-01 to J-10: Core enforcement gaps (all fixed)
-- J-41: work_order_validator.py (created)
+- J-41: validate_work_order.py (created)
 - J-42: time_box_monitor.py (created)
 - J-43: Stage 0.5 gate (added)
 - J-50: graduation_tracker.py (pending but tracked)
@@ -208,8 +208,8 @@ grep -r "<enforcement_term>" .github/workflows/ .pre-commit-config.yaml && \
 When writing verification commands in issues:
 
 1. **DO NOT copy-paste documentation examples**
-   - ❌ `python tools/foo.py --task <task-id>` (docs example)
-   - ✅ `test -f tools/foo.py && echo "PASS"` (verification check)
+   - ❌ `python tools/<target>.py --task <task-id>` (docs example)
+   - ✅ `test -f tools/<target>.py && echo "PASS"` (verification check)
 
 2. **Always use concrete paths, never placeholders**
    - ❌ `test -f {file_path}` (placeholder not substituted)
@@ -225,8 +225,8 @@ When writing verification commands in issues:
    - ✅ `ls *.yaml >/dev/null 2>&1 && echo "PASS"`
 
 5. **Verification commands should verify the FIX, not document the problem**
-   - ❌ `test -f tools/ghost.py && echo "EXISTS" || echo "GHOST"` (documents problem)
-   - ✅ `test -f tools/ghost.py && echo "PASS" || echo "FAIL"` (verifies fix)
+   - ❌ `test -f tools/<target>.py && echo "EXISTS" || echo "GHOST"` (documents problem)
+   - ✅ `test -f tools/<target>.py && echo "PASS" || echo "FAIL"` (verifies fix)
 
 
 ## Commit Your Work

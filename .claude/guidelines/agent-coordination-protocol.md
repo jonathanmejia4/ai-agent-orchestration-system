@@ -650,7 +650,7 @@ If PM detects no progress for > 4 hours across all agents:
     }
   ],
   "timeout_rate": 0.02,  // 2% of operations timeout
-  "most_common_timeout": "critic_review"
+  "most_common_timeout": "critic_self_validation"
 }
 ```
 

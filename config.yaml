@@ -133,7 +133,7 @@ tools:
 
   monitors:
     - health_monitor
-    - metrics_collector
+    - metric_aggregator
 
 # Security Configuration
 security:

@@ -25,15 +25,15 @@
 #     fi
 #
 #     # Validate with error handling
-#     if ! tools/validate_tool.sh tools/metrics_collector.py; then
-#       echo "❌ metrics_collector.py not available, skipping metrics"
+#     if ! tools/validate_tool.sh tools/metric_aggregator.py; then
+#       echo "metric_aggregator.py not available, skipping metrics"
 #       exit 0
 #     fi
 #
 # Referenced in:
 #     - edge-cases-and-recovery.md:309 (Tool existence check)
 #     - edge-cases-and-recovery.md:351 (security_scanner.py validation)
-#     - edge-cases-and-recovery.md:358 (metrics_collector.py validation)
+#     - edge-cases-and-recovery.md:358 (metric_aggregator.py validation)
 #
 # Author: SAF System
 # Created: 2025-12-23

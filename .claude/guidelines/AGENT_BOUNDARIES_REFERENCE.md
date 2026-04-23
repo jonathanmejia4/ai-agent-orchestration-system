@@ -216,9 +216,9 @@ When documents conflict:
 
 ## Related Documents
 
-- [PM Agent Specification](../../PLANNING/PM_AGENT_SPECIFICATION.md)
 - [Agent Guardrails](agent-guardrails.md)
 - [Agent Operating Principles](agent-operating-principles.md)
+- [PM Write Boundaries](pm-write-boundaries.md)
 
 ---
 

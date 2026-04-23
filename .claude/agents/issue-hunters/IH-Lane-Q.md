@@ -224,9 +224,9 @@ grep "<field>" tools/validate_action_plan.py
 | Stage | Artifact | Validator |
 |-------|----------|-----------|
 | Planning | plan_metadata.yaml | validate_action_plan.py |
-| Specification | task_spec.yaml | validate_task_manifest.py |
-| Wiring | wiring.yaml | ssot_validator.py |
-| Verdict | verdict.yaml | validate_verdict.py |
+| Specification | task_spec.yaml | validate_work_order.py |
+| Wiring | wiring.yaml | schema_validator.py |
+| Verdict | verdict.yaml | validate_review_verdict.py |
 
 ---
 
@@ -237,8 +237,8 @@ grep "<field>" tools/validate_action_plan.py
 When writing verification commands in issues:
 
 1. **DO NOT copy-paste documentation examples**
-   - ❌ `python tools/foo.py --task <task-id>` (docs example)
-   - ✅ `test -f tools/foo.py && echo "PASS"` (verification check)
+   - ❌ `python tools/<target>.py --task <task-id>` (docs example)
+   - ✅ `test -f tools/<target>.py && echo "PASS"` (verification check)
 
 2. **Always use concrete paths, never placeholders**
    - ❌ `test -f {file_path}` (placeholder not substituted)
@@ -254,8 +254,8 @@ When writing verification commands in issues:
    - ✅ `ls *.yaml >/dev/null 2>&1 && echo "PASS"`
 
 5. **Verification commands should verify the FIX, not document the problem**
-   - ❌ `test -f tools/ghost.py && echo "EXISTS" || echo "GHOST"` (documents problem)
-   - ✅ `test -f tools/ghost.py && echo "PASS" || echo "FAIL"` (verifies fix)
+   - ❌ `test -f tools/<target>.py && echo "EXISTS" || echo "GHOST"` (documents problem)
+   - ✅ `test -f tools/<target>.py && echo "PASS" || echo "FAIL"` (verifies fix)
 
 
 ## Commit Your Work

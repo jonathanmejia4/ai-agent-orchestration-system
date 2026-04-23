@@ -43,7 +43,7 @@ Use these tags: `CI`, `WorkflowDrift`, `HookDrift`, `MissingScript`, `Placeholde
 
 ### Pre-Commit (.pre-commit-config.yaml)
 
-- ssot-validator, dag-validator, retired-template-check
+- schema-validator, dag-validator, retired-template-check
 - write-boundaries, builder-scope, verdict-validator
 
 ### Git Hooks (.githooks/)
@@ -83,7 +83,7 @@ done
 
 ## CI/Hook Drift Patterns
 
-1. **Missing Script:** Workflow runs tools/x.py but file doesn't exist
+1. **Missing Script:** Workflow runs `tools/<missing>.py` but file doesn't exist
 2. **Placeholder Step:** Step only echoes TODO/stub message
 3. **Disabled Job:** Job has if: false condition
 4. **Hook Unwired:** Pre-commit references tool not in hook order
@@ -218,8 +218,8 @@ python3 -c "import yaml; yaml.safe_load(open('.github/workflows/<workflow>.yml')
 When writing verification commands in issues:
 
 1. **DO NOT copy-paste documentation examples**
-   - ❌ `python tools/foo.py --task <task-id>` (docs example)
-   - ✅ `test -f tools/foo.py && echo "PASS"` (verification check)
+   - ❌ `python tools/<target>.py --task <task-id>` (docs example)
+   - ✅ `test -f tools/<target>.py && echo "PASS"` (verification check)
 
 2. **Always use concrete paths, never placeholders**
    - ❌ `test -f {file_path}` (placeholder not substituted)
@@ -235,8 +235,8 @@ When writing verification commands in issues:
    - ✅ `ls *.yaml >/dev/null 2>&1 && echo "PASS"`
 
 5. **Verification commands should verify the FIX, not document the problem**
-   - ❌ `test -f tools/ghost.py && echo "EXISTS" || echo "GHOST"` (documents problem)
-   - ✅ `test -f tools/ghost.py && echo "PASS" || echo "FAIL"` (verifies fix)
+   - ❌ `test -f tools/<target>.py && echo "EXISTS" || echo "GHOST"` (documents problem)
+   - ✅ `test -f tools/<target>.py && echo "PASS" || echo "FAIL"` (verifies fix)
 
 
 ## Commit Your Work

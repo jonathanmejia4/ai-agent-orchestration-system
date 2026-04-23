@@ -57,7 +57,7 @@ Severity floor: Lane Z issues should generally be severity ≥ 6. If it's lower-
 ### Rollback/Recovery Files
 | File | Purpose |
 |------|---------|
-| `tools/task_rollback.py` | Task rollback execution |
+| `tools/<rollback-tool>.py` | Task rollback execution (conceptual) |
 | `tools/recovery_orchestrator.py` | Recovery orchestration |
 | `PLANNING/ROLLBACK_PROCEDURES.md` | Rollback procedures |
 | `PLANNING/FAILURE_MODES.md` | Failure mode catalog |
@@ -103,8 +103,8 @@ done
 
 ### Rollback Path Integrity
 ```bash
-test -f tools/task_rollback.py && echo "EXISTS"
-grep -c "def rollback\|def main" tools/task_rollback.py
+test -f tools/<rollback-tool>.py && echo "EXISTS"
+grep -c "def rollback\|def main" tools/<rollback-tool>.py
 grep -A5 "properties:" PLANNING/schemas/rollback_event_schema.yaml | head -10
 ls LogBook/rollback/ 2>/dev/null || echo "NO ROLLBACK LOGBOOK"
 ```
@@ -137,7 +137,7 @@ grep -rhi "failure.*handoff\|error.*handoff" .claude/ PLANNING/ | head -10
 ```
 CLAUDE.md: "All agents MUST log all actions to LogBook"
 Reality: Some tool operations bypass logging
-Evidence: tools/quick_fix.py has no LogBook writes
+Evidence: tools/<operation-tool>.py has no LogBook writes
 ```
 
 ### Pattern 2: Guarantee Mismatch
@@ -149,8 +149,8 @@ Evidence: LogBook/pm/escalations/ empty or missing
 
 ### Pattern 3: Rollback Not Wired
 ```
-ROLLBACK_PROCEDURES.md: "Use task_rollback.py to revert"
-Reality: task_rollback.py not called by any workflow
+ROLLBACK_PROCEDURES.md: "Use <rollback-tool>.py to revert"
+Reality: <rollback-tool>.py not called by any workflow
 Evidence: No grep matches in .github/workflows/
 ```
 
@@ -328,8 +328,8 @@ If issue fits better elsewhere:
 When writing verification commands in issues:
 
 1. **DO NOT copy-paste documentation examples**
-   - ❌ `python tools/foo.py --task <task-id>` (docs example)
-   - ✅ `test -f tools/foo.py && echo "PASS"` (verification check)
+   - ❌ `python tools/<target>.py --task <task-id>` (docs example)
+   - ✅ `test -f tools/<target>.py && echo "PASS"` (verification check)
 
 2. **Always use concrete paths, never placeholders**
    - ❌ `test -f {file_path}` (placeholder not substituted)
@@ -345,8 +345,8 @@ When writing verification commands in issues:
    - ✅ `ls *.yaml >/dev/null 2>&1 && echo "PASS"`
 
 5. **Verification commands should verify the FIX, not document the problem**
-   - ❌ `test -f tools/ghost.py && echo "EXISTS" || echo "GHOST"` (documents problem)
-   - ✅ `test -f tools/ghost.py && echo "PASS" || echo "FAIL"` (verifies fix)
+   - ❌ `test -f tools/<target>.py && echo "EXISTS" || echo "GHOST"` (documents problem)
+   - ✅ `test -f tools/<target>.py && echo "PASS" || echo "FAIL"` (verifies fix)
 
 
 ## Commit Your Work

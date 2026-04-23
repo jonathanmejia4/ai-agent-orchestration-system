@@ -38,11 +38,11 @@ Use these tags: `Schema`, `SchemaDrift`, `MissingSchema`, `UnusedSchema`, `Valid
 
 | Schema | Validator |
 |--------|-----------|
-| `critic_verdict_schema.yaml` | `validate_verdict.py` |
+| `critic_verdict_schema.yaml` | `validate_review_verdict.py` |
 | `work_order_schema.yaml` | `validate_work_order.py` |
-| `task_manifest_schema.yaml` | `validate_task_manifest.py` |
+| `task_manifest_schema.yaml` | `validate_work_order.py` |
 | `action_plan_schema.yaml` | `validate_action_plan.py` |
-| `ssot_wiring_schema.yaml` | `ssot_validator.py` |
+| `ssot_wiring_schema.yaml` | `schema_validator.py` |
 
 ### Other Schemas
 
@@ -95,7 +95,7 @@ grep -E "return \{|\"[a-z_]+\":" tools/validate_work_order.py | head -10
 
 Lane M is 100% complete. Skip these:
 - **M-01:** `work_order_queue_schema.yaml` (created)
-- **M-02:** `validate_verdict.py` dimensions (fixed)
+- **M-02:** `validate_review_verdict.py` dimensions (fixed)
 - **M-03:** `validate_work_order.py` issued_by (fixed)
 - **M-04:** `validate_logbook.py` VALID_AGENTS (aligned)
 - **M-05:** `validate_task_manifest.py` required fields (fixed)
@@ -234,8 +234,8 @@ All verdict validators MUST produce:
 When writing verification commands in issues:
 
 1. **DO NOT copy-paste documentation examples**
-   - ❌ `python tools/foo.py --task <task-id>` (docs example)
-   - ✅ `test -f tools/foo.py && echo "PASS"` (verification check)
+   - ❌ `python tools/<target>.py --task <task-id>` (docs example)
+   - ✅ `test -f tools/<target>.py && echo "PASS"` (verification check)
 
 2. **Always use concrete paths, never placeholders**
    - ❌ `test -f {file_path}` (placeholder not substituted)
@@ -251,8 +251,8 @@ When writing verification commands in issues:
    - ✅ `ls *.yaml >/dev/null 2>&1 && echo "PASS"`
 
 5. **Verification commands should verify the FIX, not document the problem**
-   - ❌ `test -f tools/ghost.py && echo "EXISTS" || echo "GHOST"` (documents problem)
-   - ✅ `test -f tools/ghost.py && echo "PASS" || echo "FAIL"` (verifies fix)
+   - ❌ `test -f tools/<target>.py && echo "EXISTS" || echo "GHOST"` (documents problem)
+   - ✅ `test -f tools/<target>.py && echo "PASS" || echo "FAIL"` (verifies fix)
 
 
 ## Commit Your Work

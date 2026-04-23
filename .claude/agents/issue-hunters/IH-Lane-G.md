@@ -114,8 +114,8 @@ grep -rho "LogBook/[a-zA-Z_/-]*" .claude/ PLANNING/ --include="*.md" | sort -u |
 
 ### Pattern 1: Tool Ghost Reference
 ```
-Document: "Run `python3 tools/validate_something.py`"
-Reality: tools/validate_something.py does NOT exist
+Document: "Run `python3 tools/<referenced-tool>.py`"
+Reality: tools/<referenced-tool>.py does NOT exist
 ```
 
 ### Pattern 2: Schema Ghost Reference
@@ -183,7 +183,7 @@ grep -q "<target>" <source> && echo "FAIL (ref still present)" || echo "PASS"
 
 ## False Positive Rules (What NOT to Flag)
 
-- **Paths inside code comments marked as examples** — e.g., `# e.g., tools/foo.py`
+- **Paths inside code comments marked as examples** — e.g., `# e.g., tools/<target>.py`
 - **Placeholder syntax** like `<file>`, `{path}`, `${VAR}` — not literal paths
 - **URL references** (http://, https://) — not filesystem paths
 - **Paths inside test fixtures that are intentionally non-existent** — used to assert error handling
@@ -300,8 +300,8 @@ test -f <target> && echo "PASS (Option A)" || \
 When writing verification commands in issues:
 
 1. **DO NOT copy-paste documentation examples**
-   - Bad: `python tools/foo.py --task <task-id>` (docs example)
-   - Good: `test -f tools/foo.py && echo "PASS"` (verification check)
+   - Bad: `python tools/<target>.py --task <task-id>` (docs example)
+   - Good: `test -f tools/<target>.py && echo "PASS"` (verification check)
 
 2. **Always use concrete paths, never placeholders**
    - Bad: `test -f {file_path}`
@@ -315,8 +315,8 @@ When writing verification commands in issues:
    - Good: `ls *.yaml >/dev/null 2>&1 && echo "PASS"`
 
 5. **Verification commands should verify the FIX, not document the problem**
-   - Bad: `test -f tools/ghost.py && echo "EXISTS" || echo "GHOST"`
-   - Good: `test -f tools/ghost.py && echo "PASS" || echo "FAIL"`
+   - Bad: `test -f tools/<target>.py && echo "EXISTS" || echo "GHOST"`
+   - Good: `test -f tools/<target>.py && echo "PASS" || echo "FAIL"`
 
 ---
 

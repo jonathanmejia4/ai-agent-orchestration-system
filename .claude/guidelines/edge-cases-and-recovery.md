@@ -383,8 +383,8 @@ if ! tools/validate_tool.sh tools/security_scanner.py; then
 fi
 
 # Nice-to-have tool: Metrics collector
-if ! tools/validate_tool.sh tools/metrics_collector.py; then
-  echo "🟡 WARNING: Metrics collector missing, proceeding without metrics"
+if ! tools/validate_tool.sh tools/metric_aggregator.py; then
+  echo "WARNING: Metric aggregator missing, proceeding without metrics"
   # Continue without metrics
 fi
 ```

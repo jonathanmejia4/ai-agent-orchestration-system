@@ -87,10 +87,19 @@ def enforce_self_validation(verdict_func: Callable) -> Callable:
         verdict = verdict_func(critic_agent, task_id, work_order_id, **kwargs)
 
         # Post-verdict validation
-        from tools.validate_verdict import validate_verdict
-        validation = validate_verdict(verdict)
-        if not validation.get("valid", False):
-            errors = validation.get("errors", ["Unknown validation error"])
+        from tools.validate_review_verdict import CriticVerdictValidator, ValidationResult
+        result = ValidationResult()
+        validator = CriticVerdictValidator()
+        validator.validate_schema(verdict, result)
+        validator.validate_dimensions(verdict, result)
+        validator.validate_consistency(verdict, result)
+        validator.validate_critical_dimensions(verdict, result)
+        if not result.valid:
+            validation_dict = result.to_dict()
+            errors = (validation_dict.get("schema_errors", []) +
+                      validation_dict.get("missing_dimensions", []) +
+                      validation_dict.get("consistency_errors", []) +
+                      validation_dict.get("critical_dimension_failures", [])) or ["Unknown validation error"]
             raise VerdictValidationError(
                 f"Verdict validation failed: {errors}"
             )

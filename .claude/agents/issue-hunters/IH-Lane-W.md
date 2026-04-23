@@ -76,7 +76,7 @@ tests/
 | Tool | Purpose |
 |------|---------|
 | `tools/validate_logbook.py` | LogBook structure |
-| `tools/validate_task_manifest.py` | Task manifests |
+| `tools/validate_work_order.py` | Work orders |
 | `tools/validate_write_boundaries.py` | Write boundaries |
 | `tools/validate_integration_test.py` | Integration tests |
 | `tools/schema_validator.py` | Generic schema validation |
@@ -166,9 +166,9 @@ Reality: tests/fixtures/mock_db.py does not exist
 
 ### Pattern 3: Validation Script Not Wired
 ```
-Tool exists: tools/validate_task_manifest.py
+Tool exists: tools/validate_work_order.py
 CI usage: No workflow calls this validator
-Tests: No test for validate_task_manifest.py
+Tests: No test for validate_work_order.py
 ```
 
 ### Pattern 4: Conftest Fixture Conflict
@@ -181,7 +181,7 @@ Result: Fixture shadowing
 ### Pattern 5: Coverage Gap
 ```
 Docs claim: "All tools have tests"
-Reality: tools/important_tool.py has no test file
+Reality: tools/<target>.py has no test file
 ```
 
 ### Pattern 6: Broken Test Command in Docs
@@ -323,8 +323,8 @@ related: []
 When writing verification commands in issues:
 
 1. **DO NOT copy-paste documentation examples**
-   - ❌ `python tools/foo.py --task <task-id>` (docs example)
-   - ✅ `test -f tools/foo.py && echo "PASS"` (verification check)
+   - ❌ `python tools/<target>.py --task <task-id>` (docs example)
+   - ✅ `test -f tools/<target>.py && echo "PASS"` (verification check)
 
 2. **Always use concrete paths, never placeholders**
    - ❌ `test -f {file_path}` (placeholder not substituted)
@@ -340,8 +340,8 @@ When writing verification commands in issues:
    - ✅ `ls *.yaml >/dev/null 2>&1 && echo "PASS"`
 
 5. **Verification commands should verify the FIX, not document the problem**
-   - ❌ `test -f tools/ghost.py && echo "EXISTS" || echo "GHOST"` (documents problem)
-   - ✅ `test -f tools/ghost.py && echo "PASS" || echo "FAIL"` (verifies fix)
+   - ❌ `test -f tools/<target>.py && echo "EXISTS" || echo "GHOST"` (documents problem)
+   - ✅ `test -f tools/<target>.py && echo "PASS" || echo "FAIL"` (verifies fix)
 
 
 ## Commit Your Work
