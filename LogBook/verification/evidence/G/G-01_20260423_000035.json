@@ -1,0 +1,45 @@
+{
+  "issue_id": "G-01",
+  "lane": "G",
+  "timestamp": "2026-04-23T00:00:35.303245",
+  "all_passed": false,
+  "passed_checks": 0,
+  "failed_checks": 3,
+  "total_checks": 3,
+  "confidence_score": 0,
+  "verification_pattern": "embedded_commands",
+  "verification_depth": "STANDARD",
+  "affected_paths": [],
+  "checks": [
+    {
+      "name": "file_exists",
+      "command": "test -f {file_path}",
+      "expected": 0,
+      "actual": 1,
+      "output": "",
+      "passed": false,
+      "duration_ms": 4,
+      "error": "File {file_path} does not exist"
+    },
+    {
+      "name": "file_not_empty",
+      "command": "test -s {file_path}",
+      "expected": 0,
+      "actual": 1,
+      "output": "",
+      "passed": false,
+      "duration_ms": 3,
+      "error": "File {file_path} is empty"
+    },
+    {
+      "name": "git_tracked",
+      "command": "git ls-files --error-unmatch {file_path}",
+      "expected": 0,
+      "actual": 1,
+      "output": "error: pathspec '{file_path}' did not match any file(s) known to git\nDid you forget to 'git add'?\n",
+      "passed": false,
+      "duration_ms": 14,
+      "error": "File {file_path} is not tracked by git"
+    }
+  ]
+}
