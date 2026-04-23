@@ -1,0 +1,45 @@
+{
+  "issue_id": "G-01",
+  "lane": "G",
+  "timestamp": "2026-04-23T11:00:19.633090",
+  "all_passed": true,
+  "passed_checks": 3,
+  "failed_checks": 0,
+  "total_checks": 3,
+  "confidence_score": 100,
+  "verification_pattern": "embedded_commands",
+  "verification_depth": "STANDARD",
+  "affected_paths": [],
+  "checks": [
+    {
+      "name": "file_exists",
+      "command": "test -f README.md",
+      "expected": 0,
+      "actual": 0,
+      "output": "",
+      "passed": true,
+      "duration_ms": 4,
+      "error": ""
+    },
+    {
+      "name": "file_not_empty",
+      "command": "test -s README.md",
+      "expected": 0,
+      "actual": 0,
+      "output": "",
+      "passed": true,
+      "duration_ms": 4,
+      "error": ""
+    },
+    {
+      "name": "git_tracked",
+      "command": "git ls-files --error-unmatch README.md",
+      "expected": 0,
+      "actual": 0,
+      "output": "README.md\n",
+      "passed": true,
+      "duration_ms": 15,
+      "error": ""
+    }
+  ]
+}

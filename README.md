@@ -56,6 +56,7 @@ This framework's approach: agents write signal files when done.
 | `/find-all` | Hunt for issues across all 23 lanes in parallel |
 | `/fix-all` | Fix all open issues across all lanes in parallel |
 | `/verify-fixes` | Verify all RESOLVED issues are actually fixed |
+| `/verify-catalog` | Systematically re-verify every RESOLVED issue in the catalog |
 
 ---
 

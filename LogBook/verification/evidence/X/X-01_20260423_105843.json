@@ -1,0 +1,47 @@
+{
+  "issue_id": "X-01",
+  "lane": "X",
+  "timestamp": "2026-04-23T10:58:43.043219",
+  "all_passed": true,
+  "passed_checks": 3,
+  "failed_checks": 0,
+  "total_checks": 3,
+  "confidence_score": 100,
+  "verification_pattern": "embedded_commands",
+  "verification_depth": "STANDARD",
+  "affected_paths": [
+    ".claude/commands/verify-catalog.md"
+  ],
+  "checks": [
+    {
+      "name": "file_exists",
+      "command": "test -f .claude/commands/verify-catalog.md",
+      "expected": 0,
+      "actual": 0,
+      "output": "",
+      "passed": true,
+      "duration_ms": 5,
+      "error": ""
+    },
+    {
+      "name": "file_not_empty",
+      "command": "test -s .claude/commands/verify-catalog.md",
+      "expected": 0,
+      "actual": 0,
+      "output": "",
+      "passed": true,
+      "duration_ms": 3,
+      "error": ""
+    },
+    {
+      "name": "git_tracked",
+      "command": "git ls-files --error-unmatch .claude/commands/verify-catalog.md",
+      "expected": 0,
+      "actual": 0,
+      "output": ".claude/commands/verify-catalog.md\n",
+      "passed": true,
+      "duration_ms": 21,
+      "error": ""
+    }
+  ]
+}

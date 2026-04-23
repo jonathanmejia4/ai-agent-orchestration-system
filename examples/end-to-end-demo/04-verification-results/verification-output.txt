@@ -1,0 +1,32 @@
+
+============================================================
+✅ X-01: PASS
+============================================================
+Pattern:     embedded_commands
+Depth:       STANDARD
+Checks:      3/3 passed
+Confidence:  100%
+Targets:     .claude/commands/verify-catalog.md
+
+Check Results:
+------------------------------------------------------------
+  ✅ file_exists
+      Command: test -f .claude/commands/verify-catalog.md...
+      Exit: expected=0, actual=0
+  ✅ file_not_empty
+      Command: test -s .claude/commands/verify-catalog.md...
+      Exit: expected=0, actual=0
+  ✅ git_tracked
+      Command: git ls-files --error-unmatch .claude/commands/veri...
+      Exit: expected=0, actual=0
+============================================================
+=== Running X-01 embedded Verification Commands ===
+
+# Check 1: README mentions /verify-catalog in the Slash Commands section
+PASS
+
+# Check 2: All 4 command files are represented in README
+PASS
+
+# Check 3: Table has at least 4 command rows now
+PASS

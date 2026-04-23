@@ -1,0 +1,12 @@
+diff --git a/README.md b/README.md
+index 255b0fa..0b05190 100644
+--- a/README.md
++++ b/README.md
+@@ -56,6 +56,7 @@ This framework's approach: agents write signal files when done.
+ | `/find-all` | Hunt for issues across all 23 lanes in parallel |
+ | `/fix-all` | Fix all open issues across all lanes in parallel |
+ | `/verify-fixes` | Verify all RESOLVED issues are actually fixed |
++| `/verify-catalog` | Systematically re-verify every RESOLVED issue in the catalog |
+ 
+ ---
+ 
