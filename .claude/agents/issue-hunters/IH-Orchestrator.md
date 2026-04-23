@@ -180,7 +180,7 @@ lanes:
   # used for "stuck lane" diagnostics, not enforced by code.
 
 progress:
-  total_lanes: 23
+  total_lanes: 26
   completed_lanes: 0
   total_issues: 0
   batches_run: 0

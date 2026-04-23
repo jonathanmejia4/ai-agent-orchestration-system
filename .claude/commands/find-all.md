@@ -42,6 +42,6 @@ This command reads the orchestrator spec at runtime so that:
 - Signals directory: `LogBook/issue-hunting/signals/`
 - State file: `LogBook/issue-hunting/orchestrator-state.yaml`
 
-## The 23 Lanes
+## The 26 Lanes
 
 B, D, E, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z

@@ -45,7 +45,7 @@ git clone https://github.com/jonathanmejia4/ai-agent-orchestration-system.git
 cd ai-agent-orchestration-system
 
 # Install dependencies
-pip install pyyaml
+pip install -r requirements.txt
 
 # Hunt for issues across all lanes
 /find-all

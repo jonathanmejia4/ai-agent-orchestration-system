@@ -1,0 +1,230 @@
+{
+  "timestamp": "2026-04-23T11:31:33.852476",
+  "summary": {
+    "total_issues": 5,
+    "total_verified": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 4,
+    "pass_rate": 0,
+    "genuine_failures": 0,
+    "false_negatives": 0
+  },
+  "lanes": {
+    "A": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "B": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "C": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "D": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "E": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "F": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "G": {
+      "total": 1,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 1,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "H": {
+      "total": 1,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 1,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "I": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "J": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "K": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "L": {
+      "total": 1,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 1,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "M": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "N": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "O": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "P": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "Q": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "R": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "S": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "T": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "U": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "V": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "W": {
+      "total": 1,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 1,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "X": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "Y": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    },
+    "Z": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "genuine_failures": 0,
+      "false_negatives": 0
+    }
+  },
+  "failures": {
+    "G": [],
+    "H": [],
+    "L": [],
+    "W": [],
+    "X": []
+  }
+}

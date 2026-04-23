@@ -3,7 +3,7 @@
 <!-- STATS_START -->
 ## Catalog Statistics
 
-> **Last Updated:** 2026-04-23 11:29:44
+> **Last Updated:** 2026-04-23 11:32:07
 
 | Total | Working | Broken | Progress |
 |-------|---------|--------|----------|
@@ -212,3 +212,94 @@ The tools catalog integrates with the issue system:
 ---
 
 *Run `python3 tools/sync_tools_catalog.py` to populate this catalog with your actual tools.*
+
+
+<!-- FUNCTIONAL_TEST_START -->
+## Functional Test Results
+
+> **Last Run:** 2026-04-23 11:31:43
+> **Mode:** Quick
+
+| Tested | Passed | Failed | Skipped | Errors | Pass Rate |
+|--------|--------|--------|---------|--------|-----------|
+| 154 | 132 | 22 | 77 | 0 | [█████████████████░░░] 85.7% |
+
+### By Result
+
+| Status | Count | Description |
+|--------|-------|-------------|
+| ✅ PASS | 132 | Tool runs without error |
+| ❌ FAIL | 22 | Tool crashes or returns error |
+| ⏭️ SKIP | 77 | Manual-only or sandboxed (use --full) |
+| ⚠️ ERROR | 0 | Could not test (timeout, missing deps) |
+
+### By Safety Level
+
+| Level | Count | Test Method |
+|-------|-------|-------------|
+| SAFE | 139 | Run with `--help` |
+| DRY_RUN | 15 | Run with `--dry-run` or `--check` |
+| SANDBOXED | 52 | Run in temp directory |
+| MANUAL | 25 | Skipped (dangerous) |
+
+### Failed Tools
+
+| Tool | Safety Level | Error |
+|------|--------------|-------|
+| `approve_action.py` * | dry_run | --dry-run failed: usage: approve_action.py [-h] -- |
+| `check_agent_compatibility.py` * | safe | --help failed:  |
+| `critic_self_validation.py` * | safe | --help failed: Traceback (most recent call last):
+ |
+| `generate.py` * | dry_run | --dry-run failed: usage: generate.py [-h] --task T |
+| `permission_guardrails.py` * | safe | --help failed:  |
+| `pm_promote.py` * | dry_run | --dry-run failed: usage: pm_promote.py [-h] [-n] [ |
+| `scan_timestamps.py` * | dry_run | --dry-run failed: usage: scan_timestamps.py [-h] [ |
+| `schema_validator.py` | safe | --help failed:  |
+| `stage_gate_enforcer.py` * | dry_run | --dry-run failed:  |
+| `stage_promotion.py` * | dry_run | --dry-run failed: usage: stage_promotion.py [-h] { |
+| `template_metadata_generator.py` * | dry_run | --dry-run failed:  |
+| `template_registry_manager.py` * | dry_run | --dry-run failed: usage: template_registry_manager |
+| `template_upgrade_assistant.py` * | dry_run | --dry-run failed: usage: template_upgrade_assistan |
+| `time_box_monitor.py` * | safe | --help failed: Traceback (most recent call last):
+ |
+| `traceability_checker.py` * | safe | --help failed:  |
+| `validate_environment.py` * | safe | --help failed:  |
+| `validate_issue_file.py` * | safe | --help failed: error: not found: --help
+ |
+| `validate_work_order.py` * | safe | --help failed:  |
+| `verify_all_resolved.py` | safe | --help failed: Traceback (most recent call last):
+ |
+| `verify_optimization.py` * | safe | --help failed:  |
+| `verify_phase2.py` * | safe | --help failed:  |
+| `verify_phase3.py` * | safe | --help failed:  |
+
+### Auto-Classified Tools (132 tools)
+
+> These tools are not in `tool_safety_config.yaml` and were classified automatically.
+> Add them to the config file for explicit control.
+
+| Tool | Detected Level | Reason |
+|------|----------------|--------|
+| `access_control_validator.py` | safe | Auto-detected |
+| `account_merge_tool.py` | dry_run | Auto-detected |
+| `add_pattern_vars.py` | sandboxed | Auto-detected |
+| `add_permission_handling_to_lanes.py` | sandboxed | Auto-detected |
+| `agent_session_state.py` | sandboxed | Auto-detected |
+| `ai_adapter.py` | sandboxed | Auto-detected |
+| `alert_manager.py` | manual | Auto-detected |
+| `alt_branch_stats.py` | safe | Auto-detected |
+| `approve_action.py` | dry_run | Auto-detected |
+| `approve_preview.py` | manual | Auto-detected |
+| `ast_merge_engine.py` | sandboxed | Auto-detected |
+| `audit_trail_validator.py` | safe | Auto-detected |
+| `auto_resolution.py` | sandboxed | Auto-detected |
+| `bias_detector.py` | sandboxed | Auto-detected |
+| `breaking_change_frequency.py` | manual | Auto-detected |
+| `build_embeddings.py` | sandboxed | Auto-detected |
+| `card_expiry_notifier.py` | manual | Auto-detected |
+| `causal_mapper.py` | sandboxed | Auto-detected |
+| `check_agent_compatibility.py` | safe | Auto-detected |
+| `check_canonicalization.py` | safe | Auto-detected |
+| ... | ... | 112 more auto-classified |
+
+<!-- FUNCTIONAL_TEST_END -->

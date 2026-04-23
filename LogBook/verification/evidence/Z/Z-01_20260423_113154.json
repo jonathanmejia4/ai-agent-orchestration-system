@@ -1,0 +1,45 @@
+{
+  "issue_id": "Z-01",
+  "lane": "Z",
+  "timestamp": "2026-04-23T11:31:54.271198",
+  "all_passed": true,
+  "passed_checks": 3,
+  "failed_checks": 0,
+  "total_checks": 3,
+  "confidence_score": 100,
+  "verification_pattern": "embedded_commands",
+  "verification_depth": "STANDARD",
+  "affected_paths": [],
+  "checks": [
+    {
+      "name": "file_exists",
+      "command": "test -f CLAUDE.md",
+      "expected": 0,
+      "actual": 0,
+      "output": "",
+      "passed": true,
+      "duration_ms": 6,
+      "error": ""
+    },
+    {
+      "name": "file_not_empty",
+      "command": "test -s CLAUDE.md",
+      "expected": 0,
+      "actual": 0,
+      "output": "",
+      "passed": true,
+      "duration_ms": 3,
+      "error": ""
+    },
+    {
+      "name": "git_tracked",
+      "command": "git ls-files --error-unmatch CLAUDE.md",
+      "expected": 0,
+      "actual": 0,
+      "output": "CLAUDE.md\n",
+      "passed": true,
+      "duration_ms": 14,
+      "error": ""
+    }
+  ]
+}
