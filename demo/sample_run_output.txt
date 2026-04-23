@@ -1,0 +1,39 @@
+
+============================================================
+               FILE-SIGNAL ORCHESTRATION DEMO               
+============================================================
+
+Demonstrating file-based agent coordination
+NO AI API calls - pure orchestration pattern
+
+[Step 1] Cleaning old signals...
+  ✓ Signal directory cleaned
+[Step 2] Reading issue catalog...
+  → Lane E: 3 open issues
+  → Lane M: 2 open issues
+[Step 3] Spawning lane workers in PARALLEL...
+  → In production: dozens of parallel agents via Task tool
+  → In demo: Threaded simulation with same signal behavior
+  → Starting Lane E worker...
+  → Starting Lane M worker...
+[Step 4] Polling for completion signals...
+  Polling: E:○ | M:○ (0/2 done)
+  Polling: E:✓ | M:✓ (2/2 done)
+  ✓ All lanes completed!
+[Step 5] Generating report...
+  ✓ Report: examples/output/sample_run_report.md
+  ✓ Signals copied to examples/output/signals/
+
+============================================================
+                       DEMO COMPLETE                        
+============================================================
+
+  Lanes:        2
+  Issues fixed: 5
+  Signals:      LogBook/issue-fixing/signals/
+  Report:       examples/output/sample_run_report.md
+
+This demonstrates the file-signal orchestration pattern.
+Lane workers ran in PARALLEL threads (simulating real agent behavior).
+Real system uses Claude agents with this same signaling approach.
+

@@ -1,0 +1,34 @@
+run_id: "initial"
+started: null
+status: idle
+
+lanes_skipped: []
+
+lanes:
+  D: { status: pending, issues_fixed: 0, issue_ids: [] }
+  E: { status: pending, issues_fixed: 0, issue_ids: [] }
+  G: { status: pending, issues_fixed: 0, issue_ids: [] }
+  H: { status: pending, issues_fixed: 0, issue_ids: [] }
+  I: { status: pending, issues_fixed: 0, issue_ids: [] }
+  J: { status: pending, issues_fixed: 0, issue_ids: [] }
+  K: { status: pending, issues_fixed: 0, issue_ids: [] }
+  L: { status: pending, issues_fixed: 0, issue_ids: [] }
+  M: { status: pending, issues_fixed: 0, issue_ids: [] }
+  N: { status: pending, issues_fixed: 0, issue_ids: [] }
+  O: { status: pending, issues_fixed: 0, issue_ids: [] }
+  P: { status: pending, issues_fixed: 0, issue_ids: [] }
+  Q: { status: pending, issues_fixed: 0, issue_ids: [] }
+  R: { status: pending, issues_fixed: 0, issue_ids: [] }
+  S: { status: pending, issues_fixed: 0, issue_ids: [] }
+  T: { status: pending, issues_fixed: 0, issue_ids: [] }
+  U: { status: pending, issues_fixed: 0, issue_ids: [] }
+  V: { status: pending, issues_fixed: 0, issue_ids: [] }
+  W: { status: pending, issues_fixed: 0, issue_ids: [] }
+  X: { status: pending, issues_fixed: 0, issue_ids: [] }
+  Y: { status: pending, issues_fixed: 0, issue_ids: [] }
+  Z: { status: pending, issues_fixed: 0, issue_ids: [] }
+
+progress:
+  total_lanes: 22
+  completed_lanes: 0
+  total_fixed: 0

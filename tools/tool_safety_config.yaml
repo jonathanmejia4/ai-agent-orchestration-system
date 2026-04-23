@@ -1,0 +1,185 @@
+# Tool Safety Configuration
+#
+# This file classifies tools by their safety level for automated testing.
+# Edit this file to change how tools are tested.
+#
+# Safety Levels:
+#   safe      - Read-only tools, run with --help
+#   dry_run   - Tools with --dry-run or --check flags (specify the flag)
+#   sandboxed - Tools that modify files (run in temp directory)
+#   manual    - Dangerous tools (skip automated testing)
+
+# SAFE - Read-only tools that can be tested with --help
+safe:
+  # Validators
+  - dag_validator.py
+  - ssot_validator.py
+  - logbook_validator.py
+  - schema_validator.py
+  - gate_validator.py
+  - region_validator.py
+  - idempotence_validator.py
+
+  # Validate_* tools
+  - validate_logbook.py
+  - validate_action_plan.py
+  - validate_verdict.py
+  - validate_write_boundaries.py
+  - validate_issue_frontmatter.py
+  - validate_verification_commands.py
+
+  # Checkers
+  - check_cross_references.py
+  - check_traceability.py
+  - circular_dep_detector.py
+  - find_cycles.py
+  - retired_template_checker.py
+  - template_version_checker.py
+  - template_drift_detector.py
+  - convention_checker.py
+  - code_quality_analyzer.py
+  - test_coverage_checker.py
+  - protected_paths_checker.py
+
+  # Verifiers
+  - verify_issue.py
+  - batch_verify.py
+  - comprehensive_verify.py
+  - smart_verify.py
+  - final_verify.py
+  - verify_frontmatter.py
+  - verify_stats.py
+  - verify_dashboard.py
+  - verify_all_tools.py
+  - verify_all_resolved.py
+
+  # Reporters & Stats
+  - issue_stats.py
+  - progress_reporter.py
+  - progress_dashboard.py
+  - orchestrator_dashboard.py
+  - update_dashboard.py
+  - eod_summary.py
+
+  # Scanners & Analyzers
+  - pii_scanner.py
+  - security_scanner.py
+  - detect_missing_manifests.py
+  - dependency_analyzer.py
+  - change_impact_analyzer.py
+  - failure_mode_detector.py
+  - file_integrity_checker.py
+  - markdown_link_checker.py
+  - analyze_verification_failures.py
+
+  # Audits
+  - audit.py
+  - logbook_query.py
+
+  # Dependency tools
+  - topological_sort.py
+
+  # Health & Monitoring
+  - health_monitor.py
+  - agent_health_monitor.py
+  - system_health_check.py
+
+  # Region tools (read-only)
+  - region_hash.py
+  - region_extractor.py
+  - region_interface_checker.py
+  - region_reuse_detector.py
+  - protected_regions_validator.py
+
+  # Other safe tools
+  - log_aggregator.py
+  - idempotence_checker.py
+  - sync_tools_catalog.py
+  - safe_tool_tester.py
+
+  # Universal utilities (added from the framework)
+  - env_config_validator.py
+  - password_breach_check.py
+  - coverage_reporter.py
+  - doc_coverage.py
+  - canonicalize.py
+  - performance_profiler.py
+  - a11y_audit.py
+  - api_docs_validator.py
+
+# DRY_RUN - Tools with safe execution flags
+# Format: tool_name: flag
+dry_run:
+  sync_catalog_stats.py: "--check"
+  restructure_catalog.py: "--dry-run"
+
+# SANDBOXED - Tools that modify files (test in temp directory)
+sandboxed:
+  # Issue management
+  - add_issue.py
+  - add_issue_to_catalog.py
+  - add_fix_checklist.py
+
+  # Frontmatter/content modification
+  - add_frontmatter.py
+  - add_resolution_template.py
+  - add_verification_commands.py
+  - fix_frontmatter.py
+  - fix_issue_frontmatter.py
+  - fix_verification_commands.py
+  - regenerate_verification_commands.py
+
+  # LogBook modification
+  - logbook_update.py
+  - logbook_auto_append.py
+  - logbook_archive.py
+
+  # Generation tools
+  - generate_report.py
+  - generate_daily_digest.py
+
+  # Other modification tools
+  - auto_resolve.py
+  - region_reinserter.py
+  - update_base_version.py
+  - collect_evidence.py
+
+  # Policy tools
+  - enforce_write_boundaries.py
+  - policy_enforcement_engine.py
+
+# MANUAL_ONLY - Skip automated testing (too dangerous)
+manual:
+  # Orchestration
+  - orchestrator_recovery.py
+  - recovery_orchestrator.py
+
+  # State management
+  - snapshot_manager.py
+  - workflow_state_manager.py
+
+  # Escalation
+  - escalation_handler.py
+
+  # Merge tools
+  - merge_engine.py
+
+  # Sensitive operations
+  - protected_regions.py
+
+  # Test runners (run their own tests)
+  - smoke_test.py
+  - test_runner.py
+  - run_integration_tests.py
+  - checkpoint_runner.py
+
+  # External communication (sends notifications)
+  - notification_dispatcher.py
+
+  # Shell scripts (all manual)
+  - setup_saf.sh
+  - install_hooks.sh
+  - health_check.sh
+  - test_idempotence.sh
+  - validate_tool.sh
+  - check_builder_scope.sh

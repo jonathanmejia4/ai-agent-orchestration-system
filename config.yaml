@@ -1,0 +1,175 @@
+# Runtime Configuration
+# Version: 1.0.0
+# Last Updated: 2025-12-25
+#
+# PURPOSE: High-level workflow stage configuration for the framework runtime operations.
+# This defines the APPROVAL WORKFLOW stages (draft -> review -> staging -> live)
+# for task lifecycle management.
+#
+# SCOPE: Agent settings, workflow pipeline gates, template config, LogBook settings.
+#
+# NOTE: This is DIFFERENT from integration/config/stage-gates.yaml which defines
+# the GENERATION PIPELINE stages (structural -> plugin_attachment -> behavioral ->
+# integration -> promotion) for code generation quality gates.
+#
+# SSOT: This file is the source of truth for runtime workflow configuration.
+# See integration/config/stage-gates.yaml for generation pipeline gates.
+
+# This file defines centralized runtime configuration for the the system.
+# All agents and tools should reference this file for consistent settings.
+
+saf:
+  version: "2.10.11"
+  environment: "development"  # development, staging, production
+
+# Agent Configuration
+agents:
+  pm:
+    enabled: true
+    log_level: INFO
+    approval_thresholds:
+      overall_minimum: 7.0
+      no_criterion_below: 5.0
+      security_minimum: 6.0
+    escalation:
+      max_rejections: 3
+      auto_escalate_security: true
+
+  planner:
+    enabled: true
+    log_level: INFO
+    max_plan_depth: 5
+    require_approval: true
+
+  builder:
+    enabled: true
+    log_level: INFO
+    sandbox_mode: true
+    alt_branch_policy: strict
+    idempotence_check: true
+
+  critic:
+    enabled: true
+    log_level: INFO
+    dimensions:
+      - correctness
+      - completeness
+      - security
+      - performance
+      - maintainability
+      - documentation
+
+# Pipeline Configuration
+pipeline:
+  stages:
+    - name: draft
+      auto_advance: false
+    - name: review
+      auto_advance: false
+      require_critic: true
+      require_pm: true
+    - name: staging
+      auto_advance: false
+      require_tests: true
+    - name: live
+      require_approval: true
+
+  gates:
+    g1_validation_score: 80
+    g2_pm_score: 7.0
+    g3_test_pass_rate: 100
+
+# Template Configuration
+templates:
+  families:
+    - code
+    - test
+    - schema
+    - documentation
+    - adapters
+
+  validation:
+    syntax_check: true
+    lint_check: true
+    schema_validation: true
+
+  protected_regions:
+    enabled: true
+    hash_algorithm: sha256
+
+# LogBook Configuration
+logbook:
+  enabled: true
+  path: "LogBook/"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_age_days: 90
+
+  aggregation:
+    daily_rollup: true
+    weekly_rollup: true
+    monthly_rollup: true
+
+# Task Configuration
+tasks:
+  path: "tasks/"
+  manifest_required: true
+  validation:
+    schema: "PLANNING/schemas/task_manifest_schema.json"
+    strict_mode: true
+
+# Tool Configuration
+tools:
+  validators:
+    - task_validator
+    - template_scanner
+    - dependency_analyzer
+    - compliance_reporter
+
+  scanners:
+    - task_scanner
+    - template_scanner
+
+  monitors:
+    - health_monitor
+    - metrics_collector
+
+# Security Configuration
+security:
+  scan_enabled: true
+  block_critical: true
+  allowed_paths:
+    - tasks/
+    - templates/
+    - LogBook/
+
+  denied_paths:
+    - .git/
+    - node_modules/
+    - __pycache__/
+
+# Metrics Configuration
+metrics:
+  enabled: true
+  collection_interval_seconds: 60
+  export_format: json
+  retention_days: 30
+
+# Notification Configuration
+notifications:
+  enabled: false
+  channels:
+    - type: slack
+      enabled: false
+    - type: email
+      enabled: false
+    - type: teams
+      enabled: false
+
+# Debug Configuration
+debug:
+  enabled: false
+  verbose_logging: false
+  trace_tool_calls: false
+  dump_state: false

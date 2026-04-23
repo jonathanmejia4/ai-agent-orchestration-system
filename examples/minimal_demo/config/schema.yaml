@@ -1,0 +1,14 @@
+# Schema Configuration (Demo)
+# This file is used by the minimal demo to demonstrate issue fixing
+
+validation:
+  enabled: true
+  log_errors: true
+
+fields:
+  - name: id
+    type: string
+    required: true
+  - name: timestamp
+    type: datetime
+    required: true

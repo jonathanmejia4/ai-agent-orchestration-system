@@ -1,0 +1,64 @@
+run_id: "initial"
+started: null
+status: idle
+last_updated: null
+
+config:
+  batch_size: 22
+  lanes_to_run:
+    - D
+    - E
+    - G
+    - H
+    - I
+    - J
+    - K
+    - L
+    - M
+    - N
+    - O
+    - P
+    - Q
+    - R
+    - S
+    - T
+    - U
+    - V
+    - W
+    - X
+    - Y
+    - Z
+
+lanes:
+  D: { status: pending, issues: 0, issue_ids: [], committed: false }
+  E: { status: pending, issues: 0, issue_ids: [], committed: false }
+  G: { status: pending, issues: 0, issue_ids: [], committed: false }
+  H: { status: pending, issues: 0, issue_ids: [], committed: false }
+  I: { status: pending, issues: 0, issue_ids: [], committed: false }
+  J: { status: pending, issues: 0, issue_ids: [], committed: false }
+  K: { status: pending, issues: 0, issue_ids: [], committed: false }
+  L: { status: pending, issues: 0, issue_ids: [], committed: false }
+  M: { status: pending, issues: 0, issue_ids: [], committed: false }
+  N: { status: pending, issues: 0, issue_ids: [], committed: false }
+  O: { status: pending, issues: 0, issue_ids: [], committed: false }
+  P: { status: pending, issues: 0, issue_ids: [], committed: false }
+  Q: { status: pending, issues: 0, issue_ids: [], committed: false }
+  R: { status: pending, issues: 0, issue_ids: [], committed: false }
+  S: { status: pending, issues: 0, issue_ids: [], committed: false }
+  T: { status: pending, issues: 0, issue_ids: [], committed: false }
+  U: { status: pending, issues: 0, issue_ids: [], committed: false }
+  V: { status: pending, issues: 0, issue_ids: [], committed: false }
+  W: { status: pending, issues: 0, issue_ids: [], committed: false }
+  X: { status: pending, issues: 0, issue_ids: [], committed: false }
+  Y: { status: pending, issues: 0, issue_ids: [], committed: false }
+  Z: { status: pending, issues: 0, issue_ids: [], committed: false }
+
+progress:
+  total_lanes: 22
+  completed_lanes: 0
+  total_issues: 0
+  batches_run: 0
+  last_batch: []
+  next_batch: [D, E, G]
+
+errors: []

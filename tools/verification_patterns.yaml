@@ -1,0 +1,437 @@
+# =============================================================================
+# Issue Verification Patterns Library
+# =============================================================================
+#
+# This file defines reusable verification patterns that agents can reference
+# when checking if an issue has been properly fixed.
+#
+# Usage:
+#   1. Issue files reference a pattern by name
+#   2. Agent loads pattern, substitutes variables, runs checks
+#   3. All checks must pass for issue to be marked VERIFIED
+#
+# Pattern Variables:
+#   {file_path}     - Path to file being checked
+#   {dir_path}      - Path to directory being checked
+#   {pattern}       - Regex or text pattern to match
+#   {schema_path}   - Path to schema file for validation
+#   {script_path}   - Path to Python script
+#   {issue_id}      - Current issue ID (e.g., G-17)
+#
+# =============================================================================
+
+version: "1.0"
+last_updated: "2025-12-28"
+
+# =============================================================================
+# VERIFICATION DEPTH LEVELS
+# =============================================================================
+# Defines how thorough verification should be for different issue types
+
+depth_levels:
+  QUICK:
+    description: "Fast check - file/directory existence only"
+    checks: ["existence"]
+    estimated_time: "1-5 seconds"
+
+  STANDARD:
+    description: "Normal check - existence + basic content validation"
+    checks: ["existence", "content_validation", "git_tracking"]
+    estimated_time: "5-15 seconds"
+
+  DEEP:
+    description: "Full check - all 6 verification dimensions"
+    checks: ["existence", "content_validation", "git_tracking", "syntax", "integration", "cross_reference"]
+    estimated_time: "15-60 seconds"
+
+# =============================================================================
+# COMMON VERIFICATION PATTERNS
+# =============================================================================
+
+patterns:
+
+  # ---------------------------------------------------------------------------
+  # FILE/DIRECTORY EXISTENCE PATTERNS
+  # ---------------------------------------------------------------------------
+
+  missing_file:
+    description: "Verify a missing file has been created"
+    difficulty: EASY
+    depth: QUICK
+    checks:
+      - name: file_exists
+        command: "test -f {file_path}"
+        expected_exit: 0
+        failure_message: "File {file_path} does not exist"
+
+      - name: file_not_empty
+        command: "test -s {file_path}"
+        expected_exit: 0
+        failure_message: "File {file_path} is empty"
+
+      - name: git_tracked
+        command: "git ls-files --error-unmatch {file_path}"
+        expected_exit: 0
+        failure_message: "File {file_path} is not tracked by git"
+
+  missing_directory:
+    description: "Verify a missing directory has been created"
+    difficulty: EASY
+    depth: QUICK
+    checks:
+      - name: dir_exists
+        command: "test -d {dir_path}"
+        expected_exit: 0
+        failure_message: "Directory {dir_path} does not exist"
+
+      - name: has_readme
+        command: "test -f {dir_path}/README.md || test -f {dir_path}/.gitkeep"
+        expected_exit: 0
+        failure_message: "Directory {dir_path} needs README.md or .gitkeep"
+
+  # ---------------------------------------------------------------------------
+  # SCHEMA/JSON VALIDATION PATTERNS
+  # ---------------------------------------------------------------------------
+
+  json_schema:
+    description: "Verify JSON file exists and is valid"
+    difficulty: EASY
+    depth: STANDARD
+    checks:
+      - name: file_exists
+        command: "test -f {file_path}"
+        expected_exit: 0
+
+      - name: valid_json
+        command: "python3 -m json.tool {file_path} > /dev/null"
+        expected_exit: 0
+        failure_message: "File {file_path} is not valid JSON"
+
+      - name: git_tracked
+        command: "git ls-files --error-unmatch {file_path}"
+        expected_exit: 0
+
+  yaml_schema:
+    description: "Verify YAML file exists and is valid"
+    difficulty: EASY
+    depth: STANDARD
+    checks:
+      - name: file_exists
+        command: "test -f {file_path}"
+        expected_exit: 0
+
+      - name: valid_yaml
+        command: "python3 -c \"import yaml; yaml.safe_load(open('{file_path}'))\""
+        expected_exit: 0
+        failure_message: "File {file_path} is not valid YAML"
+
+      - name: git_tracked
+        command: "git ls-files --error-unmatch {file_path}"
+        expected_exit: 0
+
+  # ---------------------------------------------------------------------------
+  # PYTHON SCRIPT PATTERNS
+  # ---------------------------------------------------------------------------
+
+  python_script:
+    description: "Verify Python script exists and has valid syntax"
+    difficulty: MEDIUM
+    depth: STANDARD
+    checks:
+      - name: file_exists
+        command: "test -f {script_path}"
+        expected_exit: 0
+
+      - name: valid_syntax
+        command: "python3 -m py_compile {script_path}"
+        expected_exit: 0
+        failure_message: "Python syntax error in {script_path}"
+
+      - name: executable
+        command: "test -x {script_path} || head -1 {script_path} | grep -q 'python'"
+        expected_exit: 0
+
+      - name: git_tracked
+        command: "git ls-files --error-unmatch {script_path}"
+        expected_exit: 0
+
+  python_script_runnable:
+    description: "Verify Python script runs without import errors"
+    difficulty: MEDIUM
+    depth: DEEP
+    checks:
+      - name: file_exists
+        command: "test -f {script_path}"
+        expected_exit: 0
+
+      - name: valid_syntax
+        command: "python3 -m py_compile {script_path}"
+        expected_exit: 0
+
+      - name: imports_work
+        command: "python3 -c \"import sys; sys.path.insert(0, '.'); exec(open('{script_path}').read().split('if __name__')[0])\""
+        expected_exit: 0
+        failure_message: "Import errors in {script_path}"
+
+  # ---------------------------------------------------------------------------
+  # REFERENCE/IMPORT PATTERNS
+  # ---------------------------------------------------------------------------
+
+  ghost_reference:
+    description: "Verify ghost reference has been resolved"
+    difficulty: MEDIUM
+    depth: STANDARD
+    checks:
+      - name: target_exists
+        command: "test -e {file_path}"
+        expected_exit: 0
+        failure_message: "Referenced target {file_path} does not exist"
+
+      - name: reference_valid
+        command: "grep -l '{file_path}' {source_file} > /dev/null"
+        expected_exit: 0
+        failure_message: "Reference to {file_path} not found in {source_file}"
+
+  missing_import:
+    description: "Verify missing import has been added"
+    difficulty: EASY
+    depth: STANDARD
+    checks:
+      - name: import_exists
+        command: "grep -q '{import_pattern}' {file_path}"
+        expected_exit: 0
+        failure_message: "Import pattern '{import_pattern}' not found in {file_path}"
+
+      - name: syntax_valid
+        command: "python3 -m py_compile {file_path}"
+        expected_exit: 0
+
+  # ---------------------------------------------------------------------------
+  # WORKFLOW/CI PATTERNS
+  # ---------------------------------------------------------------------------
+
+  workflow_file:
+    description: "Verify GitHub workflow file is valid"
+    difficulty: MEDIUM
+    depth: STANDARD
+    checks:
+      - name: file_exists
+        command: "test -f {file_path}"
+        expected_exit: 0
+
+      - name: valid_yaml
+        command: "python3 -c \"import yaml; yaml.safe_load(open('{file_path}'))\""
+        expected_exit: 0
+
+      - name: has_jobs
+        command: "grep -q 'jobs:' {file_path}"
+        expected_exit: 0
+        failure_message: "Workflow {file_path} missing 'jobs:' section"
+
+      - name: has_trigger
+        command: "grep -qE 'on:|workflow_dispatch:' {file_path}"
+        expected_exit: 0
+        failure_message: "Workflow {file_path} missing trigger"
+
+  # ---------------------------------------------------------------------------
+  # DOCUMENTATION PATTERNS
+  # ---------------------------------------------------------------------------
+
+  markdown_doc:
+    description: "Verify markdown documentation exists"
+    difficulty: EASY
+    depth: QUICK
+    checks:
+      - name: file_exists
+        command: "test -f {file_path}"
+        expected_exit: 0
+
+      - name: has_title
+        command: "head -5 {file_path} | grep -q '^#'"
+        expected_exit: 0
+        failure_message: "Document {file_path} missing title header"
+
+      - name: not_empty
+        command: "test $(wc -l < {file_path}) -gt 5"
+        expected_exit: 0
+        failure_message: "Document {file_path} too short (< 5 lines)"
+
+  # ---------------------------------------------------------------------------
+  # STUB/PLACEHOLDER PATTERNS
+  # ---------------------------------------------------------------------------
+
+  stub_implementation:
+    description: "Verify stub has been replaced with real implementation"
+    difficulty: HARD
+    depth: DEEP
+    checks:
+      - name: file_exists
+        command: "test -f {file_path}"
+        expected_exit: 0
+
+      - name: no_stub_markers
+        command: "! grep -qiE '(TODO|FIXME|STUB|NOT.?IMPLEMENTED|PLACEHOLDER)' {file_path}"
+        expected_exit: 0
+        failure_message: "File {file_path} still contains stub markers"
+
+      - name: has_implementation
+        command: "test $(wc -l < {file_path}) -gt 20"
+        expected_exit: 0
+        failure_message: "File {file_path} too short to be real implementation"
+
+  # ---------------------------------------------------------------------------
+  # CLI/TOOL PATTERNS (T-11 Fix)
+  # ---------------------------------------------------------------------------
+
+  cli_flags:
+    description: "Verify CLI tool has expected flags/options"
+    difficulty: MEDIUM
+    depth: STANDARD
+    checks:
+      - name: tool_exists
+        command: "test -f {script_path}"
+        expected_exit: 0
+        failure_message: "Tool {script_path} does not exist"
+
+      - name: tool_runnable
+        command: "python3 {script_path} --help >/dev/null 2>&1"
+        expected_exit: 0
+        failure_message: "Tool {script_path} --help failed"
+
+      - name: flag_documented
+        command: "python3 {script_path} --help 2>&1 | grep -q '{flag_name}'"
+        expected_exit: 0
+        failure_message: "Flag {flag_name} not found in help output"
+
+  directory_structure:
+    description: "Verify a directory exists with expected structure"
+    difficulty: EASY
+    depth: STANDARD
+    checks:
+      - name: dir_exists
+        command: "test -d {dir_path}"
+        expected_exit: 0
+        failure_message: "Directory {dir_path} does not exist"
+
+      - name: has_readme_or_gitkeep
+        command: "test -f {dir_path}/README.md || test -f {dir_path}/.gitkeep"
+        expected_exit: 0
+        failure_message: "Directory {dir_path} needs README.md or .gitkeep"
+
+      - name: not_empty
+        command: "test -n \"$(ls -A {dir_path})\""
+        expected_exit: 0
+        failure_message: "Directory {dir_path} is empty"
+
+  workflow_cli_alignment:
+    description: "Verify workflow uses valid CLI flags for tool"
+    difficulty: MEDIUM
+    depth: DEEP
+    checks:
+      - name: tool_exists
+        command: "test -f {script_path}"
+        expected_exit: 0
+
+      - name: workflow_exists
+        command: "test -f {workflow_path}"
+        expected_exit: 0
+
+      - name: flags_valid
+        command: "grep '{script_path}' {workflow_path} | head -1"
+        expected_exit: 0
+        failure_message: "Could not find {script_path} invocation in {workflow_path}"
+
+  # ---------------------------------------------------------------------------
+  # POLICY/CONTRADICTION PATTERNS
+  # ---------------------------------------------------------------------------
+
+  policy_alignment:
+    description: "Verify policy contradiction has been resolved"
+    difficulty: HARD
+    depth: DEEP
+    checks:
+      - name: source_updated
+        command: "test -f {source_file} && git log -1 --format=%H -- {source_file}"
+        expected_exit: 0
+
+      - name: no_contradiction
+        command: "! grep -q '{contradiction_pattern}' {source_file}"
+        expected_exit: 0
+        failure_message: "Contradiction still exists in {source_file}"
+
+  # ---------------------------------------------------------------------------
+  # INTEGRATION PATTERNS
+  # ---------------------------------------------------------------------------
+
+  cross_file_consistency:
+    description: "Verify changes are consistent across related files"
+    difficulty: HARD
+    depth: DEEP
+    checks:
+      - name: primary_exists
+        command: "test -f {primary_file}"
+        expected_exit: 0
+
+      - name: pattern_matches
+        command: "grep -c '{pattern}' {primary_file} {secondary_file}"
+        expected_exit: 0
+        failure_message: "Pattern '{pattern}' not consistent across files"
+
+# =============================================================================
+# ISSUE TYPE TO PATTERN MAPPING
+# =============================================================================
+# Maps Type Tags from issues to recommended verification patterns
+
+type_tag_patterns:
+  GhostRef: ["ghost_reference", "missing_file"]
+  MissingFile: ["missing_file"]
+  MissingDir: ["missing_directory", "directory_structure"]
+  MissingSchema: ["json_schema", "yaml_schema"]
+  Stub: ["stub_implementation"]
+  ConfigError: ["yaml_schema", "json_schema"]
+  WorkflowGap: ["workflow_file", "workflow_cli_alignment"]
+  DocDrift: ["markdown_doc"]
+  PolicyViolation: ["policy_alignment"]
+  Contradiction: ["policy_alignment", "cross_file_consistency"]
+  # T-11 additions
+  CLIDrift: ["cli_flags", "workflow_cli_alignment"]
+  InvocationMismatch: ["cli_flags", "workflow_cli_alignment"]
+  ToolContract: ["cli_flags", "python_script"]
+
+# =============================================================================
+# SEVERITY TO DEPTH MAPPING
+# =============================================================================
+# Suggests verification depth based on issue severity
+
+severity_depth:
+  HIGH: DEEP
+  MEDIUM: STANDARD
+  LOW: QUICK
+
+# =============================================================================
+# EVIDENCE REQUIREMENTS BY PATTERN
+# =============================================================================
+# What evidence must be collected for each pattern
+
+evidence_requirements:
+  missing_file:
+    - "Screenshot/output of: test -f {file_path}"
+    - "Git commit SHA that created the file"
+    - "File content summary (first 20 lines)"
+
+  missing_directory:
+    - "Output of: ls -la {dir_path}"
+    - "Git commit SHA that created directory"
+
+  json_schema:
+    - "Output of: python3 -m json.tool {file_path}"
+    - "Schema structure summary"
+
+  python_script:
+    - "Output of: python3 -m py_compile {script_path}"
+    - "Script help/usage if available"
+
+  stub_implementation:
+    - "Proof no stub markers remain"
+    - "Function/class count comparison before/after"
+    - "Test execution results if tests exist"
